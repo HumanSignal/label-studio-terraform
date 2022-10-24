@@ -45,3 +45,17 @@ module "eks" {
   instance_profile_name = module.iam.iam_instance_profile
   tags                  = local.tags
 }
+
+module "route53" {
+  source      = "../modules/route53"
+  count       = var.create_r53_zone ? 1 : 0
+  domain_name = var.domain_name
+  tags        = local.tags
+}
+
+module "acm" {
+  source      = "../modules/acm"
+  count       = var.create_acm_certificate ? 1 : 0
+  domain_name = var.domain_name
+  tags        = local.tags
+}
