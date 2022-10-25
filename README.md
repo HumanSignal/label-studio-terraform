@@ -63,7 +63,7 @@ make init "provider=aws"
 # Plan all GCP resources.
 make plan "provider=aws"
 ```
-### This command will all the neccessary infrastructure and deploy Label Studio/Label Studio Enterprise on the AWS EKS cluster.
+### This command will all the necessary infrastructure and deploy Label Studio/Label Studio Enterprise on the AWS EKS cluster.
 ```bash
 # Create or update AWS resources
 # This command takes some time to execute. 
