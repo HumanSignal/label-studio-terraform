@@ -47,9 +47,16 @@ module "eks" {
 }
 
 module "helm" {
-  source = "../../common/modules/helm"
-  repository_password = ""
+  source              = "../../common/modules/helm"
+  repository          = "https://charts.heartex.com"
   repository_username = ""
+  repository_password = ""
+  chart               = ""
+  registry_server     = ""
+  registry_username   = ""
+  registry_email      = ""
+  registry_password   = ""
+  license_literal     = ""
 }
 
 #module "route53" {
