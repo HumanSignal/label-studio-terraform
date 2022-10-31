@@ -38,6 +38,7 @@ variable "registry_password" {
 variable "registry_email" {
   description = "TBD"
   type        = string
+  default     = ""
 }
 
 # License

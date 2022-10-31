@@ -48,15 +48,15 @@ module "eks" {
 
 module "helm" {
   source              = "../../common/modules/helm"
-  repository          = "https://charts.heartex.com"
-  repository_username = ""
-  repository_password = ""
-  chart               = ""
-  registry_server     = ""
-  registry_username   = ""
-  registry_email      = ""
-  registry_password   = ""
-  license_literal     = ""
+  repository          = var.repository
+  repository_username = var.repository_username
+  repository_password = var.repository_password
+  chart               = var.chart
+  registry_server     = var.registry_server
+  registry_username   = var.registry_username
+  registry_email      = var.registry_email
+  registry_password   = var.registry_password
+  license_literal     = var.license_literal
 }
 
 #module "route53" {

@@ -57,9 +57,9 @@ locals {
 
   # Common Tags to attach all the resources.
   tags = {
-    "Environment"    = var.environment
-    "resource-name"  = var.name
-    "project-id"     = format("%s", data.aws_caller_identity.current.id)
+    "Environment"   = var.environment
+    "resource-name" = var.name
+    "project-id"    = format("%s", data.aws_caller_identity.current.id)
   }
 }
 
@@ -77,4 +77,56 @@ variable "create_acm_certificate" {
 
 variable "domain_name" {
   description = "Main public domain name"
+}
+
+# Helm
+variable "repository" {
+  description = "TBD"
+  type        = string
+  default     = "https://charts.heartex.com"
+}
+
+variable "repository_username" {
+  description = "Username for HTTP basic authentication against the Helm repository."
+  type        = string
+}
+
+variable "repository_password" {
+  description = "Password for HTTP basic authentication against the Helm repository."
+  type        = string
+}
+
+variable "chart" {
+  description = "TBD"
+  type        = string
+  default     = "label-studio-enterprise"
+}
+
+# Docker config
+variable "registry_server" {
+  description = "TBD"
+  type        = string
+  default     = "https://index.docker.io/v2/"
+}
+
+variable "registry_username" {
+  description = "TBD"
+  type        = string
+}
+
+variable "registry_email" {
+  description = "TBD"
+  type        = string
+  default     = ""
+}
+
+variable "registry_password" {
+  description = "TBD"
+  type        = string
+}
+
+# License
+variable "license_literal" {
+  description = "TBD"
+  type        = string
 }
