@@ -2,6 +2,17 @@
 # shellcheck disable=SC1091
 set -euo pipefail
 
+prompt_confirm() {
+  while true; do
+    read -r -n 1 -p "${1:-Continue?} [y/n]: " REPLY
+    case $REPLY in
+      [yY]) echo ; return 0 ;;
+      [nN]) echo ; return 1 ;;
+      *) printf " \033[31m %s \n\033[0m" "invalid input"
+    esac
+  done
+}
+
 # Locate the root directory
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -9,6 +20,9 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "${ROOT}/scripts/common.sh"
 
 cd "${ROOT}/env"
+
+prompt_confirm "Are you sure you what to destroy the environment?" || exit 0
+prompt_confirm "ARE YOU SURE?" || exit 0
 
 # Select the environment workspace where you want destroy all your resources
 terraform workspace select "${TF_VAR_environment:-}"
