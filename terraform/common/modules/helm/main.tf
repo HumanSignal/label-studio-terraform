@@ -50,26 +50,17 @@ resource "helm_release" "label_studio" {
     name  = "global.enterpriseLicense.secretName"
     value = kubernetes_secret.license.metadata[0].name
   }
+
   set {
     name  = "global.enterpriseLicense.secretKey"
     value = var.license_secret_key
   }
-
-  set {
-    name  = "global.enterpriseLicense.secretName"
-    value = "lse-license"
-  }
-  set {
-    name  = "global.enterpriseLicense.secretKey"
-    value = "license"
-  }
-
+  
   set {
     # TODO: remove
     name  = "ci"
     value = true
   }
-
 
   set {
     name  = "postgresql.enabled"

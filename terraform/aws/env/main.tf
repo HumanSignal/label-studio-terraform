@@ -48,6 +48,7 @@ module "eks" {
 
 module "helm" {
   source              = "../../common/modules/helm"
+  depends_on          = [module.eks]
   repository          = var.repository
   repository_username = var.repository_username
   repository_password = var.repository_password
