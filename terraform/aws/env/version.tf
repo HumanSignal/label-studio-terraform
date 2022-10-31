@@ -10,11 +10,20 @@ terraform {
       source  = "hashicorp/helm"
       version = "= 2.7.1"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "= 2.14.0"
+    }
   }
 }
 
 provider "aws" {
   region = var.region
+}
+
+provider "kubernetes" {
+  config_path    = "~/.kube/config" # TODO: Make configurable
+  config_context = "my-context"
 }
 
 provider "helm" {
