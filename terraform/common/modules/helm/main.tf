@@ -41,35 +41,24 @@ resource "helm_release" "label_studio" {
   repository_username = var.repository_username
   repository_password = var.repository_password
 
-  set {
-    name  = "global.imagePullSecrets[0].name"
-    value = kubernetes_secret.heartex_pull_key.metadata[0].name
+  dynamic set {
+    for_each = {
+      "global.imagePullSecrets[0].name"                                                            = kubernetes_secret.heartex_pull_key.metadata[0].name
+      "global.enterpriseLicense.secretName"                                                        = kubernetes_secret.license.metadata[0].name
+      "global.enterpriseLicense.secretKey"                                                         = var.license_secret_key
+      "ci"                                                                                         = true # TODO: Remove
+      "postgresql.enabled"                                                                         = true
+      "redis.enabled"                                                                              = true
+      "minio.enabled"                                                                              = false
+      "app.ingress.enabled"                                                                        = false
+      "app.service.type"                                                                           = "LoadBalancer"
+      "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"            = "external"
+      "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-nlb-target-type" = "ip"
+      "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-scheme"          = "internet-facing"
+    }
+    content {
+      name  = set.key
+      value = set.value
+    }
   }
-
-  set {
-    name  = "global.enterpriseLicense.secretName"
-    value = kubernetes_secret.license.metadata[0].name
-  }
-
-  set {
-    name  = "global.enterpriseLicense.secretKey"
-    value = var.license_secret_key
-  }
-  
-  set {
-    # TODO: remove
-    name  = "ci"
-    value = true
-  }
-
-  set {
-    name  = "postgresql.enabled"
-    value = true
-  }
-
-  set {
-    name  = "redis.enabled"
-    value = true
-  }
-
 }
