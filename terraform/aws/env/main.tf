@@ -46,6 +46,11 @@ module "eks" {
   tags                  = local.tags
 }
 
+module "lbc" {
+  source = "../modules/load-balancer-controller"
+  cluster_name = module.eks.cluster_name
+}
+
 module "helm" {
   source              = "../../common/modules/helm"
   depends_on          = [module.eks]
