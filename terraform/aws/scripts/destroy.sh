@@ -28,7 +28,7 @@ prompt_confirm "ARE YOU SURE?" || exit 0
 terraform workspace select "${TF_VAR_environment:-}"
 
 # this will destroy all of your resources in the environment workspace
-terraform destroy -no-color -auto-approve
+terraform destroy -no-color -auto-approve ${TF_PARAMS}
 
 # Delete terraform workspace.
 terraform workspace select default
