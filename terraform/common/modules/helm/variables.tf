@@ -52,3 +52,9 @@ variable "license_literal" {
   description = "TBD"
   type        = string
 }
+
+variable "additional_set" {
+  description = "TBD"
+  type        = map(string)
+  default     = {}
+}

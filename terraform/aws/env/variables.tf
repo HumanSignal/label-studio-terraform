@@ -130,3 +130,9 @@ variable "license_literal" {
   description = "TBD"
   type        = string
 }
+
+variable "label_studio_additional_set" {
+  description = "TBD"
+  type = map(string)
+  default = {}
+}

@@ -61,4 +61,12 @@ resource "helm_release" "label_studio" {
       value = set.value
     }
   }
+
+  dynamic set {
+    for_each = var.additional_set
+    content {
+      name  = set.key
+      value = set.value
+    }
+  }
 }

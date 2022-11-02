@@ -47,7 +47,7 @@ module "eks" {
 }
 
 module "lbc" {
-  source = "../modules/load-balancer-controller"
+  source       = "../modules/load-balancer-controller"
   cluster_name = module.eks.cluster_name
 }
 
@@ -63,6 +63,7 @@ module "helm" {
   registry_email      = var.registry_email
   registry_password   = var.registry_password
   license_literal     = var.license_literal
+  additional_set      = var.label_studio_additional_set
 }
 
 #module "route53" {
