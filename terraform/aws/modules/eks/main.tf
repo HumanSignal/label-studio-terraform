@@ -24,6 +24,8 @@ resource "aws_eks_node_group" "eks_node_group" {
   subnet_ids      = var.subnet_ids
   instance_types  = [var.instance_type]
 
+  capacity_type = var.capacity_type
+
   scaling_config {
     desired_size = var.desired_capacity
     max_size     = var.max_size

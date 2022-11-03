@@ -79,6 +79,16 @@ variable "domain_name" {
   description = "Main public domain name"
 }
 
+variable "eks_capacity_type" {
+  description = "Type of capacity associated with the EKS Node Group"
+  type        = string
+  default     = "ON_DEMAND"
+  validation {
+    condition     = contains(["ON_DEMAND", "SPOT"], var.eks_capacity_type)
+    error_message = "VM Size must be `ON_DEMAND` or `SPOT`"
+  }
+}
+
 # Helm
 variable "repository" {
   description = "TBD"
@@ -133,6 +143,6 @@ variable "license_literal" {
 
 variable "label_studio_additional_set" {
   description = "TBD"
-  type = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
 }

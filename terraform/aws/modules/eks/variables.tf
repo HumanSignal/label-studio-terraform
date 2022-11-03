@@ -71,3 +71,13 @@ variable "min_size" {
   description = "Minimum number of the instances in autoscaling group"
   type        = number
 }
+
+variable "capacity_type" {
+  description = "Type of capacity associated with the EKS Node Group"
+  type        = string
+  default     = "ON_DEMAND"
+  validation {
+    condition     = contains(["ON_DEMAND", "SPOT"], var.capacity_type)
+    error_message = "VM Size must be `ON_DEMAND` or `SPOT`"
+  }
+}

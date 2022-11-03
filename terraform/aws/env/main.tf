@@ -44,6 +44,7 @@ module "eks" {
   public_subnets        = module.vpc.aws_subnet_public_ids
   instance_profile_name = module.iam.iam_instance_profile
   tags                  = local.tags
+  capacity_type         = var.eks_capacity_type
 }
 
 module "lbc" {

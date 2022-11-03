@@ -42,7 +42,7 @@ resource "helm_release" "label_studio" {
   repository_password = var.repository_password
 
   wait = true
-  
+
   dynamic set {
     for_each = {
       "global.imagePullSecrets[0].name"                                                            = kubernetes_secret.heartex_pull_key.metadata[0].name
