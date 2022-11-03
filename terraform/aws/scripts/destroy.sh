@@ -35,4 +35,5 @@ terraform workspace select default
 terraform workspace delete "${TF_VAR_environment:-}"
 
 # Cleanup state bucket
+# TODO: ERROR: An error occurred (BucketNotEmpty) when calling the DeleteBucket operation: The bucket you tried to delete is not empty. You must delete all versions in the bucket.
 aws s3api delete-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region:-}" >/dev/null
