@@ -8,7 +8,7 @@ resource "aws_vpc" "vpc" {
 
   tags = merge(var.tags, {
     "Name" = format("%s-vpc-network", var.name)
-    }
+  }
   )
   lifecycle {
     ignore_changes = [tags]
@@ -28,7 +28,7 @@ resource "aws_subnet" "public_subnet" {
     format("kubernetes.io/cluster/%s-eks-cluster", var.name) = "shared"
 
     "kubernetes.io/role/elb" = 1
-    }
+  }
   )
 }
 
@@ -53,7 +53,7 @@ resource "aws_subnet" "private_subnet" {
     format("kubernetes.io/cluster/%s-eks-cluster", var.name) = "shared"
 
     "kubernetes.io/role/internal-elb" = 1
-    }
+  }
   )
 }
 
@@ -68,7 +68,7 @@ resource "aws_route_table_association" "private_route_table_association" {
 # Routing table for public subnets
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.vpc.id
-  tags = merge(
+  tags   = merge(
     var.tags,
     {
       "Name" = format("%s-public_route_table", var.name)
@@ -87,7 +87,7 @@ resource "aws_route" "internet_gateway_route" {
 resource "aws_route_table" "private_route_table" {
   count  = var.multi_az_nat_gateway * local.pri_az_count + var.single_nat_gateway * 1
   vpc_id = aws_vpc.vpc.id
-  tags = merge(
+  tags   = merge(
     var.tags,
     {
       "Name" = format("%s-private_route_table", var.name)
@@ -101,7 +101,7 @@ resource "aws_route" "private_nat_gateway_route" {
   route_table_id         = element(aws_route_table.private_route_table.*.id, count.index)
   nat_gateway_id         = element(aws_nat_gateway.nat_gateway.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
-  depends_on = [
+  depends_on             = [
     aws_route_table.private_route_table,
     aws_nat_gateway.nat_gateway,
   ]
@@ -114,7 +114,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   count         = var.multi_az_nat_gateway * local.pri_az_count + var.single_nat_gateway * 1
   subnet_id     = element(aws_subnet.public_subnet.*.id, count.index)
   allocation_id = element(aws_eip.mod_nat_eip.*.id, count.index)
-  tags = merge(var.tags, {
+  tags          = merge(var.tags, {
     "Name" = format("%s-nat-gateway-%s", var.name, local.pri_availability_zones[count.index])
   })
   depends_on = [
@@ -134,7 +134,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
-  tags = merge(
+  tags   = merge(
     var.tags,
     {
       "Name" = format("%s-internet-gateway", aws_vpc.vpc.id)
@@ -146,10 +146,11 @@ resource "aws_internet_gateway" "internet_gateway" {
 # Create Elastic IP address for the NAT gateway.
 resource "aws_eip" "mod_nat_eip" {
   count = var.multi_az_nat_gateway * local.pri_az_count + var.single_nat_gateway * 1
-  tags = merge(var.tags, {
+  tags  = merge(var.tags, {
     "Name" = format("%s-elasticIP-%s", var.name, local.pub_availability_zones[count.index])
   })
-  vpc = true
+  vpc        = true
+  depends_on = [aws_internet_gateway.internet_gateway]
 }
 
 #-------------------------------------------------------------------------
@@ -166,8 +167,10 @@ resource "aws_security_group" "security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(var.tags, {
-    "Name" = format("%s-eks-security-group", var.name)
+  tags = merge(
+    var.tags,
+    {
+      "Name" = format("%s-eks-security-group", var.name)
     }
   )
 }
@@ -211,10 +214,11 @@ resource "aws_security_group" "worker_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(var.tags, {
-    "Name" = format("%s-eks-worker-security-group", var.name)
-
-    format("kubernetes.io/cluster/%s-eks-cluster", var.name) = "shared"
+  tags = merge(
+    var.tags,
+    {
+      "Name"                                                   = format("%s-eks-worker-security-group", var.name)
+      format("kubernetes.io/cluster/%s-eks-cluster", var.name) = "shared"
     }
   )
 }

@@ -48,13 +48,16 @@ module "eks" {
 }
 
 module "lbc" {
-  source       = "../modules/load-balancer-controller"
+  source = "../modules/load-balancer-controller"
+
   cluster_name = module.eks.cluster_name
+
+  depends_on = [module.eks]
 }
 
 module "helm" {
-  source              = "../../common/modules/helm"
-  depends_on          = [module.eks]
+  source = "../../common/modules/helm"
+
   repository          = var.repository
   repository_username = var.repository_username
   repository_password = var.repository_password
@@ -65,6 +68,11 @@ module "helm" {
   registry_password   = var.registry_password
   license_literal     = var.license_literal
   additional_set      = var.label_studio_additional_set
+
+  depends_on = [
+    module.lbc,
+    module.eks
+  ]
 }
 
 #module "route53" {
