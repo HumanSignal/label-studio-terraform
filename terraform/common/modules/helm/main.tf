@@ -71,4 +71,9 @@ resource "helm_release" "label_studio" {
       value = set.value
     }
   }
+
+  depends_on = [
+    kubernetes_secret.heartex_pull_key,
+    kubernetes_secret.license
+  ]
 }
