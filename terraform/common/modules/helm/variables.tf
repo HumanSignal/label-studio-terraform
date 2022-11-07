@@ -41,6 +41,12 @@ variable "registry_email" {
   default     = ""
 }
 
+variable "enterprise" {
+  description = "TBD"
+  type        = bool
+  default     = false
+}
+
 # License
 variable "license_secret_key" {
   description = "TBD"

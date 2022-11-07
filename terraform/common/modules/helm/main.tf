@@ -20,6 +20,8 @@ resource "kubernetes_secret" "heartex_pull_key" {
 }
 
 resource "kubernetes_secret" "license" {
+  count = var.enterprise ? 1 : 0
+
   metadata {
     name = "lse-license"
   }
@@ -43,27 +45,26 @@ resource "helm_release" "label_studio" {
   force_update = true # TODO: Remove
 
   dynamic set {
-    for_each = {
-      "global.imagePullSecrets[0].name"                                                            = kubernetes_secret.heartex_pull_key.metadata[0].name
-      "enterprise.enterpriseLicense.secretName"                                                    = kubernetes_secret.license.metadata[0].name
-      "enterprise.enterpriseLicense.secretKey"                                                     = var.license_secret_key
-      "ci"                                                                                         = true # TODO: Remove
-      "postgresql.enabled"                                                                         = true
-      "redis.enabled"                                                                              = true
-      "app.ingress.enabled"                                                                        = false
-      "app.service.type"                                                                           = "LoadBalancer"
-      "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"            = "external"
-      "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-nlb-target-type" = "ip"
-      "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-scheme"          = "internet-facing"
-    }
-    content {
-      name  = set.key
-      value = set.value
-    }
-  }
-
-  dynamic set {
-    for_each = var.additional_set
+    for_each = merge(
+      {
+        "global.imagePullSecrets[0].name"                                                            = kubernetes_secret.heartex_pull_key.metadata[0].name
+        "enterprise.enabled"                                                                         = var.enterprise
+        # TODO: Remove ci
+        "ci"                                                                                         = true
+        "postgresql.enabled"                                                                         = true
+        "redis.enabled"                                                                              = true
+        "app.ingress.enabled"                                                                        = false
+        "app.service.type"                                                                           = "LoadBalancer"
+        "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"            = "external"
+        "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-nlb-target-type" = "ip"
+        "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-scheme"          = "internet-facing"
+      },
+      var.enterprise ? tomap({
+        "enterprise.enterpriseLicense.secretName" = kubernetes_secret.license[0].metadata[0].name
+        "enterprise.enterpriseLicense.secretKey"  = var.license_secret_key
+      }) : {},
+      var.additional_set
+    )
     content {
       name  = set.key
       value = set.value

@@ -68,6 +68,7 @@ module "helm" {
   registry_password   = var.registry_password
   license_literal     = var.license_literal
   additional_set      = var.label_studio_additional_set
+  enterprise          = var.enterprise
 
   depends_on = [
     module.lbc,

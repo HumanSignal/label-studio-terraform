@@ -146,3 +146,9 @@ variable "label_studio_additional_set" {
   type        = map(string)
   default     = {}
 }
+
+variable "enterprise" {
+  description = "TBD"
+  type        = bool
+  default     = false
+}
