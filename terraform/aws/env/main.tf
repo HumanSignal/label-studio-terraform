@@ -47,6 +47,16 @@ module "eks" {
   capacity_type         = var.eks_capacity_type
 }
 
+module "rds" {
+  source = "../modules/rds"
+
+  count = var.postgresql == "rds" ? 1 : 0
+
+  postgresql_database = var.postgresql_database
+  postgresql_username = var.postgresql_username
+  postgresql_password = var.postgresql_password
+}
+
 module "lbc" {
   source = "../modules/load-balancer-controller"
 
@@ -70,9 +80,17 @@ module "helm" {
   additional_set      = var.label_studio_additional_set
   enterprise          = var.enterprise
 
+  postgresql          = var.postgresql
+  postgresql_host     = var.postgresql == "rds" ? module.rds[0].host : var.postgresql_host
+  postgresql_port     = var.postgresql == "rds" ? module.rds[0].port : var.postgresql_port
+  postgresql_database = var.postgresql == "rds" ? module.rds[0].database : var.postgresql_database
+  postgresql_username = var.postgresql == "rds" ? module.rds[0].username : var.postgresql_username
+  postgresql_password = var.postgresql == "rds" ? module.rds[0].password : var.postgresql_password
+
   depends_on = [
     module.lbc,
-    module.eks
+    module.eks,
+    module.rds,
   ]
 }
 

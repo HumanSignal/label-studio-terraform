@@ -1,10 +1,16 @@
+locals {
+  heartex_pull_key_secret_name = "heartex-pull-key"
+  license_secret_name          = "lse-license"
+  license_secret_key           = "password"
+  postgresql_secret_name       = "postgresql"
+  postgresql_secret_key        = "password"
+}
+
 resource "kubernetes_secret" "heartex_pull_key" {
   metadata {
-    name = "heartex-pull-key"
+    name = local.heartex_pull_key_secret_name
   }
-
   type = "kubernetes.io/dockerconfigjson"
-
   data = {
     ".dockerconfigjson" = jsonencode({
       auths = {
@@ -21,16 +27,24 @@ resource "kubernetes_secret" "heartex_pull_key" {
 
 resource "kubernetes_secret" "license" {
   count = var.enterprise ? 1 : 0
-
   metadata {
-    name = "lse-license"
+    name = local.license_secret_name
   }
-
   type = "generic"
-
   # TODO: Read license from file
   data = {
-    (var.license_secret_key) = var.license_literal
+    (local.license_secret_key) = var.license_literal
+  }
+}
+
+resource "kubernetes_secret" "postgresql" {
+  count = var.postgresql == "rds" ? 1 : 0
+  metadata {
+    name = local.postgresql_secret_name
+  }
+  type = "generic"
+  data = {
+    (local.postgresql_secret_key) = var.postgresql_password
   }
 }
 
@@ -51,7 +65,6 @@ resource "helm_release" "label_studio" {
         "enterprise.enabled"                                                                         = var.enterprise
         # TODO: Remove ci
         "ci"                                                                                         = true
-        "postgresql.enabled"                                                                         = true
         "redis.enabled"                                                                              = true
         "app.ingress.enabled"                                                                        = false
         "app.service.type"                                                                           = "LoadBalancer"
@@ -61,8 +74,23 @@ resource "helm_release" "label_studio" {
       },
       var.enterprise ? tomap({
         "enterprise.enterpriseLicense.secretName" = kubernetes_secret.license[0].metadata[0].name
-        "enterprise.enterpriseLicense.secretKey"  = var.license_secret_key
-      }) : {},
+        "enterprise.enterpriseLicense.secretKey"  = local.license_secret_key
+      }) : tomap({}),
+      var.postgresql == "rds" ? tomap({
+        "postgresql.enabled"                  = false
+        "global.pgConfig.host"                = var.postgresql_host
+        "global.pgConfig.port"                = var.postgresql_port
+        "global.pgConfig.dbName"              = var.postgresql_database
+        "global.pgConfig.userName"            = var.postgresql_username
+        "global.pgConfig.password.secretName" = kubernetes_secret.postgresql[0].metadata[0].name
+        "global.pgConfig.password.secretKey"  = local.license_secret_key
+        # TODO: Add postgresql SSL configuration
+      }) : tomap({
+        "postgresql.enabled"       = true
+        "postgresql.auth.database" = var.postgresql_database
+        "postgresql.auth.username" = var.postgresql_username
+        "postgresql.auth.password" = var.postgresql_password
+      }),
       var.additional_set
     )
     content {
@@ -70,4 +98,10 @@ resource "helm_release" "label_studio" {
       value = set.value
     }
   }
+
+  depends_on = [
+    kubernetes_secret.postgresql,
+    kubernetes_secret.license,
+    kubernetes_secret.heartex_pull_key,
+  ]
 }

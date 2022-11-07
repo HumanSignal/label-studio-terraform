@@ -47,6 +47,36 @@ variable "enterprise" {
   default     = false
 }
 
+variable "postgresql" {
+  description = "TBD"
+  type        = string
+  default     = "internal"
+  validation {
+    condition     = contains(["internal", "rds"], var.postgresql)
+    error_message = "postgresql must be either `internal` either `rds`"
+  }
+}
+variable "postgresql_database" {
+  type = string
+  default = "labelstudio"
+}
+variable "postgresql_host" {
+  type = string
+  default = ""
+}
+variable "postgresql_port" {
+  type = number
+  default = 5432
+}
+variable "postgresql_username" {
+  type = string
+  default = "labelstudio"
+}
+variable "postgresql_password" {
+  type = string
+  default = "labelstudio"
+}
+
 # License
 variable "license_secret_key" {
   description = "TBD"
