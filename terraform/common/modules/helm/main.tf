@@ -35,23 +35,21 @@ resource "kubernetes_secret" "license" {
 resource "helm_release" "label_studio" {
   name = "label-studio"
 
-  repository = var.repository
-  chart      = var.chart
+  chart = var.chart
 
-  repository_username = var.repository_username
-  repository_password = var.repository_password
-
-  wait = true
+  atomic       = true
+  timeout      = 900
+  wait         = true
+  force_update = true # TODO: Remove
 
   dynamic set {
     for_each = {
       "global.imagePullSecrets[0].name"                                                            = kubernetes_secret.heartex_pull_key.metadata[0].name
-      "global.enterpriseLicense.secretName"                                                        = kubernetes_secret.license.metadata[0].name
-      "global.enterpriseLicense.secretKey"                                                         = var.license_secret_key
+      "enterprise.enterpriseLicense.secretName"                                                    = kubernetes_secret.license.metadata[0].name
+      "enterprise.enterpriseLicense.secretKey"                                                     = var.license_secret_key
       "ci"                                                                                         = true # TODO: Remove
       "postgresql.enabled"                                                                         = true
       "redis.enabled"                                                                              = true
-      "minio.enabled"                                                                              = false
       "app.ingress.enabled"                                                                        = false
       "app.service.type"                                                                           = "LoadBalancer"
       "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"            = "external"
@@ -71,9 +69,4 @@ resource "helm_release" "label_studio" {
       value = set.value
     }
   }
-
-  depends_on = [
-    kubernetes_secret.heartex_pull_key,
-    kubernetes_secret.license
-  ]
 }

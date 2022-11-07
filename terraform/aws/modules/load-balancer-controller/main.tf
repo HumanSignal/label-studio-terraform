@@ -11,9 +11,9 @@ data "tls_certificate" "this" {
 }
 
 resource "aws_iam_openid_connect_provider" "aws_iam_openid_connect_provider" {
-  client_id_list = ["sts.amazonaws.com"]
+  client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = [data.tls_certificate.this.certificates[0].sha1_fingerprint]
-  url = data.aws_eks_cluster.selected.identity[0].oidc[0].issuer
+  url             = data.aws_eks_cluster.selected.identity[0].oidc[0].issuer
 }
 
 data "aws_iam_policy_document" "eks_oidc_assume_role" {
@@ -376,12 +376,16 @@ resource "kubernetes_cluster_role_binding" "this" {
 }
 
 resource "helm_release" "alb_controller" {
-  name       = "aws-load-balancer-controller"
+  name = "aws-load-balancer-controller"
+
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-  atomic     = true
-  timeout    = 900
+
+  namespace = "kube-system"
+
+  atomic  = true
+  timeout = 900
+  wait    = true
 
   dynamic "set" {
     for_each = {
