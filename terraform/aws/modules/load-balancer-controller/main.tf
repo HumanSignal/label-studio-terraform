@@ -398,4 +398,9 @@ resource "helm_release" "alb_controller" {
       value = set.value
     }
   }
+  depends_on = [
+    kubernetes_cluster_role.this,
+    kubernetes_service_account.this,
+    kubernetes_cluster_role_binding.this,
+  ]
 }
