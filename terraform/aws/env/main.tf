@@ -64,7 +64,7 @@ module "rds" {
 module "elasticache" {
   source = "../modules/elasticache"
 
-  count = var.redis == "elasticache" ? 1 : 0
+  count = var.redis == "elasticache" && var.enterprise ? 1 : 0
 
   vpc_id     = module.vpc.aws_vpc_id
   subnet_ids = module.vpc.aws_subnet_private_ids
@@ -107,9 +107,9 @@ module "helm" {
   postgresql_username = var.postgresql == "rds" ? module.rds[0].username : var.postgresql_username
   postgresql_password = var.postgresql == "rds" ? module.rds[0].password : var.postgresql_password
 
-  redis          = var.redis && var.enterprise
-  redis_host     = var.redis == "elasticache" ? module.elasticache[0].host : var.redis_host
-  redis_password = var.redis == "elasticache" ? module.elasticache[0].password : var.redis_password
+  redis          = var.enterprise ? var.redis : "internal"
+  redis_host     = var.redis == "elasticache" && var.enterprise ? module.elasticache[0].host : var.redis_host
+  redis_password = var.redis == "elasticache" && var.enterprise ? module.elasticache[0].password : var.redis_password
 
   depends_on = [
     module.lbc,
