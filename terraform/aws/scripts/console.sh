@@ -11,8 +11,5 @@ source "${ROOT}/scripts/common.sh"
 # Make plan : this command will validate the terraform code
 cd "${ROOT}"/env
 
-# Terraform validate before the plan
-terraform validate
-
-# Terraform plan will create a plan file in your current repository. Verify the all the resource it create by using plan.
-terraform plan -no-color -out=./plan.json ${TF_PARAMS}
+# Terraform console will run console for debug.
+terraform console ${TF_PARAMS}

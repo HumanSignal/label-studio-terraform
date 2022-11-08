@@ -23,6 +23,11 @@ init:
 plan:
 	bash $(ROOT)/terraform/$(provider)/scripts/plan.sh
 
+# Run terraform console for debug
+.PHONY: console
+console:
+	bash $(ROOT)/terraform/$(provider)/scripts/console.sh
+
 # Apply the Terraform resources
 .PHONY: apply
 apply:
