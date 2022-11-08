@@ -1,6 +1,6 @@
 # TODO: Close b hole from the world access
 resource "aws_security_group" "security_group" {
-  name        = "elasticache"
+  name        = format("%s-elasticache-security-group", var.name)
   vpc_id      = var.vpc_id
   description = "Allow all inbound for Elasticache"
   ingress {
@@ -12,7 +12,7 @@ resource "aws_security_group" "security_group" {
 }
 
 resource "aws_elasticache_subnet_group" "subnet_group" {
-  name       = "main"
+  name       = format("%s-elasticache-subnet-group", var.name)
   subnet_ids = var.subnet_ids
 
   tags = {
@@ -21,9 +21,9 @@ resource "aws_elasticache_subnet_group" "subnet_group" {
 }
 
 resource "aws_elasticache_replication_group" "elasticache" {
-  description = "Redis cluster"
+  description = format("%s-elasticache", var.name)
 
-  replication_group_id = "elasticache"
+  replication_group_id = format("%s-elasticache", var.name)
 
   security_group_ids = [aws_security_group.security_group.id]
   subnet_group_name  = aws_elasticache_subnet_group.subnet_group.name

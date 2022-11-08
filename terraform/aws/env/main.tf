@@ -52,6 +52,7 @@ module "rds" {
 
   count = var.postgresql == "rds" ? 1 : 0
 
+  name       = local.name_prefix
   vpc_id     = module.vpc.aws_vpc_id
   subnet_ids = module.vpc.aws_subnet_private_ids
   database   = var.postgresql_database
@@ -66,6 +67,7 @@ module "elasticache" {
 
   count = var.redis == "elasticache" && var.enterprise ? 1 : 0
 
+  name       = local.name_prefix
   vpc_id     = module.vpc.aws_vpc_id
   subnet_ids = module.vpc.aws_subnet_private_ids
   port       = var.redis_port
