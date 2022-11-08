@@ -4,6 +4,7 @@ variable "subnet_ids" {
   type = list(string)
 }
 
+# TODO: Close b hole from the world access
 resource "aws_security_group" "security_group" {
   name        = "postgresql"
   vpc_id      = var.vpc_id
