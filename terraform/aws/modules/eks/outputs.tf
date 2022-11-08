@@ -15,3 +15,9 @@ output "cluster_endpoint" {
   description = "The endpoint for your EKS Kubernetes API"
   value       = aws_eks_cluster.eks_cluster.endpoint
 }
+
+# AWS EKS IAM OIDC provider
+output "iam_oidc_provider" {
+  description = "AWS EKS IRSA id"
+  value       = aws_iam_openid_connect_provider.aws_iam_openid_connect_provider
+}

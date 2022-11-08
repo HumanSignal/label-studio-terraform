@@ -5,34 +5,23 @@ data "aws_eks_cluster" "selected" {
 
 data "aws_caller_identity" "current" {}
 
-
-data "tls_certificate" "this" {
-  url = data.aws_eks_cluster.selected.identity[0].oidc[0].issuer
-}
-
-resource "aws_iam_openid_connect_provider" "aws_iam_openid_connect_provider" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.this.certificates[0].sha1_fingerprint]
-  url             = data.aws_eks_cluster.selected.identity[0].oidc[0].issuer
-}
-
 data "aws_iam_policy_document" "eks_oidc_assume_role" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     effect  = "Allow"
     condition {
       test     = "StringEquals"
-      variable = "${replace(data.aws_eks_cluster.selected.identity[0].oidc[0].issuer, "https://", "")}:sub"
+      variable = "${replace(var.iam_oidc_provider.url, "https://", "")}:sub"
       values   = ["system:serviceaccount:kube-system:${format("%s-aws-load-balancer-controller", var.name)}"]
     }
     condition {
       test     = "StringEquals"
-      variable = "${replace(data.aws_eks_cluster.selected.identity[0].oidc[0].issuer, "https://", "")}:aud"
+      variable = "${replace(var.iam_oidc_provider.url, "https://", "")}:aud"
       values   = ["sts.amazonaws.com"]
     }
     principals {
       identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${replace(data.aws_eks_cluster.selected.identity[0].oidc[0].issuer, "https://", "")}"
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${replace(var.iam_oidc_provider.url, "https://", "")}"
       ]
       type = "Federated"
     }
@@ -42,14 +31,16 @@ data "aws_iam_policy_document" "eks_oidc_assume_role" {
 resource "aws_iam_policy" "this" {
   name        = format("%s-aws-load-balancer-controller-policy", var.name)
   description = "Permissions that are required to manage AWS Application Load Balancers."
-  # Source: `curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.3.1/docs/install/iam_policy.json`
+  # Source: `curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.4/docs/install/iam_policy.json`
   policy      = <<-POLICY
 {
     "Version": "2012-10-17",
     "Statement": [
         {
             "Effect": "Allow",
-            "Action": "iam:CreateServiceLinkedRole",
+            "Action": [
+                "iam:CreateServiceLinkedRole"
+            ],
             "Resource": "*",
             "Condition": {
                 "StringEquals": {

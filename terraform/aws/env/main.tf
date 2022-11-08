@@ -85,6 +85,8 @@ module "lbc" {
 
   cluster_name = module.eks.cluster_name
 
+  iam_oidc_provider = module.eks.iam_oidc_provider
+
   depends_on = [
     module.eks,
     module.vpc,
