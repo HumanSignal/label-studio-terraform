@@ -1,12 +1,18 @@
-variable "postgresql_database" {
+variable "vpc_id" {
   type = string
+}
+variable "subnet_ids" {
+  type = list(string)
+}
+variable "postgresql_database" {
+  type    = string
   default = "labelstudio"
 }
 variable "postgresql_username" {
-  type = string
+  type    = string
   default = "labelstudio"
 }
 variable "postgresql_password" {
-  type = string
+  type    = string
   default = "labelstudio"
 }
