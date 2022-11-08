@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "eks_oidc_assume_role" {
     condition {
       test     = "StringEquals"
       variable = "${replace(data.aws_eks_cluster.selected.identity[0].oidc[0].issuer, "https://", "")}:sub"
-      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+      values   = ["system:serviceaccount:kube-system:${format("%s-aws-load-balancer-controller", var.name)}"]
     }
     condition {
       test     = "StringEquals"
