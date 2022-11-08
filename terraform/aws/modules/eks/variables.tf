@@ -19,7 +19,7 @@ variable "worker_role_arn" {
 }
 
 variable "region" {
-  description = "The AWS regionwhere terraform builds resources."
+  description = "The AWS region where terraform builds resources."
   type        = string
 }
 
@@ -49,7 +49,7 @@ variable "instance_profile_name" {
 variable "cluster_version" {
   description = "Version of the EKS cluster."
   type        = string
-  default     = "1.22"
+  default     = "1.23"
 }
 
 variable "instance_type" {

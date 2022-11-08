@@ -17,7 +17,7 @@ variable "region" {
 variable "instance_type" {
   description = "Type of instance to be used for the Kubernetes cluster."
   type        = string
-  default     = "r5d.2xlarge"
+  default     = "t3.medium"
 }
 
 variable "desired_capacity" {
