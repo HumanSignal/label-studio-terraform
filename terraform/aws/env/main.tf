@@ -48,9 +48,10 @@ module "eks" {
 }
 
 module "rds" {
-  source = "../modules/rds"
-
-  count = var.postgresql == "rds" ? 1 : 0
+  source      = "../modules/rds"
+  name        = local.name_prefix
+  environment = var.environment
+  count       = var.postgresql == "rds" ? 1 : 0
 
   name       = local.name_prefix
   vpc_id     = module.vpc.aws_vpc_id
@@ -77,7 +78,9 @@ module "elasticache" {
 }
 
 module "lbc" {
-  source = "../modules/load-balancer-controller"
+  source      = "../modules/load-balancer-controller"
+  name        = local.name_prefix
+  environment = var.environment
 
   cluster_name = module.eks.cluster_name
 
@@ -88,7 +91,9 @@ module "lbc" {
 }
 
 module "helm" {
-  source = "../../common/modules/helm"
+  source      = "../../common/modules/helm"
+  name        = local.name_prefix
+  environment = var.environment
 
   repository          = var.repository
   repository_username = var.repository_username

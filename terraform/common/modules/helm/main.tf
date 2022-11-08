@@ -62,7 +62,7 @@ resource "kubernetes_secret" "redis" {
 }
 
 resource "helm_release" "label_studio" {
-  name = "label-studio"
+  name = format("%s-label-studio", var.name)
 
   chart = var.chart
 

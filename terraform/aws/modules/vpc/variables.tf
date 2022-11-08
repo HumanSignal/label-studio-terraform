@@ -37,12 +37,6 @@ variable "vpc_enable_dns_hostnames" {
   default = "true"
 }
 
-variable "vpc_enable_classiclink" {
-  type    = bool
-  default = "false"
-}
-
-
 # Expose Subnet settings.
 variable "public_cidr_block" {
   description = "List of public subnet CIDR blocks"

@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "eks_oidc_assume_role" {
 }
 
 resource "aws_iam_policy" "this" {
-  name        = "aws-load-balancer-controller"
+  name        = format("%s-aws-load-balancer-controller-policy", var.name)
   description = "Permissions that are required to manage AWS Application Load Balancers."
   # Source: `curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.3.1/docs/install/iam_policy.json`
   policy      = <<-POLICY
@@ -265,7 +265,7 @@ resource "aws_iam_policy" "this" {
 }
 
 resource "aws_iam_role" "this" {
-  name        = "aws-load-balancer-controller"
+  name        = format("%s-aws-load-balancer-controller-role", var.name)
   description = "Permissions required by the Kubernetes AWS Load Balancer controller to do its job."
 
   force_detach_policies = true
@@ -281,13 +281,13 @@ resource "aws_iam_role_policy_attachment" "this" {
 resource "kubernetes_service_account" "this" {
   automount_service_account_token = true
   metadata {
-    name        = "aws-load-balancer-controller"
+    name        = format("%s-aws-load-balancer-controller", var.name)
     namespace   = "kube-system"
     annotations = {
       "eks.amazonaws.com/role-arn" = aws_iam_role.this.arn
     }
     labels = {
-      "app.kubernetes.io/name"       = "aws-load-balancer-controller"
+      "app.kubernetes.io/name"       = format("%s-aws-load-balancer-controller", var.name)
       "app.kubernetes.io/component"  = "controller"
       "app.kubernetes.io/managed-by" = "terraform"
     }
@@ -296,10 +296,10 @@ resource "kubernetes_service_account" "this" {
 
 resource "kubernetes_cluster_role" "this" {
   metadata {
-    name = "aws-load-balancer-controller"
+    name = format("%s-aws-load-balancer-controller", var.name)
 
     labels = {
-      "app.kubernetes.io/name"       = "aws-load-balancer-controller"
+      "app.kubernetes.io/name"       = format("%s-aws-load-balancer-controller", var.name)
       "app.kubernetes.io/managed-by" = "terraform"
     }
   }
@@ -353,10 +353,10 @@ resource "kubernetes_cluster_role" "this" {
 
 resource "kubernetes_cluster_role_binding" "this" {
   metadata {
-    name = "aws-load-balancer-controller"
+    name = format("%s-aws-load-balancer-controller", var.name)
 
     labels = {
-      "app.kubernetes.io/name"       = "aws-load-balancer-controller"
+      "app.kubernetes.io/name"       = format("%s-aws-load-balancer-controller", var.name)
       "app.kubernetes.io/managed-by" = "terraform"
     }
   }
@@ -376,7 +376,7 @@ resource "kubernetes_cluster_role_binding" "this" {
 }
 
 resource "helm_release" "alb_controller" {
-  name = "aws-load-balancer-controller"
+  name = format("%s-aws-load-balancer-controller", var.name)
 
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
@@ -391,7 +391,7 @@ resource "helm_release" "alb_controller" {
     for_each = {
       "clusterName"           = var.cluster_name
       "serviceAccount.create" = false
-      "serviceAccount.name"   = "aws-load-balancer-controller"
+      "serviceAccount.name"   = format("%s-aws-load-balancer-controller", var.name)
     }
     content {
       name  = set.key
