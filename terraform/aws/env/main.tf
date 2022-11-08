@@ -52,11 +52,11 @@ module "rds" {
 
   count = var.postgresql == "rds" ? 1 : 0
 
-  vpc_id              = module.vpc.aws_vpc_id
-  subnet_ids          = module.vpc.aws_subnet_private_ids
-  postgresql_database = var.postgresql_database
-  postgresql_username = var.postgresql_username
-  postgresql_password = var.postgresql_password
+  vpc_id     = module.vpc.aws_vpc_id
+  subnet_ids = module.vpc.aws_subnet_private_ids
+  database   = var.postgresql_database
+  username   = var.postgresql_username
+  password   = var.postgresql_password
 
   depends_on = [module.vpc]
 }

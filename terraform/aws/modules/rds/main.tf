@@ -29,7 +29,7 @@ resource "aws_db_instance" "postgresql" {
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.security_group.id]
   db_subnet_group_name   = aws_db_subnet_group.subnet_group.name
-  db_name                = var.postgresql_database
-  username               = var.postgresql_username
-  password               = var.postgresql_password
+  db_name                = var.database
+  username               = var.username
+  password               = var.password
 }

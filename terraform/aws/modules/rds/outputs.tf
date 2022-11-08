@@ -5,11 +5,11 @@ output "port" {
   value = aws_db_instance.postgresql.port
 }
 output "database" {
-  value = var.postgresql_database
+  value = var.database
 }
 output "username" {
-  value = var.postgresql_username
+  value = var.username
 }
 output "password" {
-  value = var.postgresql_password
+  value = var.password
 }

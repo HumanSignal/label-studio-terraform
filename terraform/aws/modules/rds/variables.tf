@@ -4,15 +4,15 @@ variable "vpc_id" {
 variable "subnet_ids" {
   type = list(string)
 }
-variable "postgresql_database" {
+variable "database" {
   type    = string
   default = "labelstudio"
 }
-variable "postgresql_username" {
+variable "username" {
   type    = string
   default = "labelstudio"
 }
-variable "postgresql_password" {
+variable "password" {
   type    = string
   default = "labelstudio"
 }
