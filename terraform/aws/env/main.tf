@@ -52,9 +52,13 @@ module "rds" {
 
   count = var.postgresql == "rds" ? 1 : 0
 
+  vpc_id              = module.vpc.aws_vpc_id
+  subnet_ids          = module.vpc.aws_subnet_private_ids
   postgresql_database = var.postgresql_database
   postgresql_username = var.postgresql_username
   postgresql_password = var.postgresql_password
+
+  depends_on = [module.vpc]
 }
 
 module "lbc" {
@@ -62,7 +66,10 @@ module "lbc" {
 
   cluster_name = module.eks.cluster_name
 
-  depends_on = [module.eks]
+  depends_on = [
+    module.eks,
+    module.vpc,
+  ]
 }
 
 module "helm" {
