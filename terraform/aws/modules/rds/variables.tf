@@ -30,3 +30,7 @@ variable "password" {
   type    = string
   default = "labelstudio"
 }
+variable "machine_type" {
+  type    = string
+  default = "db.m5.large"
+}

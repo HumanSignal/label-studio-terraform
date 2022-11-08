@@ -28,7 +28,7 @@ resource "aws_elasticache_replication_group" "elasticache" {
   security_group_ids = [aws_security_group.security_group.id]
   subnet_group_name  = aws_elasticache_subnet_group.subnet_group.name
 
-  node_type                  = "cache.m4.large"
+  node_type                  = var.machine_type
   port                       = var.port
   transit_encryption_enabled = true
   auth_token                 = var.password

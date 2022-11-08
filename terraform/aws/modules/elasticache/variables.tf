@@ -15,3 +15,7 @@ variable "password" {
   type    = string
   default = "labelstudio"
 }
+variable "machine_type" {
+  type    = string
+  default = "cache.m4.large"
+}

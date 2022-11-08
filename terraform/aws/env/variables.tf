@@ -163,6 +163,10 @@ variable "postgresql" {
     error_message = "postgresql must be either `internal` either `rds`"
   }
 }
+variable "postgresql_machine_type" {
+  type    = string
+  default = "db.m5.large"
+}
 variable "postgresql_database" {
   type    = string
   default = "labelstudio"
@@ -185,7 +189,6 @@ variable "postgresql_password" {
 }
 
 # Redis
-# Redis
 variable "redis" {
   description = "TBD"
   type        = string
@@ -194,6 +197,10 @@ variable "redis" {
     condition     = contains(["internal", "elasticache"], var.redis)
     error_message = "postgresql must be either `internal` either `elasticache`"
   }
+}
+variable "redis_machine_type" {
+  type    = string
+  default = "cache.m4.large"
 }
 variable "redis_host" {
   type    = string

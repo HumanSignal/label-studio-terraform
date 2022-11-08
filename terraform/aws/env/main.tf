@@ -48,16 +48,17 @@ module "eks" {
 }
 
 module "rds" {
-  source      = "../modules/rds"
-  name        = local.name_prefix
-  environment = var.environment
-  count       = var.postgresql == "rds" ? 1 : 0
+  source = "../modules/rds"
+  count  = var.postgresql == "rds" ? 1 : 0
 
-  vpc_id     = module.vpc.aws_vpc_id
-  subnet_ids = module.vpc.aws_subnet_private_ids
-  database   = var.postgresql_database
-  username   = var.postgresql_username
-  password   = var.postgresql_password
+  name         = local.name_prefix
+  environment  = var.environment
+  vpc_id       = module.vpc.aws_vpc_id
+  subnet_ids   = module.vpc.aws_subnet_private_ids
+  machine_type = var.postgresql_machine_type
+  database     = var.postgresql_database
+  username     = var.postgresql_username
+  password     = var.postgresql_password
 
   depends_on = [module.vpc]
 }
@@ -67,11 +68,12 @@ module "elasticache" {
 
   count = var.redis == "elasticache" && var.enterprise ? 1 : 0
 
-  name       = local.name_prefix
-  vpc_id     = module.vpc.aws_vpc_id
-  subnet_ids = module.vpc.aws_subnet_private_ids
-  port       = var.redis_port
-  password   = var.redis_password
+  name         = local.name_prefix
+  vpc_id       = module.vpc.aws_vpc_id
+  subnet_ids   = module.vpc.aws_subnet_private_ids
+  machine_type = var.redis_machine_type
+  port         = var.redis_port
+  password     = var.redis_password
 
   depends_on = [module.vpc]
 }

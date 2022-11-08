@@ -22,7 +22,7 @@ resource "aws_db_subnet_group" "subnet_group" {
 
 resource "aws_db_instance" "postgresql" {
   identifier             = format("%s-rds", var.name)
-  instance_class         = "db.m5.large"
+  instance_class         = var.machine_type
   allocated_storage      = 10
   engine                 = "postgres"
   engine_version         = "14.4"
