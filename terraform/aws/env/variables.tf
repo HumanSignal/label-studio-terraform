@@ -153,32 +153,57 @@ variable "enterprise" {
   default     = false
 }
 
+# Postgres
 variable "postgresql" {
   description = "TBD"
-  type = string
-  default = "internal"
+  type        = string
+  default     = "internal"
   validation {
     condition     = contains(["internal", "rds"], var.postgresql)
     error_message = "postgresql must be either `internal` either `rds`"
   }
 }
 variable "postgresql_database" {
-  type = string
+  type    = string
   default = "labelstudio"
 }
 variable "postgresql_host" {
-  type = string
+  type    = string
   default = ""
 }
 variable "postgresql_port" {
-  type = number
+  type    = number
   default = 5432
 }
 variable "postgresql_username" {
-  type = string
+  type    = string
   default = "labelstudio"
 }
 variable "postgresql_password" {
-  type = string
+  type    = string
+  default = "labelstudio"
+}
+
+# Redis
+# Redis
+variable "redis" {
+  description = "TBD"
+  type        = string
+  default     = "internal"
+  validation {
+    condition     = contains(["internal", "elasticache"], var.redis)
+    error_message = "postgresql must be either `internal` either `elasticache`"
+  }
+}
+variable "redis_host" {
+  type    = string
+  default = ""
+}
+variable "redis_port" {
+  type    = string
+  default = 6379
+}
+variable "redis_password" {
+  type    = string
   default = "labelstudio"
 }

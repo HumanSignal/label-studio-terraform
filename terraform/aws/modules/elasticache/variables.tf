@@ -1,12 +1,13 @@
-variable "postgresql_database" {
-  type = string
-  default = "labelstudio"
+variable "vpc_id" {
 }
-variable "postgresql_username" {
-  type = string
-  default = "labelstudio"
+variable "subnet_ids" {
+  type = list(string)
 }
-variable "postgresql_password" {
+variable "port" {
+  type = number
+  default = 6379
+}
+variable "password" {
   type = string
   default = "labelstudio"
 }

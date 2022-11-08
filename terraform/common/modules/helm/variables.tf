@@ -47,6 +47,7 @@ variable "enterprise" {
   default     = false
 }
 
+# Postgres
 variable "postgresql" {
   description = "TBD"
   type        = string
@@ -75,6 +76,23 @@ variable "postgresql_username" {
 variable "postgresql_password" {
   type = string
   default = "labelstudio"
+}
+
+# Redis
+variable "redis" {
+  description = "TBD"
+  type        = string
+  default     = "internal"
+  validation {
+    condition     = contains(["internal", "elasticache"], var.redis)
+    error_message = "postgresql must be either `internal` either `elasticache`"
+  }
+}
+variable "redis_host" {
+  type = string
+}
+variable "redis_password" {
+  type = string
 }
 
 # License
