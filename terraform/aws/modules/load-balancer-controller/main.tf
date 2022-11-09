@@ -269,6 +269,7 @@ resource "aws_iam_role_policy_attachment" "this" {
   role       = aws_iam_role.this.name
 }
 
+# TODO: Error: Unauthorized
 resource "kubernetes_service_account" "this" {
   automount_service_account_token = true
   metadata {
@@ -285,6 +286,7 @@ resource "kubernetes_service_account" "this" {
   }
 }
 
+# TODO: Error: Unauthorized
 resource "kubernetes_cluster_role" "this" {
   metadata {
     name = format("%s-aws-load-balancer-controller", var.name)

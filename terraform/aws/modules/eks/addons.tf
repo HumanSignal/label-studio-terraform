@@ -14,7 +14,7 @@ resource "aws_eks_addon" "coredns" {
   addon_version = local.addon_versions["coredns"]
 
   resolve_conflicts = "OVERWRITE"
-  depends_on = [
+  depends_on        = [
     aws_eks_node_group.eks_node_group,
   ]
 }
@@ -25,7 +25,7 @@ resource "aws_eks_addon" "kube_proxy" {
   addon_version = local.addon_versions["kube-proxy"]
 
   resolve_conflicts = "OVERWRITE"
-  depends_on = [
+  depends_on        = [
     aws_eks_node_group.eks_node_group,
   ]
 }
@@ -38,7 +38,7 @@ resource "aws_eks_addon" "vpc_cni" {
 
   service_account_role_arn = aws_iam_role.cni_irsa_role.arn
   resolve_conflicts        = "OVERWRITE"
-  depends_on = [
+  depends_on               = [
     aws_eks_node_group.eks_node_group,
   ]
 }
@@ -81,7 +81,7 @@ resource "aws_eks_addon" "ebs_csi_driver" {
 
   service_account_role_arn = aws_iam_role.ebs_csi_irsa_role.arn
   resolve_conflicts        = "OVERWRITE"
-  depends_on = [
+  depends_on               = [
     aws_eks_node_group.eks_node_group,
   ]
 }

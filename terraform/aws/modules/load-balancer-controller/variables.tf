@@ -10,7 +10,7 @@ variable "environment" {
 
 variable "iam_oidc_provider" {
   description = "AWS EKS IRSA provider"
-  type = object({
+  type        = object({
     url = string
     arn = string
   })
