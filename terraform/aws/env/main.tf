@@ -118,7 +118,7 @@ module "helm" {
   postgresql_password = var.postgresql == "rds" ? module.rds[0].password : var.postgresql_password
 
   redis          = var.enterprise ? var.redis : "internal"
-  redis_host     = var.redis == "elasticache" && var.enterprise ? module.elasticache[0].host : var.redis_host
+  redis_host     = var.redis == "elasticache" && var.enterprise ? "redis://${module.elasticache[0].host}:${module.elasticache[0].port}/1" : var.redis_host
   redis_password = var.redis == "elasticache" && var.enterprise ? module.elasticache[0].password : var.redis_password
 
   depends_on = [
