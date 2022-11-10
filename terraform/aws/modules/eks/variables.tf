@@ -81,3 +81,9 @@ variable "capacity_type" {
     error_message = "VM Size must be `ON_DEMAND` or `SPOT`"
   }
 }
+
+variable "metrics_server_enabled" {
+  description = "Enable Metrics server"
+  type        = bool
+  default     = true
+}

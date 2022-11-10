@@ -66,7 +66,6 @@ resource "helm_release" "label_studio" {
 
   chart = var.chart
 
-  atomic       = true
   timeout      = 900
   wait         = true
 

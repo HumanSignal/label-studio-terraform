@@ -376,15 +376,15 @@ resource "helm_release" "alb_controller" {
 
   namespace = "kube-system"
 
-  atomic  = true
   timeout = 900
   wait    = true
 
   dynamic "set" {
     for_each = {
-      "clusterName"           = var.cluster_name
-      "serviceAccount.create" = false
-      "serviceAccount.name"   = format("%s-aws-load-balancer-controller", var.name)
+      "clusterName"                = var.cluster_name
+      "serviceAccount.create"      = false
+      "serviceAccount.name"        = format("%s-aws-load-balancer-controller", var.name)
+      "ingressClassConfig.default" = true
     }
     content {
       name  = set.key

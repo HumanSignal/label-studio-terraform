@@ -11,7 +11,7 @@ resource "aws_eks_cluster" "eks_cluster" {
   tags = var.tags
 
   provisioner "local-exec" {
-    command = format("aws eks --region %s update-kubeconfig --name %s", var.region, aws_eks_cluster.eks_cluster.name)
+    command = format("aws eks --region %s update-kubeconfig --name %s --alias %s", var.region, aws_eks_cluster.eks_cluster.name, aws_eks_cluster.eks_cluster.name)
   }
 
 }

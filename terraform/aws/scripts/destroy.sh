@@ -34,11 +34,15 @@ terraform destroy -no-color -auto-approve ${TF_PARAMS}
 terraform workspace select default
 terraform workspace delete "${TF_VAR_environment:-}"
 
+echo -e "[INFO] Terraform state bucket should be deleted manually."
+echo -e "[INFO] Run these commands to completely remove bucket and all versioned state files"
+# TODO replace with informal message
+
 # Cleanup state bucket
-ITEMS=$(aws s3api list-object-versions --bucket "${BUCKET_NAME}" --region "${TF_VAR_region:-}" --output json | jq '. | to_entries | [.[] | select(.key | match("^Versions|DeleteMarkers$")) | .value[] | {Key:.Key,VersionId:.VersionId}]')
-
-if [ -n "${ITEMS}" ]; then
-  aws s3api delete-objects --bucket "${BUCKET_NAME}" --region "${TF_VAR_region:-}" --delete "{\"Objects\": ${ITEMS}}" >/dev/null
-fi
-
-aws s3api delete-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region:-}" >/dev/null
+#ITEMS=$(aws s3api list-object-versions --bucket "${BUCKET_NAME}" --region "${TF_VAR_region:-}" --output json | jq '. | to_entries | [.[] | select(.key | match("^Versions|DeleteMarkers$")) | .value[] | {Key:.Key,VersionId:.VersionId}]')
+#
+#if [ -n "${ITEMS}" ]; then
+#  aws s3api delete-objects --bucket "${BUCKET_NAME}" --region "${TF_VAR_region:-}" --delete "{\"Objects\": ${ITEMS}}" >/dev/null
+#fi
+#
+#aws s3api delete-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region:-}" >/dev/null
