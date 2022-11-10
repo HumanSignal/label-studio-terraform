@@ -69,7 +69,6 @@ resource "helm_release" "label_studio" {
   atomic       = true
   timeout      = 900
   wait         = true
-  force_update = true # TODO: Remove
 
   dynamic set {
     for_each = merge(
