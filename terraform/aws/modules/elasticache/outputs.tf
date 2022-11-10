@@ -1,9 +1,9 @@
 output "host" {
-  value = aws_elasticache_cluster.elasticache.cache_nodes[0].address
+  value = aws_elasticache_replication_group.elasticache.primary_endpoint_address
 }
 output "port" {
-  value = aws_elasticache_cluster.elasticache.port
+  value = aws_elasticache_replication_group.elasticache.port
 }
 output "password" {
-  value = ""
+  value = aws_elasticache_replication_group.elasticache.auth_token
 }
