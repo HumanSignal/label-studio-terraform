@@ -108,9 +108,8 @@ resource "helm_release" "label_studio" {
       var.redis == "elasticache" ? tomap({
         "redis.enabled"                          = false
         "global.redisConfig.host"                = var.redis_host
-        # TODO: Configure elasticache with password
-#        "global.redisConfig.password.secretName" = kubernetes_secret.redis[0].metadata[0].name
-#        "global.redisConfig.password.secretKey"  = local.redis_secret_key
+        "global.redisConfig.password.secretName" = kubernetes_secret.redis[0].metadata[0].name
+        "global.redisConfig.password.secretKey"  = local.redis_secret_key
         # TODO: Add redis SSL configuration
       }) : tomap({
         "redis.enabled" = true
