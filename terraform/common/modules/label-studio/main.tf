@@ -64,7 +64,7 @@ resource "kubernetes_secret" "redis" {
 resource "helm_release" "label_studio" {
   name = format("%s-label-studio", var.name)
 
-  chart = var.chart
+  chart = var.helm_chart_release_name
 
   timeout      = 900
   wait         = true

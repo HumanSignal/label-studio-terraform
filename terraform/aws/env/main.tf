@@ -94,21 +94,21 @@ module "lbc" {
 }
 
 module "helm" {
-  source      = "../../common/modules/helm"
+  source      = "../../common/modules/label-studio"
   name        = local.name_prefix
   environment = var.environment
 
-  repository          = var.repository
-  repository_username = var.repository_username
-  repository_password = var.repository_password
-  chart               = var.chart
-  registry_server     = var.registry_server
-  registry_username   = var.registry_username
-  registry_email      = var.registry_email
-  registry_password   = var.registry_password
-  license_literal     = var.license_literal
-  additional_set      = var.label_studio_additional_set
-  enterprise          = var.enterprise
+  helm_chart_repo          = var.helm_chart_repo
+  helm_chart_repo_username = var.helm_chart_repo_username
+  helm_chart_repo_password = var.helm_chart_repo_password
+  helm_chart_release_name  = var.helm_chart_release_name
+  registry_server          = var.registry_server
+  registry_username        = var.registry_username
+  registry_email           = var.registry_email
+  registry_password        = var.registry_password
+  license_literal          = var.license_literal
+  additional_set           = var.label_studio_additional_set
+  enterprise               = var.enterprise
 
   postgresql          = var.postgresql
   postgresql_host     = var.postgresql == "rds" ? module.rds[0].host : var.postgresql_host

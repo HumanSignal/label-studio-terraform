@@ -90,26 +90,26 @@ variable "eks_capacity_type" {
 }
 
 # Helm
-variable "repository" {
-  description = "TBD"
+variable "helm_chart_repo" {
+  description = "Heartex repository name."
   type        = string
   default     = "https://charts.heartex.com"
 }
 
-variable "repository_username" {
+variable "helm_chart_repo_username" {
   description = "Username for HTTP basic authentication against the Helm repository."
   type        = string
 }
 
-variable "repository_password" {
+variable "helm_chart_repo_password" {
   description = "Password for HTTP basic authentication against the Helm repository."
   type        = string
 }
 
-variable "chart" {
-  description = "TBD"
+variable "helm_chart_release_name" {
   type        = string
-  default     = "label-studio-enterprise"
+  default     = "label-studio"
+  description = "Helm release name"
 }
 
 # Docker config

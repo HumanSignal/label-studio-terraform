@@ -27,10 +27,10 @@ variable "helm_chart_version" {
   description = "Metrics Server Helm chart version."
 }
 
-variable "helm_chart_name" {
+variable "helm_chart_release_name" {
   type        = string
   default     = "aws-load-balancer-controller"
-  description = "AWS Load Balancer Controller Helm chart name to be installed"
+  description = "Helm release name"
 }
 
 variable "helm_chart_repo" {

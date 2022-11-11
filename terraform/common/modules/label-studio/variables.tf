@@ -9,23 +9,38 @@ variable "environment" {
 }
 
 # Helm
-variable "repository" {
-  description = "TBD"
+
+variable "helm_chart_release_name" {
   type        = string
+  default     = "label-studio"
+  description = "Helm release name"
 }
 
-variable "repository_username" {
+variable "helm_chart_version" {
+  type        = string
+  default     = "1.0.0"
+  description = "Label Studio Helm chart version."
+}
+
+variable "helm_chart_repo" {
+  type        = string
+  default     = "https://charts.heartex.com/"
+  description = "Heartex repository name."
+}
+
+variable "namespace" {
+  type        = string
+  default     = "default"
+  description = "Kubernetes namespace to deploy Label Studio Helm chart."
+}
+
+variable "helm_chart_repo_username" {
   description = "Username for HTTP basic authentication against the Helm repository."
   type        = string
 }
 
-variable "repository_password" {
+variable "helm_chart_repo_password" {
   description = "Password for HTTP basic authentication against the Helm repository."
-  type        = string
-}
-
-variable "chart" {
-  description = "TBD"
   type        = string
 }
 

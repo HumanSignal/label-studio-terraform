@@ -364,10 +364,10 @@ resource "kubernetes_cluster_role_binding" "this" {
 }
 
 resource "helm_release" "alb_controller" {
-  name = format("%s-aws-load-balancer-controller", var.name)
+  name = var.helm_chart_release_name
 
   repository = var.helm_chart_repo
-  chart      = var.helm_chart_name
+  chart      = var.helm_chart_release_name
   version    = var.helm_chart_version
 
   namespace = var.namespace
