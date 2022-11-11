@@ -17,5 +17,5 @@ variable "password" {
 }
 variable "machine_type" {
   type    = string
-  default = "cache.t2.micro"
+  default = "cache.t3.micro"
 }

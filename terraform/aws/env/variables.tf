@@ -200,7 +200,7 @@ variable "redis" {
 }
 variable "redis_machine_type" {
   type    = string
-  default = "cache.m4.large"
+  default = "cache.t3.micro"
 }
 variable "redis_host" {
   type    = string
