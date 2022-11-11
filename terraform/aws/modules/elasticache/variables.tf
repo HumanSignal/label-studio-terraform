@@ -17,5 +17,5 @@ variable "password" {
 }
 variable "machine_type" {
   type    = string
-  default = "cache.m4.large"
+  default = "cache.t2.micro"
 }
