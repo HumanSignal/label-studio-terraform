@@ -15,3 +15,32 @@ variable "iam_oidc_provider" {
     arn = string
   })
 }
+
+variable "cluster_name" {
+  description = "EKS cluster name"
+  type = string
+}
+
+variable "helm_chart_version" {
+  type        = string
+  default     = "1.4.5"
+  description = "Metrics Server Helm chart version."
+}
+
+variable "helm_chart_name" {
+  type        = string
+  default     = "aws-load-balancer-controller"
+  description = "AWS Load Balancer Controller Helm chart name to be installed"
+}
+
+variable "helm_chart_repo" {
+  type        = string
+  default     = "https://aws.github.io/eks-charts"
+  description = "AWS Load Balancer Controller repository name."
+}
+
+variable "namespace" {
+  type        = string
+  default     = "kube-system"
+  description = "Kubernetes namespace to deploy AWS Load Balancer Controller Helm chart."
+}

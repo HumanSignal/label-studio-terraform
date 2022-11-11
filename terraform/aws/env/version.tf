@@ -20,17 +20,3 @@ terraform {
     }
   }
 }
-
-provider "aws" {
-  region = var.region
-}
-
-provider "kubernetes" {
-  config_path    = "~/.kube/config" # TODO: Make configurable
-}
-
-provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config" # TODO: Make configurable
-  }
-}

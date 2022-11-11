@@ -1,8 +1,3 @@
-variable "cluster_name" {}
-data "aws_eks_cluster" "selected" {
-  name = var.cluster_name
-}
-
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "eks_oidc_assume_role" {
@@ -371,10 +366,11 @@ resource "kubernetes_cluster_role_binding" "this" {
 resource "helm_release" "alb_controller" {
   name = format("%s-aws-load-balancer-controller", var.name)
 
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
+  repository = var.helm_chart_repo
+  chart      = var.helm_chart_name
+  version    = var.helm_chart_version
 
-  namespace = "kube-system"
+  namespace = var.namespace
 
   timeout = 900
   wait    = true
