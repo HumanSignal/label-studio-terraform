@@ -1,0 +1,55 @@
+name: "Validation"
+
+on:
+  push:
+    branches:
+      - master
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  TFSEC_VERSION: "v1.28.1"
+
+jobs:
+
+  validation:
+    strategy:
+      matrix:
+        provider: [aws]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hmarr/debug-action@v2.1.0
+
+      - name: Configure tfsec binary cache
+        id: tfsec-cache
+        uses: actions/cache@v3
+        with:
+          path: /usr/local/bin/tfsec
+          key: tfsec-${{ env.TFSEC_VERSION }}
+
+      - name: Install tfsec
+        if: steps.tfsec-cache.outputs.cache-hit != 'true'
+        run: |
+          binary=$(mktemp)
+          wget -O "${binary}" \
+            "https://github.com/aquasecurity/tfsec/releases/download/${{ env.TFSEC_VERSION }}/tfsec-linux-amd64"
+          install "${binary}" "/usr/local/bin/tfsec"
+
+      - name: Check tfsec version
+        run: tfsec -v
+
+      - uses: actions/checkout@v3
+
+      - name: TF Sec
+        run: |
+          tfsec .
