@@ -51,5 +51,15 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: TF Sec
+        id: tfsec
         run: |
-          tfsec .
+          result_file="$(mktemp -d)/tfsec_results.txt"
+          echo "result_file=${result_file}" >> $GITHUB_OUTPUT
+          tfsec --out="${result_file}"  .
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: TF Sec results
+          path: ${{ steps.tfsec.outputs.result_file }}
