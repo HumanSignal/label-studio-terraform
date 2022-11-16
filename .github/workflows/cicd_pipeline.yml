@@ -1,6 +1,7 @@
 name: "Validation"
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -19,6 +20,7 @@ concurrency:
 
 env:
   TFSEC_VERSION: "v1.28.1"
+  TFLINT_VERSION: "v0.42.2"
 
 jobs:
 
@@ -40,13 +42,36 @@ jobs:
       - name: Install tfsec
         if: steps.tfsec-cache.outputs.cache-hit != 'true'
         run: |
-          binary=$(mktemp)
-          wget -O "${binary}" \
+          download_path=$(mktemp -d -t tfsec.XXXXXXXXXX)
+          download_executable="${download_path}/tfsec"
+          wget -O "${download_executable}" \
             "https://github.com/aquasecurity/tfsec/releases/download/${{ env.TFSEC_VERSION }}/tfsec-linux-amd64"
-          install "${binary}" "/usr/local/bin/tfsec"
+          install "${download_executable}" "/usr/local/bin/tfsec"
 
       - name: Check tfsec version
         run: tfsec -v
+
+      - name: Configure tflint binary cache
+        id: tflint-cache
+        uses: actions/cache@v3
+        with:
+          path: /usr/local/bin/tflint
+          key: tflint-${{ env.TFLINT_VERSION }}
+
+      - name: Install tflint
+        if: steps.tflint-cache.outputs.cache-hit != 'true'
+        run: |
+          download_path=$(mktemp -d -t tflint.XXXXXXXXXX)
+          download_zip="${download_path}/tflint.zip"
+          download_executable="${download_path}/tflint"
+          wget -O "${download_zip}" \
+            "https://github.com/terraform-linters/tflint/releases/download/${{ env.TFLINT_VERSION }}/tflint_linux_amd64.zip"
+          unzip -u "${download_zip}" -d "${download_path}"
+          install "${download_executable}" "/usr/local/bin/tflint"
+
+      - name: Check tflint version
+        run: tflint -v
+
 
       - uses: actions/checkout@v3
 
