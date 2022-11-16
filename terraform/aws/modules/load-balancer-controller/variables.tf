@@ -23,7 +23,7 @@ variable "cluster_name" {
 
 variable "helm_chart_version" {
   type        = string
-  default     = "1.4.5"
+  default     = "1.4.6"
   description = "Metrics Server Helm chart version."
 }
 

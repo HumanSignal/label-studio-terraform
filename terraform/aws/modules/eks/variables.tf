@@ -49,7 +49,7 @@ variable "instance_profile_name" {
 variable "cluster_version" {
   description = "Version of the EKS cluster."
   type        = string
-  default     = "1.23"
+  default     = "1.24"
 }
 
 variable "instance_type" {
