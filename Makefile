@@ -39,7 +39,7 @@ destroy:
 	bash $(ROOT)/terraform/$(provider)/scripts/destroy.sh
 
 .PHONY: lint
-lint: check_shell check_terraform check_shebangs
+lint: check_shell check_terraform check_shebangs tflint tfsec
 
 # Shell check
 .PHONY: check_shell
@@ -55,3 +55,13 @@ check_terraform:
 .PHONY: check_shebangs
 check_shebangs:
 	source ${ROOT}/test/lint.sh && check_bash
+
+# TF Lint check
+.PHONY: tflint
+tflint:
+	source ${ROOT}/test/lint.sh && check_tflint
+
+# TF Sec check
+.PHONY: tfsec
+tfsec:
+	source ${ROOT}/test/lint.sh && check_tfsec
