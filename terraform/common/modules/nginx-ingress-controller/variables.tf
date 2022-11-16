@@ -10,14 +10,9 @@ variable "helm_chart_name" {
   description = "Metrics Server Helm chart name to be installed"
 }
 
-variable "environment" {
-  description = "Name of the environment where infrastructure is being built."
-  type        = string
-}
-
 variable "helm_release_name" {
   type        = string
-  default     = "metrics-server"
+  default     = "ingress-nginx"
   description = "Helm release name"
 }
 
@@ -35,19 +30,13 @@ variable "helm_chart_repo" {
 
 variable "namespace" {
   type        = string
-  default     = "kube-system"
+  default     = "ingress-controller"
   description = "Kubernetes namespace to deploy Metrics Server Helm chart."
 }
 
 variable "settings" {
   default = {
-    extraArgs = [
-      "--kubelet-insecure-tls=true",
-      "--kubelet-preferred-address-types=InternalIP"
-    ]
-    apiService = {
-      create = true
-    }
+    
   }
-  description = "Additional settings which will be passed to the Helm chart values."
+  description = "Additional yaml encoded values which will be passed to the Helm chart."
 }
