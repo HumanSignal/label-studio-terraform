@@ -75,6 +75,23 @@ jobs:
 
       - uses: actions/checkout@v3
 
+
+      - name: TF Lint
+        id: tflint
+        run: |
+          result_file="$(mktemp -d)/tflint_results.txt"
+          echo "result_file=${result_file}" >> $GITHUB_OUTPUT
+          cd "terraform/${{ matrix.provider }}/env"
+          tflint >> "${result_file}"
+
+      - name: Upload TF Lint results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: TF Lint results
+          path: ${{ steps.tflint.outputs.result_file }}
+
+
       - name: TF Sec
         id: tfsec
         run: |
@@ -82,7 +99,7 @@ jobs:
           echo "result_file=${result_file}" >> $GITHUB_OUTPUT
           tfsec --out="${result_file}"  .
 
-      - name: Upload test results
+      - name: Upload TF Sec results
         if: always()
         uses: actions/upload-artifact@v3
         with:
