@@ -86,6 +86,7 @@ jobs:
       - name: Install tflint
         if: steps.tflint-cache.outputs.cache-hit != 'true'
         run: |
+          set -euo pipefail ${ACTIONS_STEP_DEBUG:+-x}
           download_path=$(mktemp -d -t tflint.XXXXXXXXXX)
           download_zip="${download_path}/tflint.zip"
           download_executable="${download_path}/tflint"
@@ -102,10 +103,11 @@ jobs:
       - name: TF Lint
         id: tflint
         run: |
+          set -euo pipefail ${ACTIONS_STEP_DEBUG:+-x}
           result_file="$(mktemp -d)/tflint_results.txt"
           echo "result_file=${result_file}" >> $GITHUB_OUTPUT
           cd "terraform/${{ matrix.provider }}/env"
-          tflint >> "${result_file}"
+          tflint | tee -a "${result_file}"
 
       - name: Upload TF Lint results
         if: always()
