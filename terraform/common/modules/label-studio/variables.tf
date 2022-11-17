@@ -137,3 +137,11 @@ variable "additional_set" {
   type        = map(string)
   default     = {}
 }
+
+# TLS
+variable "tls_key_file" {
+  type = string
+}
+variable "tls_crt_file" {
+  type = string
+}

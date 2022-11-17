@@ -6,6 +6,7 @@ locals {
   postgresql_secret_key        = "password"
   redis_secret_name            = "redis"
   redis_secret_key             = "password"
+  tls_secret_name              = "tls"
 }
 
 resource "kubernetes_secret" "heartex_pull_key" {
@@ -61,6 +62,17 @@ resource "kubernetes_secret" "redis" {
   }
 }
 
+resource "kubernetes_secret" "tls" {
+  metadata {
+    name = local.tls_secret_name
+  }
+  type = "kubernetes.io/tls"
+  data = {
+    "tls.crt" = file(var.tls_crt_file)
+    "tls.key" = file(var.tls_key_file)
+  }
+}
+
 resource "helm_release" "label_studio" {
   name = format("%s-label-studio", var.name)
 
@@ -77,8 +89,14 @@ resource "helm_release" "label_studio" {
         # TODO: Remove ci
         "ci"                                                                       = true
         "app.ingress.enabled"                                                      = true
+        "app.ingress.className"                                                    = "nginx"
         "app.ingress.annotations.kubernetes\\.io/ingress\\.class"                  = "nginx"
         "app.ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/rewrite-target" = "/"
+        "app.ingress.tls[0].secretName"                                            = kubernetes_secret.tls.metadata[0].name
+#        TODO: Replace with domain
+        "app.ingress.tls[0].hosts[0]"                                              = "*.eu-north-1.elb.amazonaws.com"
+#        TODO: Replace with domain
+        "app.ingress.host"                                                         = "*.eu-north-1.elb.amazonaws.com"
       },
       # licence
       var.enterprise ? tomap({

@@ -129,6 +129,9 @@ module "helm" {
   redis_host     = var.redis == "elasticache" && var.enterprise ? "rediss://${module.elasticache[0].host}:${module.elasticache[0].port}/1" : var.redis_host
   redis_password = var.redis == "elasticache" && var.enterprise ? module.elasticache[0].password : var.redis_password
 
+  tls_crt_file = var.tls_crt_file
+  tls_key_file = var.tls_key_file
+
   depends_on = [
     module.lbc,
     module.eks,
