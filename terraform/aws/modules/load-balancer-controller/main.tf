@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "eks_oidc_assume_role" {
     condition {
       test     = "StringEquals"
       variable = "${replace(var.iam_oidc_provider.url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:kube-system:${format("%s-aws-load-balancer-controller", var.name)}"]
+      values   = ["system:serviceaccount:${var.namespace}:${format("%s-aws-load-balancer-controller", var.name)}"]
     }
     condition {
       test     = "StringEquals"
@@ -264,32 +264,28 @@ resource "aws_iam_role_policy_attachment" "this" {
   role       = aws_iam_role.this.name
 }
 
-resource "kubernetes_manifest" "this" {
-  manifest = {
-    apiVersion = "v1"
-    kind       = "ServiceAccount"
-    metadata = {
-      namespace = "kube-system"
-      name      = format("%s-aws-load-balancer-controller", var.name)
-      annotations = {
-        "eks.amazonaws.com/role-arn" = aws_iam_role.this.arn
-      }
-      labels = {
-        "app.kubernetes.io/name"       = format("%s-aws-load-balancer-controller", var.name)
-        "app.kubernetes.io/component"  = "controller"
-        "app.kubernetes.io/managed-by" = "terraform"
-      }
+resource "kubernetes_service_account" "this" {
+  automount_service_account_token = false
+  metadata {
+    name        = format("%s-aws-load-balancer-controller", var.name)
+    namespace   = var.namespace
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.this.arn
     }
-    automountServiceAccountToken = false
+    labels = {
+      "app.kubernetes.io/name"       = format("%s-aws-load-balancer-controller", var.name)
+      "app.kubernetes.io/component"  = "controller"
+      "app.kubernetes.io/managed-by" = "terraform"
+    }
   }
 }
 
 resource "kubernetes_secret" "this" {
   metadata {
-    name      = format("%s-aws-load-balancer-controller-token", var.name)
-    namespace = "kube-system"
+    name        = format("%s-aws-load-balancer-controller-token", var.name)
+    namespace   = var.namespace
     annotations = {
-      "kubernetes.io/service-account.name" = kubernetes_manifest.this.manifest.metadata.name
+      "kubernetes.io/service-account.name" = kubernetes_service_account.this.metadata[0].name
     }
   }
   type = "kubernetes.io/service-account-token"
@@ -371,8 +367,8 @@ resource "kubernetes_cluster_role_binding" "this" {
   subject {
     api_group = ""
     kind      = "ServiceAccount"
-    name      = kubernetes_manifest.this.manifest.metadata.name
-    namespace = kubernetes_manifest.this.manifest.metadata.namespace
+    name      = kubernetes_service_account.this.metadata[0].name
+    namespace = kubernetes_service_account.this.metadata[0].namespace
   }
 }
 
@@ -402,7 +398,7 @@ resource "helm_release" "alb_controller" {
   }
   depends_on = [
     kubernetes_cluster_role.this,
-    kubernetes_manifest.this,
+    kubernetes_service_account.this,
     kubernetes_cluster_role_binding.this,
   ]
 }
