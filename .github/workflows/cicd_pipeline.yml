@@ -24,10 +24,10 @@ env:
 
 jobs:
 
-  validation:
+  tfsec:
     strategy:
       matrix:
-        provider: [aws]
+        provider: [ aws ]
     runs-on: ubuntu-latest
     steps:
       - uses: hmarr/debug-action@v2.1.0
@@ -51,6 +51,31 @@ jobs:
       - name: Check tfsec version
         run: tfsec -v
 
+      - uses: actions/checkout@v3
+
+      - name: TF Sec
+        id: tfsec
+        run: |
+          result_file="$(mktemp -d)/tfsec_results.txt"
+          echo "result_file=${result_file}" >> $GITHUB_OUTPUT
+          tfsec --out="${result_file}"  .
+
+      - name: Upload TF Sec results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: TF Sec results
+          path: ${{ steps.tfsec.outputs.result_file }}
+
+
+  tflint:
+    strategy:
+      matrix:
+        provider: [ aws ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hmarr/debug-action@v2.1.0
+
       - name: Configure tflint binary cache
         id: tflint-cache
         uses: actions/cache@v3
@@ -72,9 +97,7 @@ jobs:
       - name: Check tflint version
         run: tflint -v
 
-
       - uses: actions/checkout@v3
-
 
       - name: TF Lint
         id: tflint
@@ -90,18 +113,3 @@ jobs:
         with:
           name: TF Lint results
           path: ${{ steps.tflint.outputs.result_file }}
-
-
-      - name: TF Sec
-        id: tfsec
-        run: |
-          result_file="$(mktemp -d)/tfsec_results.txt"
-          echo "result_file=${result_file}" >> $GITHUB_OUTPUT
-          tfsec --out="${result_file}"  .
-
-      - name: Upload TF Sec results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: TF Sec results
-          path: ${{ steps.tfsec.outputs.result_file }}
