@@ -1,9 +1,3 @@
-variable "enabled" {
-  type        = bool
-  default     = true
-  description = "Variable indicating whether deployment is enabled."
-}
-
 variable "helm_chart_name" {
   type        = string
   default     = "metrics-server"
@@ -15,7 +9,7 @@ variable "environment" {
   type        = string
 }
 
-variable "helm_release_name" {
+variable "helm_chart_release_name" {
   type        = string
   default     = "metrics-server"
   description = "Helm release name"
