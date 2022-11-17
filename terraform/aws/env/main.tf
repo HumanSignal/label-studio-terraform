@@ -93,6 +93,14 @@ module "lbc" {
   ]
 }
 
+module "nic" {
+  source = "../../common/modules/nginx-ingress-controller"
+
+  helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
+
+  namespace = "kube-system"
+}
+
 module "helm" {
   source      = "../../common/modules/label-studio"
   name        = local.name_prefix

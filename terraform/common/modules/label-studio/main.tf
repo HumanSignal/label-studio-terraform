@@ -66,21 +66,19 @@ resource "helm_release" "label_studio" {
 
   chart = var.helm_chart_release_name
 
-  timeout      = 900
-  wait         = true
+  timeout = 900
+  wait    = true
 
   dynamic set {
     for_each = merge(
       {
-        "global.imagePullSecrets[0].name"                                                            = kubernetes_secret.heartex_pull_key.metadata[0].name
-        "enterprise.enabled"                                                                         = var.enterprise
+        "global.imagePullSecrets[0].name"                                          = kubernetes_secret.heartex_pull_key.metadata[0].name
+        "enterprise.enabled"                                                       = var.enterprise
         # TODO: Remove ci
-        "ci"                                                                                         = true
-        "app.ingress.enabled"                                                                        = false
-        "app.service.type"                                                                           = "LoadBalancer"
-        "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"            = "external"
-        "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-nlb-target-type" = "ip"
-        "app.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-scheme"          = "internet-facing"
+        "ci"                                                                       = true
+        "app.ingress.enabled"                                                      = true
+        "app.ingress.annotations.kubernetes\\.io/ingress\\.class"                  = "nginx"
+        "app.ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/rewrite-target" = "/"
       },
       # licence
       var.enterprise ? tomap({
