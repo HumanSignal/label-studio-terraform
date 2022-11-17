@@ -1,5 +1,5 @@
 resource "helm_release" "this" {
-  count = var.enabled
+  count = var.enabled ? 1 : 0
 
   name = var.helm_release_name
 
