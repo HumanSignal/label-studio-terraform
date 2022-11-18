@@ -138,10 +138,6 @@ variable "additional_set" {
   default     = {}
 }
 
-# TLS
-variable "tls_key_file" {
-  type = string
-}
-variable "tls_crt_file" {
+variable "host" {
   type = string
 }

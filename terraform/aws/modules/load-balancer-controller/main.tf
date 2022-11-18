@@ -264,7 +264,7 @@ resource "aws_iam_role_policy_attachment" "this" {
   role       = aws_iam_role.this.name
 }
 
-resource "kubernetes_service_account" "this" {
+resource "kubernetes_service_account_v1" "this" {
   automount_service_account_token = false
   metadata {
     name        = format("%s-aws-load-balancer-controller", var.name)
@@ -282,10 +282,10 @@ resource "kubernetes_service_account" "this" {
 
 resource "kubernetes_secret" "this" {
   metadata {
-    name        = format("%s-aws-load-balancer-controller-token", var.name)
+    name        = format("%s-aws-load-balancer-controller", var.name)
     namespace   = var.namespace
     annotations = {
-      "kubernetes.io/service-account.name" = kubernetes_service_account.this.metadata[0].name
+      "kubernetes.io/service-account.name" = format("%s-aws-load-balancer-controller", var.name)
     }
   }
   type = "kubernetes.io/service-account-token"
@@ -367,8 +367,8 @@ resource "kubernetes_cluster_role_binding" "this" {
   subject {
     api_group = ""
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account.this.metadata[0].name
-    namespace = kubernetes_service_account.this.metadata[0].namespace
+    name      = kubernetes_service_account_v1.this.metadata[0].name
+    namespace = kubernetes_service_account_v1.this.metadata[0].namespace
   }
 }
 
@@ -388,7 +388,7 @@ resource "helm_release" "alb_controller" {
     for_each = {
       "clusterName"                = var.cluster_name
       "serviceAccount.create"      = false
-      "serviceAccount.name"        = format("%s-aws-load-balancer-controller", var.name)
+      "serviceAccount.name"        = kubernetes_service_account_v1.this.metadata[0].name
       "ingressClassConfig.default" = true
     }
     content {
@@ -398,7 +398,7 @@ resource "helm_release" "alb_controller" {
   }
   depends_on = [
     kubernetes_cluster_role.this,
-    kubernetes_service_account.this,
+    kubernetes_service_account_v1.this,
     kubernetes_cluster_role_binding.this,
   ]
 }

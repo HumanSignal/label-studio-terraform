@@ -21,6 +21,9 @@ provider "helm" {
 #  }
 }
 
+provider "random" {
+}
+
 data "aws_eks_cluster" "eks" {
   name = module.eks.cluster_name
 }

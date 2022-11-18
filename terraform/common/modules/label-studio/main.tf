@@ -62,14 +62,45 @@ resource "kubernetes_secret" "redis" {
   }
 }
 
+
+resource "random_string" "app_keystore_password" {
+  length  = 16
+  special = false
+}
+
+resource "tls_private_key" "key" {
+  algorithm = "RSA"
+}
+
+resource "tls_self_signed_cert" "cert" {
+
+  private_key_pem       = tls_private_key.key.private_key_pem
+  validity_period_hours = 87600
+
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+    "server_auth",
+  ]
+
+  dns_names = [var.host]
+
+  subject {
+    common_name  = var.host
+    organization = "ORG"
+    province     = "STATE"
+    country      = "COUNT"
+  }
+}
+
 resource "kubernetes_secret" "tls" {
   metadata {
     name = local.tls_secret_name
   }
   type = "kubernetes.io/tls"
   data = {
-    "tls.crt" = file(var.tls_crt_file)
-    "tls.key" = file(var.tls_key_file)
+    "tls.crt" = tls_self_signed_cert.cert.cert_pem
+    "tls.key" = tls_private_key.key.private_key_pem
   }
 }
 
@@ -90,13 +121,10 @@ resource "helm_release" "label_studio" {
         "ci"                                                                       = true
         "app.ingress.enabled"                                                      = true
         "app.ingress.className"                                                    = "nginx"
-        "app.ingress.annotations.kubernetes\\.io/ingress\\.class"                  = "nginx"
         "app.ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/rewrite-target" = "/"
         "app.ingress.tls[0].secretName"                                            = kubernetes_secret.tls.metadata[0].name
-#        TODO: Replace with domain
-        "app.ingress.tls[0].hosts[0]"                                              = "*.eu-north-1.elb.amazonaws.com"
-#        TODO: Replace with domain
-        "app.ingress.host"                                                         = "*.eu-north-1.elb.amazonaws.com"
+        "app.ingress.tls[0].hosts[0]"                                              = var.host
+        "app.ingress.host"                                                         = var.host
       },
       # licence
       var.enterprise ? tomap({
