@@ -1,4 +1,5 @@
 # Elastic Kubernetes Service Cluster configuration
+#tfsec:ignore:aws-eks-no-public-cluster-access tfsec:ignore:aws-eks-no-public-cluster-access-to-cidr tfsec:ignore:aws-eks-enable-control-plane-logging
 resource "aws_eks_cluster" "eks_cluster" {
   name     = format("%s-eks-cluster", var.name)
   role_arn = var.role_arn
@@ -7,6 +8,8 @@ resource "aws_eks_cluster" "eks_cluster" {
     security_group_ids = [var.security_group_id]
     subnet_ids         = var.subnet_ids
   }
+
+  enabled_cluster_log_types = var.eks_cluster_enabled_log_types
 
   tags = var.tags
 

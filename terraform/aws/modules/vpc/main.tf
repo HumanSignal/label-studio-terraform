@@ -154,6 +154,7 @@ resource "aws_eip" "mod_nat_eip" {
 
 #-------------------------------------------------------------------------
 # Create AWS Security group
+#tfsec:ignore:aws-ec2-no-public-egress-sgr
 resource "aws_security_group" "security_group" {
   name        = format("%s-eks-security-group", var.name)
   description = "Cluster communication with worker nodes"
@@ -201,6 +202,7 @@ resource "aws_security_group_rule" "workstation_https_group_rule" {
 }
 
 # Create AWS workers Security Group
+#tfsec:ignore:aws-ec2-no-public-egress-sgr
 resource "aws_security_group" "worker_security_group" {
   name        = format("%s-eks-worker-security-group", var.name)
   description = "Security group for all nodes in the cluster"

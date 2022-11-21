@@ -1,0 +1,24 @@
+We use GitHub Actions and [tfsec](https://github.com/aquasecurity/tfsec) to check our terraform code using static analysis to spot potential security issues. There are some checks that should be skipped:
+
+| File                | Issue ID                                 | Impact                                                       | Resolution                                                                                               |
+|---------------------|------------------------------------------|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| modules/eks/main.tf | aws-eks-no-public-cluster-access         | EKS can be accessed from the internet                        | By default we create a publicly accessible EKS cluster, the endpoint is secured by AWS auth.             |
+| modules/eks/main.tf | aws-eks-no-public-cluster-access-to-cidr | EKS can be accessed from the internet                        | By default we create a publicly accessible EKS cluster, the endpoint is secured by AWS auth.             |
+| modules/eks/main.tf | aws-eks-enable-control-plane-logging     | Logging provides valuable information about access and usage | By default only `audit` is enabled, it's possible to override using `var.eks_cluster_enabled_log_types`. |
+| modules/vpc/main.tf | aws-ec2-no-public-egress-sgr             | Your port is egressing data to the internet                  | By default all resources in VPC can access `0.0.0.0/0`.                                                  |
+| modules/vpc/main.tf | aws-ec2-no-public-egress-sgr             | Your port is egressing data to the internet                  | By default worker nodes can access `0.0.0.0/0`.                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+|                     |                                          |                                                              |                                                                                                          |
+
+
