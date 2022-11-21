@@ -67,15 +67,18 @@ data "aws_caller_identity" "current" {}
 
 variable "create_r53_zone" {
   default     = false
+  type        = bool
   description = "Create R53 zone for main public domain"
 }
 
 variable "create_acm_certificate" {
   default     = false
+  type        = bool
   description = "Whether to create acm certificate or use existing"
 }
 
 variable "domain_name" {
+  type = string
   description = "Main public domain name"
 }
 
@@ -213,12 +216,4 @@ variable "redis_port" {
 variable "redis_password" {
   type    = string
   default = "labelstudio"
-}
-
-# TLS
-variable "tls_key_file" {
-  type = string
-}
-variable "tls_crt_file" {
-  type = string
 }

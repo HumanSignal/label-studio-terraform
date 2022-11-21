@@ -34,3 +34,9 @@ variable "machine_type" {
   type    = string
   default = "db.m5.large"
 }
+
+variable "tags" {
+  description = "Tags added to resources."
+  type        = map(any)
+  default     = {}
+}

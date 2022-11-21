@@ -9,6 +9,7 @@ help:
 	@echo '    make plan "provider=<REPLACEME>"	    Plan all Terraform resources.'
 	@echo '    make apply "provider=<REPLACEME>"    Create or update Terraform resources.'
 	@echo '    make destroy "provider=<REPLACEME>"  Destroy all Terraform resources.'
+	@echo '    make console "provider=<REPLACEME>"  Run terraform console to debug terrafom resources.'
 	@echo '    make lint	                        Check syntax of all scripts.'
 	@echo
 
@@ -57,11 +58,11 @@ check_shebangs:
 	source ${ROOT}/test/lint.sh && check_bash
 
 # TF Lint check
-.PHONY: tflint
-tflint:
+.PHONY: check_tflint
+check_tflint:
 	source ${ROOT}/test/lint.sh && check_tflint
 
 # TF Sec check
-.PHONY: tfsec
-tfsec:
+.PHONY: check_tfsec
+check_tfsec:
 	source ${ROOT}/test/lint.sh && check_tfsec

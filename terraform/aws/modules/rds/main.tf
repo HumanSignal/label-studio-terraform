@@ -9,15 +9,17 @@ resource "aws_security_group" "security_group" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = var.tags
 }
 
 resource "aws_db_subnet_group" "subnet_group" {
   name       = format("%s-rds-subnet-group", var.name)
   subnet_ids = var.subnet_ids
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "Postgres subnet group"
   }
+  )
 }
 
 resource "aws_db_instance" "postgresql" {
@@ -33,4 +35,5 @@ resource "aws_db_instance" "postgresql" {
   db_name                = var.database
   username               = var.username
   password               = var.password
+  tags                   = var.tags
 }

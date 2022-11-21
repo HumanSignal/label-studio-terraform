@@ -54,6 +54,8 @@ resource "aws_route53_record" "validation" {
 
   allow_overwrite = var.validation_allow_overwrite_records
 
+  tags = var.tags
+
   depends_on = [aws_acm_certificate.this]
 }
 
@@ -61,6 +63,8 @@ resource "aws_acm_certificate_validation" "this" {
   count = var.validation_method != "NONE" && var.validate_certificate && var.wait_for_validation ? 1 : 0
 
   certificate_arn = aws_acm_certificate.this[0].arn
+
+  tags = var.tags
 
   validation_record_fqdns = flatten([aws_route53_record.validation.*.fqdn, var.validation_record_fqdns])
 }

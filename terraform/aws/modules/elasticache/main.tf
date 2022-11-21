@@ -3,6 +3,7 @@ resource "aws_security_group" "security_group" {
   name        = format("%s-elasticache-security-group", var.name)
   vpc_id      = var.vpc_id
   description = "Allow all inbound for Elasticache"
+  tags        = var.tags
   ingress {
     from_port   = var.port
     to_port     = var.port
@@ -15,9 +16,10 @@ resource "aws_elasticache_subnet_group" "subnet_group" {
   name       = format("%s-elasticache-subnet-group", var.name)
   subnet_ids = var.subnet_ids
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "Elasticache subnet group"
   }
+  )
 }
 
 resource "aws_elasticache_replication_group" "elasticache" {
@@ -34,7 +36,7 @@ resource "aws_elasticache_replication_group" "elasticache" {
 
   transit_encryption_enabled = true
   auth_token                 = var.password
-
-  num_node_groups         = 1
-  replicas_per_node_group = 1
+  tags                       = var.tags
+  num_node_groups            = 1
+  replicas_per_node_group    = 1
 }

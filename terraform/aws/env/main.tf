@@ -47,6 +47,21 @@ module "eks" {
   capacity_type         = var.eks_capacity_type
 }
 
+module "route53" {
+  source      = "../modules/route53"
+  count       = var.create_r53_zone ? 1 : 0
+  domain_name = var.domain_name
+  tags        = local.tags
+}
+
+
+module "acm" {
+  source      = "../modules/acm"
+  count       = var.create_acm_certificate ? 1 : 0
+  domain_name = var.domain_name
+  tags        = local.tags
+}
+
 module "rds" {
   source = "../modules/rds"
   count  = var.postgresql == "rds" ? 1 : 0
@@ -59,6 +74,7 @@ module "rds" {
   database     = var.postgresql_database
   username     = var.postgresql_username
   password     = var.postgresql_password
+  tags        = local.tags
 
   depends_on = [module.vpc]
 }
@@ -74,6 +90,7 @@ module "elasticache" {
   machine_type = var.redis_machine_type
   port         = var.redis_port
   password     = var.redis_password
+  tags        = local.tags
 
   depends_on = [module.vpc]
 }
@@ -138,17 +155,3 @@ module "helm" {
     module.elasticache,
   ]
 }
-
-#module "route53" {
-#  source      = "../modules/route53"
-#  count       = var.create_r53_zone ? 1 : 0
-#  domain_name = var.domain_name
-#  tags        = local.tags
-#}
-#
-#module "acm" {
-#  source      = "../modules/acm"
-#  count       = var.create_acm_certificate ? 1 : 0
-#  domain_name = var.domain_name
-#  tags        = local.tags
-#}

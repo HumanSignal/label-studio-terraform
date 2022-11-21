@@ -18,7 +18,7 @@ function check_bash() {
 function check_terraform() {
   echo "Running terraform validate"
   REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-  for provider in $(ls "${REPO_ROOT}/terraform/"); do
+  for provider in $(ls "${REPO_ROOT}/terraform/" | grep -v common) ; do
     cd "${REPO_ROOT}/terraform/${provider}/env"
     terraform init -backend=false
     terraform validate .
@@ -33,18 +33,30 @@ function check_shell() {
 }
 
 function check_tflint() {
-  echo "Running tf lint"
+  # tflint is installed
+  command -v tflint >/dev/null 2>&1 || { \
+   echo >&2 "tflint is required for this check but it's not installed.  Aborting."
+   echo >&2 "Refer to: https://github.com/terraform-linters/tflint"
+   exit 1
+  }
+  echo "Running tflint"
   REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-  for provider in $(ls "${REPO_ROOT}/terraform/"); do
+  for provider in $(ls "${REPO_ROOT}/terraform/" | grep -v common); do
     cd "${REPO_ROOT}/terraform/${provider}/env"
     tflint
   done
 }
 
 function check_tfsec() {
-  echo "Running tf sec"
+  # tfsec is installed
+  command -v tfsec >/dev/null 2>&1 || { \
+   echo >&2 "tfsec is required for this check but it's not installed.  Aborting."
+   echo >&2 "Refer to: https://github.com/aquasecurity/tfsec"
+   exit 1
+  }
+  echo "Running tfsec"
   REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-  for provider in $(ls "${REPO_ROOT}/terraform/"); do
+  for provider in $(ls "${REPO_ROOT}/terraform/" | grep -v common); do
     cd "${REPO_ROOT}/terraform/${provider}/env"
     tfsec
   done
