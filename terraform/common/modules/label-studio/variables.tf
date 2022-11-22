@@ -141,3 +141,7 @@ variable "additional_set" {
 variable "host" {
   type = string
 }
+
+variable "certificate_issuer_name" {
+  type = string
+}

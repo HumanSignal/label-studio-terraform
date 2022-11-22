@@ -22,3 +22,7 @@ output "connect_cluster" {
   description = "Configuring EKS cluster access for kubectl"
   value       = format("aws eks --region %s update-kubeconfig --name %s --alias %s", var.region, module.eks.cluster_name, module.eks.cluster_name)
 }
+
+output "host" {
+  value = module.nic.host
+}

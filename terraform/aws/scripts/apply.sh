@@ -12,5 +12,5 @@ source "${ROOT}/scripts/common.sh"
 (cd "${ROOT}/env"; terraform apply -no-color -auto-approve ${TF_PARAMS})
 
 # Get cluster outputs from the cluster.
-GET_OUTPUTS='(cd "${ROOT}/env"; terraform output cluster_endpoint)'
+GET_OUTPUTS='(cd "${ROOT}/env"; terraform output host)'
 eval ${GET_OUTPUTS}

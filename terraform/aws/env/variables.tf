@@ -78,7 +78,7 @@ variable "create_acm_certificate" {
 }
 
 variable "domain_name" {
-  type = string
+  type        = string
   description = "Main public domain name"
 }
 
@@ -216,4 +216,8 @@ variable "redis_port" {
 variable "redis_password" {
   type    = string
   default = "labelstudio"
+}
+
+variable "email" {
+  type = string
 }

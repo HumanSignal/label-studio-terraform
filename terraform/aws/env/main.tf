@@ -74,7 +74,7 @@ module "rds" {
   database     = var.postgresql_database
   username     = var.postgresql_username
   password     = var.postgresql_password
-  tags        = local.tags
+  tags         = local.tags
 
   depends_on = [module.vpc]
 }
@@ -90,7 +90,7 @@ module "elasticache" {
   machine_type = var.redis_machine_type
   port         = var.redis_port
   password     = var.redis_password
-  tags        = local.tags
+  tags         = local.tags
 
   depends_on = [module.vpc]
 }
@@ -114,8 +114,16 @@ module "nic" {
   source = "../../common/modules/nginx-ingress-controller"
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
-
   namespace = "kube-system"
+}
+
+module "cert-manager" {
+  source = "../../common/modules/cert-manager"
+
+  helm_chart_release_name = format("%s-cert-manager", local.name_prefix)
+  namespace = "cert-manager"
+  email = var.email
+
 }
 
 module "helm" {
@@ -147,6 +155,7 @@ module "helm" {
   redis_password = var.redis == "elasticache" && var.enterprise ? module.elasticache[0].password : var.redis_password
 
   host = module.nic.host
+  certificate_issuer_name = module.cert-manager.issuer_name
 
   depends_on = [
     module.lbc,

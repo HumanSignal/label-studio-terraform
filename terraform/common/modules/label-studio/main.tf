@@ -63,44 +63,22 @@ resource "kubernetes_secret" "redis" {
 }
 
 
-resource "random_string" "app_keystore_password" {
-  length  = 16
-  special = false
-}
-
-resource "tls_private_key" "key" {
-  algorithm = "RSA"
-}
-
-resource "tls_self_signed_cert" "cert" {
-
-  private_key_pem       = tls_private_key.key.private_key_pem
-  validity_period_hours = 87600
-
-  allowed_uses = [
-    "key_encipherment",
-    "digital_signature",
-    "server_auth",
-  ]
-
-  dns_names = [var.host]
-
-  subject {
-    common_name  = var.host
-    organization = "ORG"
-    province     = "STATE"
-    country      = "COUNT"
-  }
-}
-
-resource "kubernetes_secret" "tls" {
-  metadata {
-    name = local.tls_secret_name
-  }
-  type = "kubernetes.io/tls"
-  data = {
-    "tls.crt" = tls_self_signed_cert.cert.cert_pem
-    "tls.key" = tls_private_key.key.private_key_pem
+resource "kubernetes_manifest" "clusterissuer_letsencrypt" {
+  manifest = {
+    apiVersion = "cert-manager.io/v1"
+    kind       = "Certificate"
+    metadata   = {
+      name      = "${var.name}-label-studio-certificate"
+      namespace = var.namespace
+    }
+    spec = {
+      dnsNames : [var.host]
+      secretName : local.tls_secret_name
+      issuerRef : {
+        kind : "ClusterIssuer"
+        name : var.certificate_issuer_name
+      }
+    }
   }
 }
 
@@ -122,7 +100,7 @@ resource "helm_release" "label_studio" {
         "app.ingress.enabled"                                                      = true
         "app.ingress.className"                                                    = "nginx"
         "app.ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/rewrite-target" = "/"
-        "app.ingress.tls[0].secretName"                                            = kubernetes_secret.tls.metadata[0].name
+        "app.ingress.tls[0].secretName"                                            = kubernetes_manifest.clusterissuer_letsencrypt.manifest.spec.secretName
         "app.ingress.tls[0].hosts[0]"                                              = var.host
         "app.ingress.host"                                                         = var.host
       },

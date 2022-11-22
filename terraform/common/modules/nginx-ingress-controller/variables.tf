@@ -32,7 +32,16 @@ variable "namespace" {
 
 variable "settings" {
   default = {
-
+    controller : {
+      service : {
+        annotations : {
+          "service.beta.kubernetes.io/aws-load-balancer-name" : "nb-ls"
+          "service.beta.kubernetes.io/aws-load-balancer-type" : "external"
+          "service.beta.kubernetes.io/aws-load-balancer-scheme" : "internet-facing"
+          "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" : "ip"
+        }
+      }
+    }
   }
   description = "Additional yaml encoded values which will be passed to the Helm chart."
 }
