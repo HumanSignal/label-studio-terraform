@@ -26,6 +26,9 @@ resource "helm_release" "this" {
       value = set.value
     }
   }
+  depends_on = [
+    kubernetes_namespace.this,
+  ]
 }
 
 resource "kubernetes_manifest" "clusterissuer_letsencrypt" {
@@ -54,4 +57,9 @@ resource "kubernetes_manifest" "clusterissuer_letsencrypt" {
       }
     }
   }
+
+  depends_on = [
+    kubernetes_namespace.this,
+    helm_release.this,
+  ]
 }
