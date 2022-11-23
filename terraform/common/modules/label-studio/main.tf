@@ -63,23 +63,29 @@ resource "kubernetes_secret" "redis" {
 }
 
 
-resource "kubernetes_manifest" "clusterissuer_letsencrypt" {
-  manifest = {
-    apiVersion = "cert-manager.io/v1"
-    kind       = "Certificate"
-    metadata   = {
-      name      = "${var.name}-label-studio-certificate"
-      namespace = var.namespace
-    }
-    spec = {
-      dnsNames : [var.host]
-      secretName : local.tls_secret_name
-      issuerRef : {
-        kind : "ClusterIssuer"
-        name : var.certificate_issuer_name
-      }
-    }
+terraform {
+  required_providers {
+     kubectl = {
+      source  = "gavinbunney/kubectl"
+   }
   }
+}
+
+resource "kubectl_manifest" "certificate" {
+  yaml_body = <<-EOF
+    apiVersion: "cert-manager.io/v1"
+    kind: "Certificate"
+    metadata:
+      name: "${var.name}-label-studio-certificate"
+      namespace: "${var.namespace}"
+    spec:
+      dnsNames:
+        - "${var.host}"
+      secretName: "${local.tls_secret_name}"
+      issuerRef:
+        kind: "ClusterIssuer"
+        name: "${var.certificate_issuer_name}"
+    EOF
 }
 
 resource "helm_release" "label_studio" {
@@ -100,7 +106,7 @@ resource "helm_release" "label_studio" {
         "app.ingress.enabled"                                                      = true
         "app.ingress.className"                                                    = "nginx"
         "app.ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/rewrite-target" = "/"
-        "app.ingress.tls[0].secretName"                                            = kubernetes_manifest.clusterissuer_letsencrypt.manifest.spec.secretName
+        "app.ingress.tls[0].secretName"                                            = local.tls_secret_name
         "app.ingress.tls[0].hosts[0]"                                              = var.host
         "app.ingress.host"                                                         = var.host
       },
@@ -147,6 +153,7 @@ resource "helm_release" "label_studio" {
     kubernetes_secret.postgresql,
     kubernetes_secret.redis,
     kubernetes_secret.license,
+    kubectl_manifest.certificate,
     kubernetes_secret.heartex_pull_key,
   ]
 }

@@ -160,6 +160,7 @@ module "helm" {
   depends_on = [
     module.lbc,
     module.eks,
+    module.cert-manager,
     module.rds,
     module.elasticache,
   ]

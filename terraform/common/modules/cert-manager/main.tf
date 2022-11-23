@@ -31,32 +31,50 @@ resource "helm_release" "this" {
   ]
 }
 
-resource "kubernetes_manifest" "clusterissuer_letsencrypt" {
-  manifest = {
-    apiVersion = "cert-manager.io/v1"
-    kind       = "ClusterIssuer"
-    metadata   = {
-      name = "letsencrypt-cluster-issuer"
-    }
-    spec = {
-      acme = {
-        email               = var.email
-        privateKeySecretRef = {
-          name = "letsencrypt-cluster-issuer-key"
-        }
-        server  = "https://acme-v02.api.letsencrypt.org/directory"
-        solvers = [
-          {
-            http01 = {
-              ingress = {
-                class = "nginx"
-              }
+variable "selfsigned" {
+  type    = bool
+  default = true
+}
+locals {
+  selfsigned_issuer_specs = { selfSigned = {} }
+  acme_issuer_specs       = {
+    acme = {
+      email               = var.email
+      privateKeySecretRef = {
+        name = "letsencrypt-cluster-issuer-key"
+      }
+      server  = "https://acme-v02.api.letsencrypt.org/directory"
+      solvers = [
+        {
+          http01 = {
+            ingress = {
+              class = "nginx"
             }
           }
-        ]
-      }
+        }
+      ]
     }
   }
+}
+
+terraform {
+  required_providers {
+     kubectl = {
+      source  = "gavinbunney/kubectl"
+   }
+  }
+}
+
+resource "kubectl_manifest" "clusterissuer_letsencrypt" {
+  yaml_body = <<-EOF
+    apiVersion: "cert-manager.io/v1"
+    kind: "ClusterIssuer"
+    metadata:
+      name: "letsencrypt-cluster-issuer"
+    spec:
+      selfSigned: {}
+    EOF
+  #    spec = (var.selfsigned ? local.selfsigned_issuer_specs : local.acme_issuer_specs)
 
   depends_on = [
     kubernetes_namespace.this,
