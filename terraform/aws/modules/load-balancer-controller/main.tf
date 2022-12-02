@@ -278,6 +278,9 @@ resource "kubernetes_service_account_v1" "this" {
       "app.kubernetes.io/managed-by" = "terraform"
     }
   }
+  secret {
+    name = kubernetes_secret.this.metadata[0].name
+  }
 }
 
 resource "kubernetes_secret" "this" {
@@ -399,6 +402,7 @@ resource "helm_release" "alb_controller" {
   depends_on = [
     kubernetes_cluster_role.this,
     kubernetes_service_account_v1.this,
+    kubernetes_secret.this,
     kubernetes_cluster_role_binding.this,
   ]
 }
