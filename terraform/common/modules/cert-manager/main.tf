@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+     kubectl = {
+      source  = "gavinbunney/kubectl"
+   }
+  }
+}
+
 resource "kubernetes_namespace" "this" {
   metadata {
     name = var.namespace
@@ -54,14 +62,6 @@ locals {
         }
       ]
     }
-  }
-}
-
-terraform {
-  required_providers {
-     kubectl = {
-      source  = "gavinbunney/kubectl"
-   }
   }
 }
 

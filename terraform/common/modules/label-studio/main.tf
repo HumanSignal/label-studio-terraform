@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+     kubectl = {
+      source  = "gavinbunney/kubectl"
+   }
+  }
+}
+
 locals {
   heartex_pull_key_secret_name = "heartex-pull-key"
   license_secret_name          = "lse-license"
@@ -59,15 +67,6 @@ resource "kubernetes_secret" "redis" {
   type = "generic"
   data = {
     (local.redis_secret_key) = var.redis_password
-  }
-}
-
-
-terraform {
-  required_providers {
-     kubectl = {
-      source  = "gavinbunney/kubectl"
-   }
   }
 }
 
