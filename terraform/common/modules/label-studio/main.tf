@@ -92,6 +92,8 @@ resource "helm_release" "label_studio" {
 
   chart = var.helm_chart_release_name
 
+  # TODO: Add namespace
+
   timeout = 900
   wait    = true
 

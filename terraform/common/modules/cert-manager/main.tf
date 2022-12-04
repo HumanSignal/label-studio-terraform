@@ -1,8 +1,8 @@
 terraform {
   required_providers {
-     kubectl = {
-      source  = "gavinbunney/kubectl"
-   }
+    kubectl = {
+      source = "gavinbunney/kubectl"
+    }
   }
 }
 
@@ -44,37 +44,45 @@ variable "selfsigned" {
   default = true
 }
 locals {
-  selfsigned_issuer_specs = { selfSigned = {} }
-  acme_issuer_specs       = {
-    acme = {
-      email               = var.email
-      privateKeySecretRef = {
-        name = "letsencrypt-cluster-issuer-key"
-      }
-      server  = "https://acme-v02.api.letsencrypt.org/directory"
-      solvers = [
-        {
-          http01 = {
-            ingress = {
-              class = "nginx"
-            }
-          }
-        }
-      ]
-    }
-  }
+  cluster_issuer_name = var.selfsigned ? "selfsigned-cluster-issuer" : "letsencrypt-cluster-issuer"
 }
 
-resource "kubectl_manifest" "clusterissuer_letsencrypt" {
+resource "kubectl_manifest" "selfsigned_cluster_issuer" {
+  count     = var.selfsigned ? 1 : 0
   yaml_body = <<-EOF
     apiVersion: "cert-manager.io/v1"
     kind: "ClusterIssuer"
     metadata:
-      name: "letsencrypt-cluster-issuer"
+      name: "${local.cluster_issuer_name}"
     spec:
       selfSigned: {}
     EOF
-  #    spec = (var.selfsigned ? local.selfsigned_issuer_specs : local.acme_issuer_specs)
+
+  depends_on = [
+    kubernetes_namespace.this,
+    helm_release.this,
+  ]
+}
+
+resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
+  count = var.selfsigned ? 0 : 1
+  yaml_body = <<-EOF
+    apiVersion: "cert-manager.io/v1"
+    kind: "ClusterIssuer"
+    metadata:
+      name: "${local.cluster_issuer_name}"
+    spec:
+      acme:
+        email: "${var.email}"
+        privateKeySecretRef:
+          name: "letsencrypt-private-key"
+        server: "https://acme-v02.api.letsencrypt.org/directory"
+        solvers:
+        - http01:
+            ingress:
+              class: nginx
+          selector: {}
+    EOF
 
   depends_on = [
     kubernetes_namespace.this,

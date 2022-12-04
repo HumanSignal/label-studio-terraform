@@ -1,3 +1,3 @@
 output "issuer_name" {
-  value = "letsencrypt-cluster-issuer"
+  value = local.cluster_issuer_name
 }

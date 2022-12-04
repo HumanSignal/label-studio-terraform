@@ -48,12 +48,14 @@ module "eks" {
 }
 
 module "route53" {
-  source      = "../modules/route53"
-  count       = var.create_r53_zone ? 1 : 0
-  domain_name = var.domain_name
-  tags        = local.tags
+  source          = "../modules/route53"
+  create_r53_zone = var.create_r53_zone
+  record_name     = var.record_name
+  domain_name     = var.domain_name
+  tags            = local.tags
+  alias_name      = module.nic.host
+  alias_zone_id   = var.region
 }
-
 
 module "acm" {
   source      = "../modules/acm"
@@ -114,16 +116,16 @@ module "nic" {
   source = "../../common/modules/nginx-ingress-controller"
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
-  namespace = "kube-system"
+  namespace               = "kube-system"
 }
 
 module "cert-manager" {
   source = "../../common/modules/cert-manager"
 
   helm_chart_release_name = format("%s-cert-manager", local.name_prefix)
-  namespace = "cert-manager"
-  email = var.email
-
+  namespace               = "cert-manager"
+  email                   = var.email
+  selfsigned              = false
 }
 
 module "helm" {
@@ -154,7 +156,7 @@ module "helm" {
   redis_host     = var.redis == "elasticache" && var.enterprise ? "rediss://${module.elasticache[0].host}:${module.elasticache[0].port}/1" : var.redis_host
   redis_password = var.redis == "elasticache" && var.enterprise ? module.elasticache[0].password : var.redis_password
 
-  host = module.nic.host
+  host                    = module.route53.fqdn
   certificate_issuer_name = module.cert-manager.issuer_name
 
   depends_on = [

@@ -12,3 +12,7 @@ output "route53_zone_name" {
   description = "Name of Route53 zone"
   value       = { for k, v in aws_route53_zone.this : k => v.name }
 }
+
+output "fqdn" {
+  value = aws_route53_record.this.fqdn
+}

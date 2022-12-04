@@ -82,6 +82,11 @@ variable "domain_name" {
   description = "Main public domain name"
 }
 
+variable "record_name" {
+  type        = string
+  description = "Main record domain name"
+}
+
 variable "eks_capacity_type" {
   description = "Type of capacity associated with the EKS Node Group"
   type        = string

@@ -24,5 +24,5 @@ output "connect_cluster" {
 }
 
 output "host" {
-  value = module.nic.host
+  value = module.helm.hots
 }
