@@ -30,18 +30,11 @@ variable "namespace" {
   description = "Kubernetes namespace to deploy Metrics Server Helm chart."
 }
 
+variable "load_balancer_name" {
+  type = string
+}
+
 variable "settings" {
-  default = {
-    controller : {
-      service : {
-        annotations : {
-          "service.beta.kubernetes.io/aws-load-balancer-name" : "nb-ls"
-          "service.beta.kubernetes.io/aws-load-balancer-type" : "external"
-          "service.beta.kubernetes.io/aws-load-balancer-scheme" : "internet-facing"
-          "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" : "ip"
-        }
-      }
-    }
-  }
+  default = {}
   description = "Additional yaml encoded values which will be passed to the Helm chart."
 }

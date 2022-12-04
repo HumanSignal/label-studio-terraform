@@ -8,11 +8,7 @@ resource "aws_route53_zone" "this" {
 data "aws_route53_zone" "this" {
   count = var.create_r53_zone ? 0 : 1
 
-  name         = var.domain_name
-}
-
-data "aws_lb" "this" {
-  name = "nb-ls"
+  name = var.domain_name
 }
 
 resource "aws_route53_record" "this" {
@@ -22,7 +18,7 @@ resource "aws_route53_record" "this" {
 
   alias {
     evaluate_target_health = false
-    name                   = data.aws_lb.this.dns_name
-    zone_id                = data.aws_lb.this.zone_id
+    name                   = var.load_balancer_dns_name
+    zone_id                = var.load_balancer_zone_id
   }
 }

@@ -56,12 +56,14 @@ module "route53" {
 
   count = local.create_r53_record ? 1 : 0
 
-  create_r53_zone = var.create_r53_zone
-  record_name     = var.record_name
-  domain_name     = var.domain_name
-  tags            = local.tags
-  alias_name      = module.nic.host
-  alias_zone_id   = var.region
+  create_r53_zone        = var.create_r53_zone
+  record_name            = var.record_name
+  domain_name            = var.domain_name
+  tags                   = local.tags
+  alias_name             = module.nic.host
+  alias_zone_id          = var.region
+  load_balancer_dns_name = module.nic.load_balancer_dns_name
+  load_balancer_zone_id  = module.nic.load_balancer_zone_id
 }
 
 module "acm" {
@@ -126,6 +128,7 @@ module "nic" {
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
   namespace               = "kube-system"
+  load_balancer_name      = local.name_prefix
 }
 
 module "cert-manager" {
