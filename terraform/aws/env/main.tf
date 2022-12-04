@@ -49,6 +49,10 @@ module "eks" {
   instance_profile_name = module.iam.iam_instance_profile
   tags                  = local.tags
   capacity_type         = var.eks_capacity_type
+
+  depends_on = [
+    module.vpc,
+  ]
 }
 
 module "route53" {
@@ -90,7 +94,9 @@ module "rds" {
   password     = var.postgresql_password
   tags         = local.tags
 
-  depends_on = [module.vpc]
+  depends_on = [
+    module.vpc,
+  ]
 }
 
 module "elasticache" {
@@ -106,7 +112,9 @@ module "elasticache" {
   password     = var.redis_password
   tags         = local.tags
 
-  depends_on = [module.vpc]
+  depends_on = [
+    module.vpc,
+  ]
 }
 
 module "lbc" {
@@ -129,6 +137,10 @@ module "nic" {
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
   namespace               = "kube-system"
   load_balancer_name      = local.name_prefix
+
+  depends_on = [
+    module.eks,
+  ]
 }
 
 module "cert-manager" {
@@ -138,6 +150,10 @@ module "cert-manager" {
   namespace               = "cert-manager"
   email                   = var.email
   selfsigned              = !local.create_r53_record
+
+  depends_on = [
+    module.eks,
+  ]
 }
 
 module "label-studio" {
