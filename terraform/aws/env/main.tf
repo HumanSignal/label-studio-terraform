@@ -176,6 +176,8 @@ module "label-studio" {
     module.lbc,
     module.eks,
     module.cert-manager,
+    module.nic,
+    module.route53,
     module.rds,
     module.elasticache,
   ]
