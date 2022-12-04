@@ -30,7 +30,7 @@ variable "helm_chart_repo" {
 
 variable "namespace" {
   type        = string
-  default     = "default"
+  default     = "labelstudio"
   description = "Kubernetes namespace to deploy Label Studio Helm chart."
 }
 

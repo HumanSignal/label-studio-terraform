@@ -1,3 +1,19 @@
+locals {
+  # Name prefix will be used infront of every resource name.
+  name_prefix = format("%s-%s", var.environment, var.name)
+
+  # Common Tags to attach all the resources.
+  tags = {
+    "Environment"   = var.environment
+    "resource-name" = var.name
+    "project-id"    = format("%s", data.aws_caller_identity.current.id)
+  }
+
+  create_r53_record = var.domain_name != null && var.record_name != null
+}
+
+data "aws_caller_identity" "current" {}
+
 variable "name" {
   description = "Name is the prefix to use for resources that needs to be created."
   type        = string
@@ -51,20 +67,6 @@ variable "private_cidr_block" {
   default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
-locals {
-  # Name prefix will be used infront of every resource name.
-  name_prefix = format("%s-%s", var.environment, var.name)
-
-  # Common Tags to attach all the resources.
-  tags = {
-    "Environment"   = var.environment
-    "resource-name" = var.name
-    "project-id"    = format("%s", data.aws_caller_identity.current.id)
-  }
-}
-
-data "aws_caller_identity" "current" {}
-
 variable "create_r53_zone" {
   default     = false
   type        = bool
@@ -78,11 +80,13 @@ variable "create_acm_certificate" {
 }
 
 variable "domain_name" {
+  default     = null
   type        = string
   description = "Main public domain name"
 }
 
 variable "record_name" {
+  default     = null
   type        = string
   description = "Main record domain name"
 }
