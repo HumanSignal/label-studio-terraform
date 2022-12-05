@@ -26,7 +26,7 @@ resource "kubernetes_namespace" "this" {
 resource "kubernetes_secret" "heartex_pull_key" {
   metadata {
     name      = local.heartex_pull_key_secret_name
-    namespace = var.namespace
+    namespace = kubernetes_namespace.this.metadata[0].name
   }
   type = "kubernetes.io/dockerconfigjson"
   data = {
@@ -47,7 +47,7 @@ resource "kubernetes_secret" "license" {
   count = var.enterprise ? 1 : 0
   metadata {
     name      = local.license_secret_name
-    namespace = var.namespace
+    namespace = kubernetes_namespace.this.metadata[0].name
   }
   type = "generic"
   # TODO: Read license from file
@@ -60,7 +60,7 @@ resource "kubernetes_secret" "postgresql" {
   count = var.postgresql == "rds" ? 1 : 0
   metadata {
     name      = local.postgresql_secret_name
-    namespace = var.namespace
+    namespace = kubernetes_namespace.this.metadata[0].name
   }
   type = "generic"
   data = {
@@ -72,7 +72,7 @@ resource "kubernetes_secret" "redis" {
   count = var.redis == "elasticache" ? 1 : 0
   metadata {
     name      = local.redis_secret_name
-    namespace = var.namespace
+    namespace = kubernetes_namespace.this.metadata[0].name
   }
   type = "generic"
   data = {
@@ -86,7 +86,7 @@ resource "kubectl_manifest" "certificate" {
     kind: "Certificate"
     metadata:
       name: "${var.name}-label-studio-certificate"
-      namespace: "${var.namespace}"
+      namespace: "${kubernetes_namespace.this.metadata[0].name}"
     spec:
       dnsNames:
         - "${var.host}"
@@ -99,7 +99,7 @@ resource "kubectl_manifest" "certificate" {
 
 resource "helm_release" "label_studio" {
   name = format("%s-label-studio", var.name)
-  namespace = var.namespace
+  namespace = kubernetes_namespace.this.metadata[0].name
 
   chart = var.helm_chart_release_name
 
