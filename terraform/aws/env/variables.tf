@@ -101,57 +101,52 @@ variable "eks_capacity_type" {
   }
 }
 
-# Helm
-variable "helm_chart_repo" {
+# Label Studio Helm Chart Release
+variable "label_studio_helm_chart_repo" {
   description = "Heartex repository name."
   type        = string
   default     = "https://charts.heartex.com"
 }
 
-variable "helm_chart_repo_username" {
+variable "label_studio_helm_chart_repo_username" {
   description = "Username for HTTP basic authentication against the Helm repository."
   type        = string
 }
 
-variable "helm_chart_repo_password" {
+variable "label_studio_helm_chart_repo_password" {
   description = "Password for HTTP basic authentication against the Helm repository."
   type        = string
 }
 
-variable "helm_chart_release_name" {
+variable "label_studio_helm_chart_release_name" {
   type        = string
   default     = "label-studio"
   description = "Helm release name"
 }
 
 # Docker config
-variable "registry_server" {
+variable "label_studio_registry_server" {
   description = "TBD"
   type        = string
   default     = "https://index.docker.io/v2/"
 }
 
-variable "registry_username" {
+variable "label_studio_registry_username" {
   description = "TBD"
   type        = string
 }
 
-variable "registry_email" {
+variable "label_studio_registry_email" {
   description = "TBD"
   type        = string
   default     = ""
 }
 
-variable "registry_password" {
+variable "label_studio_registry_password" {
   description = "TBD"
   type        = string
 }
 
-# License
-variable "license_literal" {
-  description = "TBD"
-  type        = string
-}
 
 variable "label_studio_additional_set" {
   description = "TBD"
@@ -163,6 +158,10 @@ variable "enterprise" {
   description = "TBD"
   type        = bool
   default     = false
+}
+variable "license_literal" {
+  description = "TBD"
+  type        = string
 }
 
 # Postgres
@@ -206,8 +205,10 @@ variable "redis" {
   type        = string
   default     = "internal"
   validation {
-    condition     = contains(["internal", "elasticache"], var.redis)
-    error_message = "postgresql must be either `internal` either `elasticache`"
+    condition = var.enterprise
+    ? contains(["internal", "elasticache"], var.redis)
+    : contains(["internal", "elasticache", "absent"], var.redis)
+    error_message = "redis must be `internal`, `elasticache`, either `absent`"
   }
 }
 variable "redis_machine_type" {
@@ -227,6 +228,7 @@ variable "redis_password" {
   default = "labelstudio"
 }
 
-variable "email" {
-  type = string
+variable "lets_encrypt_email" {
+  description = "Email address for certificate sing via Let's Encrypt."
+  type        = string
 }

@@ -8,8 +8,6 @@ variable "environment" {
   type        = string
 }
 
-# Helm
-
 variable "helm_chart_release_name" {
   type        = string
   default     = "label-studio"
@@ -72,6 +70,11 @@ variable "enterprise" {
   default     = false
 }
 
+variable "license_literal" {
+  description = "TBD"
+  type        = string
+}
+
 # Postgres
 variable "postgresql" {
   description = "TBD"
@@ -83,23 +86,23 @@ variable "postgresql" {
   }
 }
 variable "postgresql_database" {
-  type = string
+  type    = string
   default = "labelstudio"
 }
 variable "postgresql_host" {
-  type = string
+  type    = string
   default = ""
 }
 variable "postgresql_port" {
-  type = number
+  type    = number
   default = 5432
 }
 variable "postgresql_username" {
-  type = string
+  type    = string
   default = "labelstudio"
 }
 variable "postgresql_password" {
-  type = string
+  type    = string
   default = "labelstudio"
 }
 
@@ -109,7 +112,9 @@ variable "redis" {
   type        = string
   default     = "internal"
   validation {
-    condition     = contains(["internal", "elasticache"], var.redis)
+    condition = var.enterprise
+    ? contains(["internal", "elasticache"], var.redis)
+    : contains(["internal", "elasticache", "absent"], var.redis)
     error_message = "postgresql must be either `internal` either `elasticache`"
   }
 }
@@ -118,18 +123,6 @@ variable "redis_host" {
 }
 variable "redis_password" {
   type = string
-}
-
-# License
-variable "license_secret_key" {
-  description = "TBD"
-  type        = string
-  default     = "license"
-}
-
-variable "license_literal" {
-  description = "TBD"
-  type        = string
 }
 
 variable "additional_set" {

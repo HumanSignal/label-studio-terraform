@@ -148,7 +148,7 @@ module "cert-manager" {
 
   helm_chart_release_name = format("%s-cert-manager", local.name_prefix)
   namespace               = "cert-manager"
-  email                   = var.email
+  email                   = var.lets_encrypt_email
   selfsigned              = !local.create_r53_record
 
   depends_on = [
@@ -162,14 +162,14 @@ module "label-studio" {
   name                     = local.name_prefix
   namespace                = "labelstudio"
   environment              = var.environment
-  helm_chart_repo          = var.helm_chart_repo
-  helm_chart_repo_username = var.helm_chart_repo_username
-  helm_chart_repo_password = var.helm_chart_repo_password
-  helm_chart_release_name  = var.helm_chart_release_name
-  registry_server          = var.registry_server
-  registry_username        = var.registry_username
-  registry_email           = var.registry_email
-  registry_password        = var.registry_password
+  helm_chart_repo          = var.label_studio_helm_chart_repo
+  helm_chart_repo_username = var.label_studio_helm_chart_repo_username
+  helm_chart_repo_password = var.label_studio_helm_chart_repo_password
+  helm_chart_release_name  = var.label_studio_helm_chart_release_name
+  registry_server          = var.label_studio_registry_server
+  registry_username        = var.label_studio_registry_username
+  registry_email           = var.label_studio_registry_email
+  registry_password        = var.label_studio_registry_password
   license_literal          = var.license_literal
   additional_set           = var.label_studio_additional_set
   enterprise               = var.enterprise
@@ -181,7 +181,7 @@ module "label-studio" {
   postgresql_username = var.postgresql == "rds" ? module.rds[0].username : var.postgresql_username
   postgresql_password = var.postgresql == "rds" ? module.rds[0].password : var.postgresql_password
 
-  redis          = var.enterprise ? var.redis : "internal"
+  redis          = var.enterprise ? var.redis : "absent"
   redis_host     = var.redis == "elasticache" && var.enterprise ? "rediss://${module.elasticache[0].host}:${module.elasticache[0].port}/1" : var.redis_host
   redis_password = var.redis == "elasticache" && var.enterprise ? module.elasticache[0].password : var.redis_password
 
