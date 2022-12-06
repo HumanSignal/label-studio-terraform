@@ -12,8 +12,9 @@ variable "port" {
   default = 6379
 }
 variable "password" {
-  type    = string
-  default = "labelstudio"
+  type      = string
+  default   = "labelstudio"
+  sensitive = true
 }
 variable "machine_type" {
   type    = string

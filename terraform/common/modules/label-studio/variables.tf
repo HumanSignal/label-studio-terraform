@@ -56,6 +56,7 @@ variable "registry_username" {
 variable "registry_password" {
   description = "TBD"
   type        = string
+  sensitive   = true
 }
 
 variable "registry_email" {
@@ -73,6 +74,7 @@ variable "enterprise" {
 variable "license_literal" {
   description = "TBD"
   type        = string
+  sensitive   = true
 }
 
 # Postgres
@@ -102,8 +104,9 @@ variable "postgresql_username" {
   default = "labelstudio"
 }
 variable "postgresql_password" {
-  type    = string
-  default = "labelstudio"
+  type      = string
+  default   = "labelstudio"
+  sensitive = true
 }
 
 # Redis
@@ -112,17 +115,16 @@ variable "redis" {
   type        = string
   default     = "internal"
   validation {
-    condition = var.enterprise
-    ? contains(["internal", "elasticache"], var.redis)
-    : contains(["internal", "elasticache", "absent"], var.redis)
-    error_message = "postgresql must be either `internal` either `elasticache`"
+    condition     = contains(["internal", "elasticache", "absent"], var.redis)
+    error_message = "redis must be `internal`, `elasticache`, either `absent`"
   }
 }
 variable "redis_host" {
   type = string
 }
 variable "redis_password" {
-  type = string
+  type      = string
+  sensitive = true
 }
 
 variable "additional_set" {

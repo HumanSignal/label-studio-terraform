@@ -27,8 +27,9 @@ variable "username" {
   default = "labelstudio"
 }
 variable "password" {
-  type    = string
-  default = "labelstudio"
+  type      = string
+  default   = "labelstudio"
+  sensitive = true
 }
 variable "machine_type" {
   type    = string

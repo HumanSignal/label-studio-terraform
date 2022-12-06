@@ -116,6 +116,7 @@ variable "label_studio_helm_chart_repo_username" {
 variable "label_studio_helm_chart_repo_password" {
   description = "Password for HTTP basic authentication against the Helm repository."
   type        = string
+  sensitive   = true
 }
 
 variable "label_studio_helm_chart_release_name" {
@@ -145,6 +146,7 @@ variable "label_studio_registry_email" {
 variable "label_studio_registry_password" {
   description = "TBD"
   type        = string
+  sensitive   = true
 }
 
 
@@ -162,6 +164,8 @@ variable "enterprise" {
 variable "license_literal" {
   description = "TBD"
   type        = string
+  default     = null
+  sensitive   = true
 }
 
 # Postgres
@@ -195,8 +199,9 @@ variable "postgresql_username" {
   default = "labelstudio"
 }
 variable "postgresql_password" {
-  type    = string
-  default = "labelstudio"
+  type      = string
+  default   = "labelstudio"
+  sensitive = true
 }
 
 # Redis
@@ -205,9 +210,7 @@ variable "redis" {
   type        = string
   default     = "internal"
   validation {
-    condition = var.enterprise
-    ? contains(["internal", "elasticache"], var.redis)
-    : contains(["internal", "elasticache", "absent"], var.redis)
+    condition     = contains(["internal", "elasticache", "absent"], var.redis)
     error_message = "redis must be `internal`, `elasticache`, either `absent`"
   }
 }
@@ -224,8 +227,9 @@ variable "redis_port" {
   default = 6379
 }
 variable "redis_password" {
-  type    = string
-  default = "labelstudio"
+  type      = string
+  default   = "labelstudio"
+  sensitive = true
 }
 
 variable "lets_encrypt_email" {

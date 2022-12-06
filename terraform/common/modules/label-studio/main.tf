@@ -121,15 +121,12 @@ resource "helm_release" "label_studio" {
         "app.ingress.host"                                                         = var.host
       },
       # licence
-      var.enterprise
-      ? tomap({
+      var.enterprise ? tomap({
         "enterprise.enterpriseLicense.secretName" = kubernetes_secret.license[0].metadata[0].name
         "enterprise.enterpriseLicense.secretKey"  = local.license_secret_key
-      })
-      : tomap({}),
+      }) : tomap({}),
       # postgres
-      var.postgresql == "rds"
-      ? tomap({
+      var.postgresql == "rds" ? tomap({
         "postgresql.enabled"                  = false
         "global.pgConfig.host"                = var.postgresql_host
         "global.pgConfig.port"                = var.postgresql_port
@@ -138,27 +135,22 @@ resource "helm_release" "label_studio" {
         "global.pgConfig.password.secretName" = kubernetes_secret.postgresql[0].metadata[0].name
         "global.pgConfig.password.secretKey"  = local.postgresql_secret_key
         # TODO: Add postgresql SSL configuration
-      })
-      : tomap({
+      }) : tomap({
         "postgresql.enabled"       = true
         "postgresql.auth.database" = var.postgresql_database
         "postgresql.auth.username" = var.postgresql_username
         "postgresql.auth.password" = var.postgresql_password
       }),
       # redis
-      contains(["elasticache", "absent"], var.redis)
-      ? tomap({
+      contains(["elasticache", "absent"], var.redis) ? tomap({
         "redis.enabled" = false
-      })
-      : tomap({}),
-      var.redis == "elasticache"
-      ? tomap({
+      }) : tomap({}),
+      var.redis == "elasticache" ? tomap({
         "global.redisConfig.host"                = var.redis_host
         "global.redisConfig.password.secretName" = kubernetes_secret.redis[0].metadata[0].name
         "global.redisConfig.password.secretKey"  = local.redis_secret_key
         # TODO: Add redis SSL configuration
-      })
-      : tomap({}),
+      }) : tomap({}),
       var.additional_set
     )
     content {
