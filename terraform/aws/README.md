@@ -2,7 +2,8 @@
 
 ## Terraform Resources created
 
-TBD
+TODO: create resources as a table with columns: name, type
+terraform-docs?
 
 # FAQ
 
