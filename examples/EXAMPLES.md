@@ -9,5 +9,27 @@ TODO:
 - description
 - usage example with command
 
-## next case
-describe for all files
+## Label Studio with domain name
+Deploy and assign domain name with singed by Let's Encrypt certificate using cert-manager.
+
+If you already have Hosted Zone, set `create_r53_zone` to `false`.
+
+```hcl
+create_r53_zone = false
+domain_name     = "example.com"
+record_name     = "label-studio"
+email           = "test@test.com"
+```
+
+## Label Studio Enterprise
+Deploys an Label Studio Enterprise with Elasticcache and RDS
+```hcl
+enterprise                  = true
+license_literal             = "<SECRET>"
+registry_username           = "<SECRET>"
+registry_password           = "<SECRET>"
+label_studio_additional_set = {
+  "global.image.repository" = "heartexlabs/label-studio-enterprise"
+  "global.image.tag"        = "<SECRET>"
+}
+```
