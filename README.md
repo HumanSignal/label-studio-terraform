@@ -17,14 +17,15 @@ This repo contains a Terraform modules for provisioning Label Studio/Label Studi
 * Terraform scripts stored in different folders. You have to specify your cloud provider to create resources.
 * List of available providers: "aws"
 
-| Command                               | Description                                |
-|---------------------------------------|--------------------------------------------|
-| `make help`                           | List all the available options to use      |
-| `make init "provider=<REPLACEME>"`    | Initialize and configure Terraform backend |
-| `make plan "provider=<REPLACEME>"`    | Plan all Terraform resources               |
-| `make apply "provider=<REPLACEME>"`   | Create or update Terraform resources       |
-| `make destroy "provider=<REPLACEME>"` | Destroy all Terraform resources            |
-| `make lint`                           | Check syntax of all scripts                |
+| Command                               | Description                                  |
+|---------------------------------------|----------------------------------------------|
+| `make help`                           | List all the available options to use        |
+| `make init "provider=<REPLACEME>"`    | Initialize and configure Terraform backend   |
+| `make plan "provider=<REPLACEME>"`    | Plan all Terraform resources                 |
+| `make apply "provider=<REPLACEME>"`   | Create or update Terraform resources         |
+| `make destroy "provider=<REPLACEME>"` | Destroy all Terraform resources              |
+| `make lint`                           | Check syntax of all scripts                  |
+| `make docs`                           | Generate documentation for terraform modules |
 
 
 ## Provider AWS

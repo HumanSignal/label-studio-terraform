@@ -9,8 +9,9 @@ help:
 	@echo '    make plan "provider=<REPLACEME>"	    Plan all Terraform resources.'
 	@echo '    make apply "provider=<REPLACEME>"    Create or update Terraform resources.'
 	@echo '    make destroy "provider=<REPLACEME>"  Destroy all Terraform resources.'
-	@echo '    make console "provider=<REPLACEME>"  Run terraform console to debug terrafom resources.'
+	@echo '    make console "provider=<REPLACEME>"  Run terraform console to debug terraform resources.'
 	@echo '    make lint	                        Check syntax of all scripts.'
+	@echo '    make docs	                        Generate documentation for terraform modules'
 	@echo
 
 # Before you run this command please export the required variables.
