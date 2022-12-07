@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Common commands for aws scripts
-
-# Locate the root directory. Used by scripts that source this one.
 # shellcheck disable=SC2034
 # shellcheck disable=SC1083
+
+# Locate the root directory. Used by scripts that source this one.
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 # AWS CLI v2 is installed
@@ -28,11 +28,11 @@ command -v helm >/dev/null 2>&1 || { \
 }
 
 # Make sure you initialize the following TF_VAR's before you initialize the environment
-if [ -z "${TF_VAR_environment:-}" ] || [ -z "${TF_VAR_name:-}" ] || [ -z "${TF_VAR_region:-}" ]; then
-  echo "[ERROR] This step requires to export the following variables TF_VAR_environment, TF_VAR_name, TF_VAR_region"
+if [ -z "${TF_VAR_environment:-}" ] || [ -z "${TF_VAR_name:-}" ] || [ -z "${TF_VAR_region:-}" ] || [ -z "${TF_PARAMS:-}" ]; then
+  echo "[ERROR] This step requires to export the following variables TF_VAR_environment, TF_VAR_name, TF_VAR_region, TF_PARAMS"
   exit 1
 else
-  echo -e "[INFO] The following variables are configured:\n  TF_VAR_environment: ${TF_VAR_environment}\n  TF_VAR_name: ${TF_VAR_name}\n  TF_VAR_region: ${TF_VAR_region}"
+  echo -e "[INFO] The following variables are configured:\n  TF_VAR_environment: ${TF_VAR_environment}\n  TF_VAR_name: ${TF_VAR_name}\n  TF_VAR_region: ${TF_VAR_region}\n  TF_PARAMS: ${TF_PARAMS}"
 fi
 
 # Create s3 state bucket if not exist

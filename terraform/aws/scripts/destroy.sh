@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1091
-set -euo pipefail
+set -euo pipefail ${DEBUG:+-x}
 
 prompt_confirm() {
   while true; do
@@ -28,7 +28,7 @@ prompt_confirm "ARE YOU SURE?" || exit 0
 terraform workspace select "${TF_VAR_environment:-}"
 
 # this will destroy all of your resources in the environment workspace
-terraform destroy -no-color -auto-approve ${TF_PARAMS}
+terraform destroy -no-color -auto-approve "${TF_PARAMS:-}"
 
 # Delete terraform workspace.
 terraform workspace select default

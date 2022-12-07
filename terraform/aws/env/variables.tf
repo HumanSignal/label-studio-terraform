@@ -127,25 +127,25 @@ variable "label_studio_helm_chart_name" {
 
 # Docker config
 variable "label_studio_registry_server" {
-  description = "Docker registry fqdn to pull label studio image from"
+  description = "Docker registry fqdn to pull Label Studio image from"
   type        = string
   default     = "https://index.docker.io/v2/"
 }
 
 variable "label_studio_registry_username" {
-  description = "Docker username to pull label studio image"
+  description = "Docker username to pull Label Studio image"
   type        = string
   default     = ""
 }
 
 variable "label_studio_registry_email" {
-  description = "Docker email to pull label studio image"
+  description = "Docker email to pull Label Studio image"
   type        = string
   default     = ""
 }
 
 variable "label_studio_registry_password" {
-  description = "Docker password to pull label studio image."
+  description = "Docker password to pull Label Studio image."
   type        = string
   default     = ""
   sensitive   = true
@@ -213,7 +213,7 @@ variable "postgresql_password" {
 
 # Redis
 variable "redis" {
-  description = "Redis type"
+  description = "Redis deployment type"
   type        = string
   default     = "internal"
   validation {

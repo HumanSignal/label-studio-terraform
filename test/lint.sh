@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -euo pipefail ${DEBUG:+-x}
 
 # This function checks to make sure that every
 # shebang has a '- e' flag, which causes it
@@ -18,8 +18,9 @@ function check_bash() {
 function check_terraform() {
   echo "Running terraform validate"
   REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-  for provider in $(ls "${REPO_ROOT}/terraform/" | grep -v common) ; do
-    cd "${REPO_ROOT}/terraform/${provider}/env"
+  for provider in "${REPO_ROOT}"/terraform/*; do
+    [[ "$provider" == "common" ]] && continue
+    cd "${provider}/env"
     terraform init -backend=false
     terraform validate .
   done
@@ -41,8 +42,9 @@ function check_tflint() {
   }
   echo "Running tflint"
   REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-  for provider in $(ls "${REPO_ROOT}/terraform/" | grep -v common); do
-    cd "${REPO_ROOT}/terraform/${provider}/env"
+  for provider in "${REPO_ROOT}"/terraform/*; do
+    [[ "$provider" == "common" ]] && continue
+    cd "${provider}/env"
     tflint
   done
 }
@@ -56,8 +58,9 @@ function check_tfsec() {
   }
   echo "Running tfsec"
   REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-  for provider in $(ls "${REPO_ROOT}/terraform/" | grep -v common); do
-    cd "${REPO_ROOT}/terraform/${provider}/env"
+  for provider in "${REPO_ROOT}"/terraform/*; do
+    [[ "$provider" == "common" ]] && continue
+    cd "${provider}/env"
     tfsec
   done
 }

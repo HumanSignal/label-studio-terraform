@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1091
-set -euo pipefail
+set -euo pipefail ${DEBUG:+-x}
 
 # Locate the root directory
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
@@ -15,4 +15,4 @@ cd "${ROOT}"/env
 terraform validate
 
 # Terraform plan will create a plan file in your current repository. Verify the all the resource it create by using plan.
-terraform plan -no-color -out=./plan.json ${TF_PARAMS}
+terraform plan -no-color -out=./plan.json "${TF_PARAMS:-}"
