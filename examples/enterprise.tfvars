@@ -9,30 +9,21 @@ region      = "eu-north-1"
 enterprise      = true
 license_literal = "<SECRET>"
 
+# docker registry
+label_studio_registry_username = "<SECRET>"
+label_studio_registry_password = "<SECRET>"
+
 # Postgres
 postgresql          = "rds"
 postgresql_database = "labelstudiodatabase"
 postgresql_username = "labelstudio"
-postgresql_password = "WOWSUCHASTRONGPASSWORD!"
+postgresql_password = "<SECRET>"
 
 # Redis
 redis          = "elasticache"
-redis_password = "WHOCARESABOUTREDIS?!"
+redis_password = "<SECRET>"
 
 label_studio_additional_set = {
-  "global.image.repository"            = "heartexlabs/label-studio-enterprise"
-  "global.image.tag"                   = "20221107.153324-develop-cbee3a8c"
-  "app.resources.requests.memory"      = "1200Mi"
-  "app.resources.requests.cpu"         = "500m"
-  "app.resources.limits.memory"        = "1500Mi"
-  "app.resources.limits.cpu"           = "1000m"
-  "rqworker.resources.requests.memory" = "512Mi"
-  "rqworker.resources.requests.cpu"    = "512m"
-  "rqworker.resources.limits.memory"   = "768Mi"
-  "rqworker.resources.limits.cpu"      = "768m"
-  "rqworker.queues.high.replicas"      = 0
-  "rqworker.queues.low.replicas"       = 0
-  "rqworker.queues.default.replicas"   = 0
-  "rqworker.queues.critical.replicas"  = 0
-  "rqworker.queues.all.replicas"       = 1
+  "global.image.repository" = "heartexlabs/label-studio-enterprise"
+  "global.image.tag"        = "20221107.153324-develop-cbee3a8c"
 }
