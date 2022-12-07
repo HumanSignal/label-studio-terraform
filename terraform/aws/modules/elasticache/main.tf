@@ -5,6 +5,7 @@ resource "aws_security_group" "security_group" {
   description = "Allow all inbound for Elasticache"
   tags        = var.tags
   ingress {
+    description = "HTTP from 0.0.0.0/0"
     from_port   = var.port
     to_port     = var.port
     protocol    = "tcp"

@@ -4,6 +4,7 @@ resource "aws_security_group" "security_group" {
   vpc_id      = var.vpc_id
   description = "Allow all inbound for Postgres"
   ingress {
+    description = "HTTP from 0.0.0.0/0"
     from_port   = var.port
     to_port     = var.port
     protocol    = "tcp"

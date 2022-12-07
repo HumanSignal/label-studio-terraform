@@ -1,4 +1,5 @@
 # Create s3 bucket resource
+#tfsec:ignore:aws-s3-enable-bucket-logging
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = format("%s-ls-s3-bucket", var.name)
   tags   = var.tags
@@ -9,6 +10,36 @@ resource "aws_s3_bucket" "s3_bucket" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+resource "aws_s3_bucket" "s3_log_bucket" {
+  count = var.enable_log_bucket ? 1 : 0
+
+  bucket = format("%s-ls-s3-log-bucket", var.name)
+  tags   = var.tags
+
+  # Force destroy bucket if there are any files exists.
+  force_destroy = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_s3_bucket_acl" "s3_log_bucket_acl" {
+  count = var.enable_log_bucket ? 1 : 0
+
+  bucket = aws_s3_bucket.s3_log_bucket[count.index]
+  acl    = "log-delivery-write"
+}
+
+resource "aws_s3_bucket_logging" "s3_bucket_logging" {
+  count = var.enable_log_bucket ? 1 : 0
+
+  bucket = aws_s3_bucket.s3_bucket.id
+
+  target_bucket = aws_s3_bucket.s3_log_bucket[count.index]
+  target_prefix = "log/"
 }
 
 # Enable bucket versioning

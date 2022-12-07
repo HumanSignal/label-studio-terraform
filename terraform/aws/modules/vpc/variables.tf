@@ -91,3 +91,19 @@ locals {
 # This data block help you to get the availability zone from the region.
 data "aws_availability_zones" "availability_zones" {
 }
+
+variable "enable_vpc_log" {
+  description = "Enable VPC log"
+  type        = bool
+  default     = false
+}
+
+variable "traffic_type" {
+  description = "The type of traffic to capture"
+  type        = string
+  default     = "ALL"
+  validation {
+    condition     = contains(["ACCEPT", "REJECT", "ALL"], var.traffic_type)
+    error_message = "Valid values: ACCEPT,REJECT, ALL."
+  }
+}

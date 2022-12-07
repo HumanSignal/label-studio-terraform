@@ -19,3 +19,9 @@ variable "region" {
   type        = string
   default     = "us-east-1"
 }
+
+variable "enable_log_bucket" {
+  description = "Enable log bucket"
+  type        = bool
+  default     = false
+}
