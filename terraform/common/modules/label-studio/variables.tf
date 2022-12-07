@@ -52,16 +52,19 @@ variable "helm_chart_repo_password" {
 variable "registry_server" {
   description = "Docker registry fqdn to pull label studio image from"
   type        = string
+  default     = "https://index.docker.io/v2/"
 }
 
 variable "registry_username" {
   description = "Docker username to pull label studio image"
   type        = string
+  default     = ""
 }
 
 variable "registry_password" {
   description = "Docker password to pull label studio image."
   type        = string
+  default     = ""
   sensitive   = true
 }
 
@@ -72,13 +75,13 @@ variable "registry_email" {
 }
 
 variable "enterprise" {
-  description = "deploy enterprise version of Label Studio"
+  description = "Deploy enterprise version of Label Studio"
   type        = bool
   default     = false
 }
 
 variable "license_literal" {
-  description = "License link"
+  description = "License link for enterprise Label Studio"
   type        = string
   sensitive   = true
 }

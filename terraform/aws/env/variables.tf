@@ -127,42 +127,43 @@ variable "label_studio_helm_chart_name" {
 
 # Docker config
 variable "label_studio_registry_server" {
-  description = "TBD"
+  description = "Docker registry fqdn to pull label studio image from"
   type        = string
   default     = "https://index.docker.io/v2/"
 }
 
 variable "label_studio_registry_username" {
-  description = "TBD"
+  description = "Docker username to pull label studio image"
   type        = string
+  default     = ""
 }
 
 variable "label_studio_registry_email" {
-  description = "TBD"
+  description = "Docker email to pull label studio image"
   type        = string
   default     = ""
 }
 
 variable "label_studio_registry_password" {
-  description = "TBD"
+  description = "Docker password to pull label studio image."
   type        = string
+  default     = ""
   sensitive   = true
 }
 
-
 variable "label_studio_additional_set" {
-  description = "TBD"
+  description = "Additional sets for Label Studio Helm chart release"
   type        = map(string)
   default     = {}
 }
 
 variable "enterprise" {
-  description = "TBD"
+  description = "Deploy enterprise version of Label Studio"
   type        = bool
   default     = false
 }
 variable "license_literal" {
-  description = "TBD"
+  description = "License link for enterprise Label Studio"
   type        = string
   default     = null
   sensitive   = true
@@ -170,7 +171,7 @@ variable "license_literal" {
 
 # Postgres
 variable "postgresql" {
-  description = "TBD"
+  description = "Postgresql type"
   type        = string
   default     = "internal"
   validation {
@@ -179,34 +180,40 @@ variable "postgresql" {
   }
 }
 variable "postgresql_machine_type" {
-  type    = string
-  default = "db.m5.large"
+  description = "Postgresql machine type"
+  type        = string
+  default     = "db.m5.large"
 }
 variable "postgresql_database" {
-  type    = string
-  default = "labelstudio"
+  description = "Postgresql database name"
+  type        = string
+  default     = "labelstudio"
 }
 variable "postgresql_host" {
-  type    = string
-  default = ""
+  description = "Postgresql fqdn"
+  type        = string
+  default     = ""
 }
 variable "postgresql_port" {
-  type    = number
-  default = 5432
+  description = "Postgresql port"
+  type        = number
+  default     = 5432
 }
 variable "postgresql_username" {
-  type    = string
-  default = "labelstudio"
+  description = "Postgresql username"
+  type        = string
+  default     = "labelstudio"
 }
 variable "postgresql_password" {
-  type      = string
-  default   = "labelstudio"
-  sensitive = true
+  description = "Postgresql password"
+  type        = string
+  default     = "labelstudio"
+  sensitive   = true
 }
 
 # Redis
 variable "redis" {
-  description = "TBD"
+  description = "Redis type"
   type        = string
   default     = "internal"
   validation {
@@ -215,21 +222,25 @@ variable "redis" {
   }
 }
 variable "redis_machine_type" {
-  type    = string
-  default = "cache.t3.micro"
+  description = "Redis machine type"
+  type        = string
+  default     = "cache.t3.micro"
 }
 variable "redis_host" {
-  type    = string
-  default = ""
+  description = "Redis fqdn"
+  type        = string
+  default     = ""
 }
 variable "redis_port" {
-  type    = string
-  default = 6379
+  description = "Redis port"
+  type        = string
+  default     = 6379
 }
 variable "redis_password" {
-  type      = string
-  default   = "labelstudio"
-  sensitive = true
+  description = "Redis password"
+  type        = string
+  default     = "labelstudio"
+  sensitive   = true
 }
 
 variable "lets_encrypt_email" {
