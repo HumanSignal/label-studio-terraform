@@ -119,12 +119,6 @@ variable "label_studio_helm_chart_repo_password" {
   sensitive   = true
 }
 
-variable "label_studio_helm_chart_release_name" {
-  type        = string
-  default     = "label-studio"
-  description = "Helm release name"
-}
-
 # Docker config
 variable "label_studio_registry_server" {
   description = "TBD"
