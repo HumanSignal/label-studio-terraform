@@ -29,11 +29,11 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Metrics Server Helm chart name to be installed | `string` | `"ingress-nginx"` | no |
 | <a name="input_helm_chart_release_name"></a> [helm\_chart\_release\_name](#input\_helm\_chart\_release\_name) | Helm release name | `string` | `"ingress-nginx"` | no |
-| <a name="input_helm_chart_repo"></a> [helm\_chart\_repo](#input\_helm\_chart\_repo) | Metrics Server repository name. | `string` | `"https://kubernetes.github.io/ingress-nginx"` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Metrics Server Helm chart version. | `string` | `"4.1.4"` | no |
-| <a name="input_load_balancer_name"></a> [load\_balancer\_name](#input\_load\_balancer\_name) | n/a | `string` | n/a | yes |
-| <a name="input_namespace"></a> [namespace](#input\_namespace) | Kubernetes namespace to deploy Metrics Server Helm chart. | `string` | `"ingress-controller"` | no |
-| <a name="input_settings"></a> [settings](#input\_settings) | Additional yaml encoded values which will be passed to the Helm chart. | `map` | `{}` | no |
+| <a name="input_helm_chart_repo"></a> [helm\_chart\_repo](#input\_helm\_chart\_repo) | Metrics Server repository name | `string` | `"https://kubernetes.github.io/ingress-nginx"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Metrics Server Helm chart version | `string` | `"4.1.4"` | no |
+| <a name="input_load_balancer_name"></a> [load\_balancer\_name](#input\_load\_balancer\_name) | Load Balancer name to create | `string` | n/a | yes |
+| <a name="input_namespace"></a> [namespace](#input\_namespace) | Kubernetes namespace to deploy Metrics Server Helm chart | `string` | `"ingress-controller"` | no |
+| <a name="input_settings"></a> [settings](#input\_settings) | Additional yaml encoded values which will be passed to the Helm chart | `map` | `{}` | no |
 
 ## Outputs
 

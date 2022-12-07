@@ -162,10 +162,10 @@ module "label-studio" {
   name                     = local.name_prefix
   namespace                = "labelstudio"
   environment              = var.environment
+  helm_chart_release_name  = format("%s-label-studio", local.name_prefix)
   helm_chart_repo          = var.label_studio_helm_chart_repo
   helm_chart_repo_username = var.label_studio_helm_chart_repo_username
   helm_chart_repo_password = var.label_studio_helm_chart_repo_password
-  helm_chart_release_name  = var.label_studio_helm_chart_release_name
   registry_server          = var.label_studio_registry_server
   registry_username        = var.label_studio_registry_username
   registry_email           = var.label_studio_registry_email

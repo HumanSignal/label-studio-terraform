@@ -34,10 +34,11 @@ No modules.
 | <a name="input_certificate_issuer_name"></a> [certificate\_issuer\_name](#input\_certificate\_issuer\_name) | Cluster Issuer name to create certificate with | `string` | n/a | yes |
 | <a name="input_enterprise"></a> [enterprise](#input\_enterprise) | deploy enterprise version of Label Studio | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Name of the environment where infrastructure is being built | `string` | n/a | yes |
-| <a name="input_helm_chart_release_name"></a> [helm\_chart\_release\_name](#input\_helm\_chart\_release\_name) | Helm chart release name | `string` | `"label-studio"` | no |
+| <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Label Studio Helm chart name to be installed | `string` | `"label-studio"` | no |
+| <a name="input_helm_chart_release_name"></a> [helm\_chart\_release\_name](#input\_helm\_chart\_release\_name) | Helm release name | `string` | `"label-studio"` | no |
 | <a name="input_helm_chart_repo"></a> [helm\_chart\_repo](#input\_helm\_chart\_repo) | Heartex repository name | `string` | `"https://charts.heartex.com/"` | no |
-| <a name="input_helm_chart_repo_password"></a> [helm\_chart\_repo\_password](#input\_helm\_chart\_repo\_password) | Password for HTTP basic authentication against the Helm repository. | `string` | n/a | yes |
-| <a name="input_helm_chart_repo_username"></a> [helm\_chart\_repo\_username](#input\_helm\_chart\_repo\_username) | Username for HTTP basic authentication against the Helm repository. | `string` | n/a | yes |
+| <a name="input_helm_chart_repo_password"></a> [helm\_chart\_repo\_password](#input\_helm\_chart\_repo\_password) | Password for HTTP basic authentication against the Helm repository | `string` | n/a | yes |
+| <a name="input_helm_chart_repo_username"></a> [helm\_chart\_repo\_username](#input\_helm\_chart\_repo\_username) | Username for HTTP basic authentication against the Helm repository | `string` | n/a | yes |
 | <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Label Studio Helm chart version | `string` | `"1.0.0"` | no |
 | <a name="input_host"></a> [host](#input\_host) | Label Studio fqdn | `string` | n/a | yes |
 | <a name="input_license_literal"></a> [license\_literal](#input\_license\_literal) | License link | `string` | n/a | yes |
@@ -54,8 +55,8 @@ No modules.
 | <a name="input_redis_password"></a> [redis\_password](#input\_redis\_password) | Redis password | `string` | n/a | yes |
 | <a name="input_registry_email"></a> [registry\_email](#input\_registry\_email) | Docker email to pull label studio image | `string` | `""` | no |
 | <a name="input_registry_password"></a> [registry\_password](#input\_registry\_password) | Docker password to pull label studio image. | `string` | n/a | yes |
-| <a name="input_registry_server"></a> [registry\_server](#input\_registry\_server) | Docker registry fqdn to pull label studio image from. | `string` | n/a | yes |
-| <a name="input_registry_username"></a> [registry\_username](#input\_registry\_username) | Docker username to pull label studio image. | `string` | n/a | yes |
+| <a name="input_registry_server"></a> [registry\_server](#input\_registry\_server) | Docker registry fqdn to pull label studio image from | `string` | n/a | yes |
+| <a name="input_registry_username"></a> [registry\_username](#input\_registry\_username) | Docker username to pull label studio image | `string` | n/a | yes |
 
 ## Outputs
 

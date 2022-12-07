@@ -28,7 +28,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_email"></a> [email](#input\_email) | n/a | `string` | n/a | yes |
+| <a name="input_email"></a> [email](#input\_email) | Email address for certificate sing via Let's Encrypt | `string` | n/a | yes |
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Cert-manager Helm chart name to be installed | `string` | `"cert-manager"` | no |
 | <a name="input_helm_chart_release_name"></a> [helm\_chart\_release\_name](#input\_helm\_chart\_release\_name) | Helm release name | `string` | `"cert-manager"` | no |
 | <a name="input_helm_chart_repo"></a> [helm\_chart\_repo](#input\_helm\_chart\_repo) | Cert-manager repository name. | `string` | `"https://charts.jetstack.io"` | no |

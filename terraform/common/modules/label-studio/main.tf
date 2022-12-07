@@ -98,10 +98,12 @@ resource "kubectl_manifest" "certificate" {
 }
 
 resource "helm_release" "label_studio" {
-  name      = format("%s-label-studio", var.name)
+  name      = var.helm_chart_release_name
   namespace = kubernetes_namespace.this.metadata[0].name
 
-  chart = var.helm_chart_release_name
+  repository = var.helm_chart_repo
+  chart      = var.helm_chart_name
+  version    = var.helm_chart_version
 
   timeout = 900
   wait    = true
@@ -158,7 +160,7 @@ resource "helm_release" "label_studio" {
     }
   }
 
-#  TODO: move sets with sensitive variables to set_sensitive
+  #  TODO: move sets with sensitive variables to set_sensitive
   dynamic "set_sensitive" {
     for_each = merge(tomap({}))
     content {

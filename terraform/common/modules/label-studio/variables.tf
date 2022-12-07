@@ -3,13 +3,19 @@ variable "name" {
   type        = string
 }
 
+variable "helm_chart_name" {
+  description = "Label Studio Helm chart name to be installed"
+  type        = string
+  default     = "label-studio"
+}
+
 variable "environment" {
   description = "Name of the environment where infrastructure is being built"
   type        = string
 }
 
 variable "helm_chart_release_name" {
-  description = "Helm chart release name"
+  description = "Helm release name"
   type        = string
   default     = "label-studio"
 }
@@ -33,23 +39,23 @@ variable "namespace" {
 }
 
 variable "helm_chart_repo_username" {
-  description = "Username for HTTP basic authentication against the Helm repository."
+  description = "Username for HTTP basic authentication against the Helm repository"
   type        = string
 }
 
 variable "helm_chart_repo_password" {
-  description = "Password for HTTP basic authentication against the Helm repository."
+  description = "Password for HTTP basic authentication against the Helm repository"
   type        = string
 }
 
 # Docker config
 variable "registry_server" {
-  description = "Docker registry fqdn to pull label studio image from."
+  description = "Docker registry fqdn to pull label studio image from"
   type        = string
 }
 
 variable "registry_username" {
-  description = "Docker username to pull label studio image."
+  description = "Docker username to pull label studio image"
   type        = string
 }
 

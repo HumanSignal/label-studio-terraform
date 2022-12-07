@@ -233,6 +233,6 @@ variable "redis_password" {
 }
 
 variable "lets_encrypt_email" {
-  description = "Email address for certificate sing via Let's Encrypt."
+  description = "Email address for certificate sing via Let's Encrypt"
   type        = string
 }
