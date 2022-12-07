@@ -1,64 +1,64 @@
 variable "name" {
-  description = "Name is the prefix to use for resources that needs to be created."
+  description = "Name is the prefix to use for resources that needs to be created"
   type        = string
 }
 
 variable "environment" {
-  description = "Name of the environment where infrastructure is being built."
+  description = "Name of the environment where infrastructure is being built"
   type        = string
 }
 
 variable "role_arn" {
-  description = "IAM role arn to attach the EKS cluster."
+  description = "IAM role arn to attach the EKS cluster"
   type        = string
 }
 
 variable "worker_role_arn" {
-  description = "IAM worker role arn to attach the EKS cluster."
+  description = "IAM worker role arn to attach the EKS cluster"
   type        = string
 }
 
 variable "region" {
-  description = "The AWS region where terraform builds resources."
+  description = "The AWS region where terraform builds resources"
   type        = string
 }
 
 variable "subnet_ids" {
-  description = "Subnet id to attach the EKS cluster."
+  description = "Subnet id to attach the EKS cluster"
 }
 
 variable "security_group_id" {
-  description = "Security group id to configure EKS cluster."
+  description = "Security group id to configure EKS cluster"
   type        = string
 }
 
 variable "public_subnets" {
-  description = "List of public subnets to create the resources."
+  description = "List of public subnets to create the resources"
 }
 
 variable "tags" {
-  description = "Common tags to attach all the resources create in this project."
+  description = "Common tags to attach all the resources create in this project"
   type        = map(string)
 }
 
 variable "instance_profile_name" {
-  description = "Instance profile name to attach aws launch configuration."
+  description = "Instance profile name to attach aws launch configuration"
   type        = string
 }
 
 variable "cluster_version" {
-  description = "Version of the EKS cluster."
+  description = "Version of the EKS cluster"
   type        = string
   default     = "1.24"
 }
 
 variable "instance_type" {
-  description = "Type of instance to be used for the Kubernetes cluster."
+  description = "Type of instance to be used for the Kubernetes cluster"
   type        = string
 }
 
 variable "desired_capacity" {
-  description = "Desired capacity for the autoscaling Group."
+  description = "Desired capacity for the autoscaling Group"
   type        = number
 }
 
@@ -89,7 +89,7 @@ variable "metrics_server_enabled" {
 }
 
 variable "eks_cluster_enabled_log_types" {
+  description = "A list of the desired control plane logging to enable. For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html). Possible values: api, audit, authenticator, controllerManager, scheduler"
   type        = list(string)
   default     = ["audit"]
-  description = "A list of the desired control plane logging to enable. For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html). Possible values: api, audit, authenticator, controllerManager, scheduler"
 }

@@ -25,13 +25,12 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_alias_name"></a> [alias\_name](#input\_alias\_name) | n/a | `string` | n/a | yes |
-| <a name="input_alias_zone_id"></a> [alias\_zone\_id](#input\_alias\_zone\_id) | n/a | `string` | n/a | yes |
+| <a name="input_alias_zone_id"></a> [alias\_zone\_id](#input\_alias\_zone\_id) | Zone id for alias | `string` | n/a | yes |
 | <a name="input_create_r53_zone"></a> [create\_r53\_zone](#input\_create\_r53\_zone) | Create R53 zone for main public domain | `bool` | `false` | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Main public domain name | `any` | n/a | yes |
-| <a name="input_load_balancer_dns_name"></a> [load\_balancer\_dns\_name](#input\_load\_balancer\_dns\_name) | n/a | `string` | n/a | yes |
-| <a name="input_load_balancer_zone_id"></a> [load\_balancer\_zone\_id](#input\_load\_balancer\_zone\_id) | n/a | `string` | n/a | yes |
-| <a name="input_record_name"></a> [record\_name](#input\_record\_name) | n/a | `string` | `"www"` | no |
+| <a name="input_load_balancer_dns_name"></a> [load\_balancer\_dns\_name](#input\_load\_balancer\_dns\_name) | fqdn for record alias | `string` | n/a | yes |
+| <a name="input_load_balancer_zone_id"></a> [load\_balancer\_zone\_id](#input\_load\_balancer\_zone\_id) | Zone id of fqdn | `string` | n/a | yes |
+| <a name="input_record_name"></a> [record\_name](#input\_record\_name) | Subdomain name | `string` | `"www"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags added to all zones. Will take precedence over tags from the 'zones' variable | `map(any)` | `{}` | no |
 
 ## Outputs

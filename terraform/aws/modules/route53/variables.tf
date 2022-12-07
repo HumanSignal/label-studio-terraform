@@ -14,21 +14,21 @@ variable "domain_name" {
 }
 
 variable "record_name" {
+  description = "Subdomain name"
   default = "www"
 }
 
-variable "alias_name" {
-  type = string
-}
-
 variable "alias_zone_id" {
+  description = "Zone id for alias"
   type = string
 }
 
 variable "load_balancer_dns_name" {
+  description = "fqdn for record alias"
   type = string
 }
 
 variable "load_balancer_zone_id" {
+  description = "Zone id of fqdn"
   type = string
 }

@@ -37,13 +37,13 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | EKS cluster name | `string` | n/a | yes |
-| <a name="input_environment"></a> [environment](#input\_environment) | Name of the environment where infrastructure is being built. | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | Name of the environment where infrastructure is being built | `string` | n/a | yes |
 | <a name="input_helm_chart_release_name"></a> [helm\_chart\_release\_name](#input\_helm\_chart\_release\_name) | Helm release name | `string` | `"aws-load-balancer-controller"` | no |
-| <a name="input_helm_chart_repo"></a> [helm\_chart\_repo](#input\_helm\_chart\_repo) | AWS Load Balancer Controller repository name. | `string` | `"https://aws.github.io/eks-charts"` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Metrics Server Helm chart version. | `string` | `"1.4.6"` | no |
+| <a name="input_helm_chart_repo"></a> [helm\_chart\_repo](#input\_helm\_chart\_repo) | AWS Load Balancer Controller repository name | `string` | `"https://aws.github.io/eks-charts"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Metrics Server Helm chart version | `string` | `"1.4.6"` | no |
 | <a name="input_iam_oidc_provider"></a> [iam\_oidc\_provider](#input\_iam\_oidc\_provider) | AWS EKS IRSA provider | <pre>object({<br>    url = string<br>    arn = string<br>  })</pre> | n/a | yes |
-| <a name="input_name"></a> [name](#input\_name) | Name is the prefix to use for resources that needs to be created. | `string` | n/a | yes |
-| <a name="input_namespace"></a> [namespace](#input\_namespace) | Kubernetes namespace to deploy AWS Load Balancer Controller Helm chart. | `string` | `"kube-system"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name is the prefix to use for resources that needs to be created | `string` | n/a | yes |
+| <a name="input_namespace"></a> [namespace](#input\_namespace) | Kubernetes namespace to deploy AWS Load Balancer Controller Helm chart | `string` | `"kube-system"` | no |
 
 ## Outputs
 

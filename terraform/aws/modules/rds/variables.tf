@@ -1,10 +1,10 @@
 variable "name" {
-  description = "Name is the prefix to use for resources that needs to be created."
+  description = "Name is the prefix to use for resources that needs to be created"
   type        = string
 }
 
 variable "environment" {
-  description = "Name of the environment where infrastructure is being built."
+  description = "Name of the environment where infrastructure is being built"
   type        = string
 }
 
@@ -37,7 +37,7 @@ variable "machine_type" {
 }
 
 variable "tags" {
-  description = "Tags added to resources."
+  description = "Tags added to resources"
   type        = map(any)
   default     = {}
 }
