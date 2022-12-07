@@ -66,3 +66,8 @@ check_tflint:
 .PHONY: check_tfsec
 check_tfsec:
 	source ${ROOT}/test/lint.sh && check_tfsec
+
+# TF documentation
+.PHONY: docs
+docs:
+	source ${ROOT}/terraform/common/scripts/docs.sh
