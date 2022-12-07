@@ -62,5 +62,5 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_hots"></a> [hots](#output\_hots) | n/a |
+| <a name="output_host"></a> [host](#output\_host) | n/a |
 <!-- END_TF_DOCS -->

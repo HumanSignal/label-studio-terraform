@@ -1,3 +1,3 @@
-output "hots" {
+output "host" {
   value = var.host
 }

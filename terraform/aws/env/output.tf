@@ -28,5 +28,5 @@ output "load_balancer_host" {
 }
 
 output "host" {
-  value = module.label-studio.hots
+  value = module.label-studio.host
 }
