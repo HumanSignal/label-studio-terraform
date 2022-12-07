@@ -150,8 +150,7 @@ resource "helm_release" "label_studio" {
         "global.redisConfig.password.secretName" = kubernetes_secret.redis[0].metadata[0].name
         "global.redisConfig.password.secretKey"  = local.redis_secret_key
         # TODO: Add redis SSL configuration
-      }) : tomap({}),
-      var.additional_set
+      }) : tomap({})
     )
     content {
       name  = set.key

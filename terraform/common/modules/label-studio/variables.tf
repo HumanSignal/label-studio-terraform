@@ -1,35 +1,35 @@
 variable "name" {
-  description = "Name is the prefix to use for resources that needs to be created."
+  description = "Name is the prefix to use for resources that needs to be created"
   type        = string
 }
 
 variable "environment" {
-  description = "Name of the environment where infrastructure is being built."
+  description = "Name of the environment where infrastructure is being built"
   type        = string
 }
 
 variable "helm_chart_release_name" {
+  description = "Helm chart release name"
   type        = string
   default     = "label-studio"
-  description = "Helm release name"
 }
 
 variable "helm_chart_version" {
+  description = "Label Studio Helm chart version"
   type        = string
   default     = "1.0.0"
-  description = "Label Studio Helm chart version."
 }
 
 variable "helm_chart_repo" {
+  description = "Heartex repository name"
   type        = string
   default     = "https://charts.heartex.com/"
-  description = "Heartex repository name."
 }
 
 variable "namespace" {
+  description = "Kubernetes namespace to deploy Label Studio Helm chart"
   type        = string
   default     = "labelstudio"
-  description = "Kubernetes namespace to deploy Label Studio Helm chart."
 }
 
 variable "helm_chart_repo_username" {
@@ -44,42 +44,42 @@ variable "helm_chart_repo_password" {
 
 # Docker config
 variable "registry_server" {
-  description = "TBD"
+  description = "Docker registry fqdn to pull label studio image from."
   type        = string
 }
 
 variable "registry_username" {
-  description = "TBD"
+  description = "Docker username to pull label studio image."
   type        = string
 }
 
 variable "registry_password" {
-  description = "TBD"
+  description = "Docker password to pull label studio image."
   type        = string
   sensitive   = true
 }
 
 variable "registry_email" {
-  description = "TBD"
+  description = "Docker email to pull label studio image"
   type        = string
   default     = ""
 }
 
 variable "enterprise" {
-  description = "TBD"
+  description = "deploy enterprise version of Label Studio"
   type        = bool
   default     = false
 }
 
 variable "license_literal" {
-  description = "TBD"
+  description = "License link"
   type        = string
   sensitive   = true
 }
 
 # Postgres
 variable "postgresql" {
-  description = "TBD"
+  description = "Postgresql type"
   type        = string
   default     = "internal"
   validation {
@@ -88,30 +88,35 @@ variable "postgresql" {
   }
 }
 variable "postgresql_database" {
-  type    = string
-  default = "labelstudio"
+  description = "Postgresql database name"
+  type        = string
+  default     = "labelstudio"
 }
 variable "postgresql_host" {
-  type    = string
-  default = ""
+  description = "Postgresql fqdn"
+  type        = string
+  default     = ""
 }
 variable "postgresql_port" {
-  type    = number
-  default = 5432
+  description = "Postgresql port"
+  type        = number
+  default     = 5432
 }
 variable "postgresql_username" {
-  type    = string
-  default = "labelstudio"
+  description = "Postgresql username"
+  type        = string
+  default     = "labelstudio"
 }
 variable "postgresql_password" {
-  type      = string
-  default   = "labelstudio"
-  sensitive = true
+  description = "Postgresql password"
+  type        = string
+  default     = "labelstudio"
+  sensitive   = true
 }
 
 # Redis
 variable "redis" {
-  description = "TBD"
+  description = "Redis type"
   type        = string
   default     = "internal"
   validation {
@@ -120,23 +125,21 @@ variable "redis" {
   }
 }
 variable "redis_host" {
-  type = string
+  description = "Redis fqdn"
+  type        = string
 }
 variable "redis_password" {
-  type      = string
-  sensitive = true
-}
-
-variable "additional_set" {
-  description = "TBD"
-  type        = map(string)
-  default     = {}
+  description = "Redis password"
+  type        = string
+  sensitive   = true
 }
 
 variable "host" {
-  type = string
+  description = "Label Studio fqdn"
+  type        = string
 }
 
 variable "certificate_issuer_name" {
-  type = string
+  description = "Cluster Issuer name to create certificate with"
+  type        = string
 }
