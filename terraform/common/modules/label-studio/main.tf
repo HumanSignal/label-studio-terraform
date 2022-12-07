@@ -101,9 +101,11 @@ resource "helm_release" "label_studio" {
   name      = var.helm_chart_release_name
   namespace = kubernetes_namespace.this.metadata[0].name
 
-  repository = var.helm_chart_repo
-  chart      = var.helm_chart_name
-  version    = var.helm_chart_version
+  repository          = var.helm_chart_repo
+  repository_username = var.helm_chart_repo_username
+  repository_password = var.helm_chart_repo_password
+  chart               = var.helm_chart_name
+  version             = var.helm_chart_version
 
   timeout = 900
   wait    = true
@@ -113,8 +115,6 @@ resource "helm_release" "label_studio" {
       {
         "global.imagePullSecrets[0].name"                                          = kubernetes_secret.heartex_pull_key.metadata[0].name
         "enterprise.enabled"                                                       = var.enterprise
-        # TODO: Remove ci
-        "ci"                                                                       = true
         "app.ingress.enabled"                                                      = true
         "app.ingress.className"                                                    = "nginx"
         "app.ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/rewrite-target" = "/"
@@ -141,18 +141,20 @@ resource "helm_release" "label_studio" {
         "postgresql.enabled"       = true
         "postgresql.auth.database" = var.postgresql_database
         "postgresql.auth.username" = var.postgresql_username
-        "postgresql.auth.password" = var.postgresql_password
       }),
       # redis
       contains(["elasticache", "absent"], var.redis) ? tomap({
         "redis.enabled" = false
-      }) : tomap({}),
+      }) : tomap({
+        "redis.enabled" = true
+      }),
       var.redis == "elasticache" ? tomap({
         "global.redisConfig.host"                = var.redis_host
         "global.redisConfig.password.secretName" = kubernetes_secret.redis[0].metadata[0].name
         "global.redisConfig.password.secretKey"  = local.redis_secret_key
         # TODO: Add redis SSL configuration
-      }) : tomap({})
+      }) : tomap({}),
+      var.additional_set
     )
     content {
       name  = set.key
@@ -160,9 +162,13 @@ resource "helm_release" "label_studio" {
     }
   }
 
-  #  TODO: move sets with sensitive variables to set_sensitive
   dynamic "set_sensitive" {
-    for_each = merge(tomap({}))
+    for_each = merge(
+      var.postgresql == "rds" ? tomap({
+      }) : tomap({
+        "postgresql.auth.password" = var.postgresql_password
+      }),
+    )
     content {
       name  = set_sensitive.key
       value = set_sensitive.value

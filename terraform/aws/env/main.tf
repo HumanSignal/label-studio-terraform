@@ -64,7 +64,6 @@ module "route53" {
   record_name            = var.record_name
   domain_name            = var.domain_name
   tags                   = local.tags
-  alias_name             = module.nic.host
   alias_zone_id          = var.region
   load_balancer_dns_name = module.nic.load_balancer_dns_name
   load_balancer_zone_id  = module.nic.load_balancer_zone_id
@@ -166,6 +165,7 @@ module "label-studio" {
   helm_chart_repo          = var.label_studio_helm_chart_repo
   helm_chart_repo_username = var.label_studio_helm_chart_repo_username
   helm_chart_repo_password = var.label_studio_helm_chart_repo_password
+  helm_chart_name          = var.label_studio_helm_chart_name
   registry_server          = var.label_studio_registry_server
   registry_username        = var.label_studio_registry_username
   registry_email           = var.label_studio_registry_email

@@ -149,3 +149,9 @@ variable "certificate_issuer_name" {
   description = "Cluster Issuer name to create certificate with"
   type        = string
 }
+
+variable "additional_set" {
+  description = "Additional sets for Label Studio Helm chart release"
+  type        = map(string)
+  default     = {}
+}

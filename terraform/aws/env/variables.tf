@@ -119,6 +119,12 @@ variable "label_studio_helm_chart_repo_password" {
   sensitive   = true
 }
 
+variable "label_studio_helm_chart_name" {
+  description = "Label Studio Helm chart name to be installed"
+  type        = string
+  default     = "label-studio"
+}
+
 # Docker config
 variable "label_studio_registry_server" {
   description = "TBD"
@@ -229,4 +235,5 @@ variable "redis_password" {
 variable "lets_encrypt_email" {
   description = "Email address for certificate sing via Let's Encrypt"
   type        = string
+  default     = null
 }
