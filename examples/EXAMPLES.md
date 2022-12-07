@@ -22,7 +22,7 @@ email           = "test@test.com"
 ```
 
 ## Label Studio Enterprise
-Deploys an Label Studio Enterprise with Elasticcache and RDS
+Deploys a Label Studio Enterprise with Elasticache and RDS
 ```hcl
 enterprise                  = true
 license_literal             = "<SECRET>"
