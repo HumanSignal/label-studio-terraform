@@ -115,6 +115,8 @@ resource "helm_release" "label_studio" {
       {
         "global.imagePullSecrets[0].name"                                          = kubernetes_secret.heartex_pull_key.metadata[0].name
         "enterprise.enabled"                                                       = var.enterprise
+        "deployment_type"                                                          = "terraform"
+        "cloud_provider"                                                           = var.cloud_provider
         "app.ingress.enabled"                                                      = true
         "app.ingress.className"                                                    = "nginx"
         "app.ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/rewrite-target" = "/"

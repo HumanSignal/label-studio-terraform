@@ -158,3 +158,9 @@ variable "additional_set" {
   type        = map(string)
   default     = {}
 }
+
+variable "cloud_provider" {
+  type = string
+  description = "Cloud provider"
+  default = ""
+}

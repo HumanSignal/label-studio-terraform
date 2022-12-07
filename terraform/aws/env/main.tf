@@ -173,6 +173,7 @@ module "label-studio" {
   license_literal          = var.license_literal
   additional_set           = var.label_studio_additional_set
   enterprise               = var.enterprise
+  cloud_provider           = "aws"
 
   postgresql          = var.postgresql
   postgresql_host     = var.postgresql == "rds" ? module.rds[0].host : var.postgresql_host
