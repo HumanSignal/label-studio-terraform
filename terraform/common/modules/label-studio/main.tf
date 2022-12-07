@@ -159,6 +159,15 @@ resource "helm_release" "label_studio" {
     }
   }
 
+#  TODO: move sets with sensitive variables to set_sensitive
+  dynamic "set_sensitive" {
+    for_each = merge(tomap({}))
+    content {
+      name  = set_sensitive.key
+      value = set_sensitive.value
+    }
+  }
+
   depends_on = [
     kubernetes_secret.postgresql,
     kubernetes_secret.redis,
