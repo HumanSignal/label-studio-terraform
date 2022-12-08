@@ -111,11 +111,13 @@ variable "label_studio_helm_chart_repo" {
 variable "label_studio_helm_chart_repo_username" {
   description = "Username for HTTP basic authentication against the Helm repository."
   type        = string
+  default     = ""
 }
 
 variable "label_studio_helm_chart_repo_password" {
   description = "Password for HTTP basic authentication against the Helm repository."
   type        = string
+  default     = ""
   sensitive   = true
 }
 

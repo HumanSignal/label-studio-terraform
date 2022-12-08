@@ -41,11 +41,13 @@ variable "namespace" {
 variable "helm_chart_repo_username" {
   description = "Username for HTTP basic authentication against the Helm repository"
   type        = string
+  default     = ""
 }
 
 variable "helm_chart_repo_password" {
   description = "Password for HTTP basic authentication against the Helm repository"
   type        = string
+  default     = ""
 }
 
 # Docker config

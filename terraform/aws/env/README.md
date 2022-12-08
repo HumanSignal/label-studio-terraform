@@ -57,12 +57,12 @@
 | <a name="input_label_studio_additional_set"></a> [label\_studio\_additional\_set](#input\_label\_studio\_additional\_set) | Additional sets for Label Studio Helm chart release | `map(string)` | `{}` | no |
 | <a name="input_label_studio_helm_chart_name"></a> [label\_studio\_helm\_chart\_name](#input\_label\_studio\_helm\_chart\_name) | Label Studio Helm chart name to be installed | `string` | `"label-studio"` | no |
 | <a name="input_label_studio_helm_chart_repo"></a> [label\_studio\_helm\_chart\_repo](#input\_label\_studio\_helm\_chart\_repo) | Heartex repository name. | `string` | `"https://charts.heartex.com"` | no |
-| <a name="input_label_studio_helm_chart_repo_password"></a> [label\_studio\_helm\_chart\_repo\_password](#input\_label\_studio\_helm\_chart\_repo\_password) | Password for HTTP basic authentication against the Helm repository. | `string` | n/a | yes |
-| <a name="input_label_studio_helm_chart_repo_username"></a> [label\_studio\_helm\_chart\_repo\_username](#input\_label\_studio\_helm\_chart\_repo\_username) | Username for HTTP basic authentication against the Helm repository. | `string` | n/a | yes |
-| <a name="input_label_studio_registry_email"></a> [label\_studio\_registry\_email](#input\_label\_studio\_registry\_email) | Docker email to pull Label Studio image | `string` | `""` | no |
-| <a name="input_label_studio_registry_password"></a> [label\_studio\_registry\_password](#input\_label\_studio\_registry\_password) | Docker password to pull Label Studio image. | `string` | `""` | no |
-| <a name="input_label_studio_registry_server"></a> [label\_studio\_registry\_server](#input\_label\_studio\_registry\_server) | Docker registry fqdn to pull Label Studio image from | `string` | `"https://index.docker.io/v2/"` | no |
-| <a name="input_label_studio_registry_username"></a> [label\_studio\_registry\_username](#input\_label\_studio\_registry\_username) | Docker username to pull Label Studio image | `string` | `""` | no |
+| <a name="input_label_studio_helm_chart_repo_password"></a> [label\_studio\_helm\_chart\_repo\_password](#input\_label\_studio\_helm\_chart\_repo\_password) | Password for HTTP basic authentication against the Helm repository. | `string` | `""` | no |
+| <a name="input_label_studio_helm_chart_repo_username"></a> [label\_studio\_helm\_chart\_repo\_username](#input\_label\_studio\_helm\_chart\_repo\_username) | Username for HTTP basic authentication against the Helm repository. | `string` | `""` | no |
+| <a name="input_label_studio_registry_email"></a> [label\_studio\_registry\_email](#input\_label\_studio\_registry\_email) | Docker email to pull label studio image | `string` | `""` | no |
+| <a name="input_label_studio_registry_password"></a> [label\_studio\_registry\_password](#input\_label\_studio\_registry\_password) | Docker password to pull label studio image. | `string` | `""` | no |
+| <a name="input_label_studio_registry_server"></a> [label\_studio\_registry\_server](#input\_label\_studio\_registry\_server) | Docker registry fqdn to pull label studio image from | `string` | `"https://index.docker.io/v2/"` | no |
+| <a name="input_label_studio_registry_username"></a> [label\_studio\_registry\_username](#input\_label\_studio\_registry\_username) | Docker username to pull label studio image | `string` | `""` | no |
 | <a name="input_lets_encrypt_email"></a> [lets\_encrypt\_email](#input\_lets\_encrypt\_email) | Email address for certificate sing via Let's Encrypt | `string` | `null` | no |
 | <a name="input_license_literal"></a> [license\_literal](#input\_license\_literal) | License link for enterprise Label Studio | `string` | `null` | no |
 | <a name="input_max_size"></a> [max\_size](#input\_max\_size) | Maximum number of the instances in autoscaling group | `number` | `5` | no |
@@ -78,7 +78,7 @@
 | <a name="input_private_cidr_block"></a> [private\_cidr\_block](#input\_private\_cidr\_block) | List of private subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.1.0/24",<br>  "10.0.2.0/24",<br>  "10.0.3.0/24"<br>]</pre> | no |
 | <a name="input_public_cidr_block"></a> [public\_cidr\_block](#input\_public\_cidr\_block) | List of public subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.101.0/24",<br>  "10.0.102.0/24",<br>  "10.0.103.0/24"<br>]</pre> | no |
 | <a name="input_record_name"></a> [record\_name](#input\_record\_name) | Main record domain name | `string` | `null` | no |
-| <a name="input_redis"></a> [redis](#input\_redis) | Redis deployment type | `string` | `"internal"` | no |
+| <a name="input_redis"></a> [redis](#input\_redis) | Redis type | `string` | `"internal"` | no |
 | <a name="input_redis_host"></a> [redis\_host](#input\_redis\_host) | Redis fqdn | `string` | `""` | no |
 | <a name="input_redis_machine_type"></a> [redis\_machine\_type](#input\_redis\_machine\_type) | Redis machine type | `string` | `"cache.t3.micro"` | no |
 | <a name="input_redis_password"></a> [redis\_password](#input\_redis\_password) | Redis password | `string` | `"labelstudio"` | no |
