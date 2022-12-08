@@ -1,11 +1,11 @@
-# Elastic Kubernetes Service Cluster configuration
-#tfsec:ignore:aws-eks-no-public-cluster-access tfsec:ignore:aws-eks-no-public-cluster-access-to-cidr tfsec:ignore:aws-eks-enable-control-plane-logging
 resource "aws_kms_key" "eks" {
   description             = format("KMS key for %s-eks-cluster secrets", var.name)
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
   deletion_window_in_days = 10
 }
 
+# Elastic Kubernetes Service Cluster configuration
+#tfsec:ignore:aws-eks-no-public-cluster-access tfsec:ignore:aws-eks-no-public-cluster-access-to-cidr tfsec:ignore:aws-eks-enable-control-plane-logging
 resource "aws_eks_cluster" "eks_cluster" {
   name     = format("%s-eks-cluster", var.name)
   role_arn = var.role_arn
