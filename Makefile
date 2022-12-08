@@ -1,44 +1,45 @@
 SHELL := /usr/bin/env bash
 ROOT := ${CURDIR}
 provider := ${}
+vars_file := ${}
 
 .PHONY: help
 help:
 	@echo 'Usage:'
-	@echo '    make init "provider=<REPLACEME>"	    Initialize and configure Terraform Backend.'
-	@echo '    make plan "provider=<REPLACEME>"	    Plan all Terraform resources.'
-	@echo '    make apply "provider=<REPLACEME>"    Create or update Terraform resources.'
-	@echo '    make destroy "provider=<REPLACEME>"  Destroy all Terraform resources.'
-	@echo '    make console "provider=<REPLACEME>"  Run terraform console to debug terraform resources.'
-	@echo '    make lint	                        Check syntax of all scripts.'
-	@echo '    make docs	                        Generate documentation for terraform modules'
+	@echo '    make init    "provider=<REPLACEME>" vars_file=<REPLACEME> Initialize and configure Terraform Backend.'
+	@echo '    make plan    "provider=<REPLACEME>" vars_file=<REPLACEME> Plan all Terraform resources.'
+	@echo '    make apply   "provider=<REPLACEME>" vars_file=<REPLACEME> Create or update Terraform resources.'
+	@echo '    make destroy "provider=<REPLACEME>" vars_file=<REPLACEME> Destroy all Terraform resources.'
+	@echo '    make console "provider=<REPLACEME>" vars_file=<REPLACEME> Run terraform console to debug terraform resources.'
+	@echo '    make lint	                                             Check syntax of all scripts.'
+	@echo '    make docs	                                             Generate documentation for terraform modules'
 	@echo
 
 # Before you run this command please export the required variables.
 # Initialize the environment variables
 .PHONY: init
 init:
-	bash $(ROOT)/terraform/$(provider)/scripts/init.sh
+	bash $(ROOT)/terraform/$(provider)/scripts/init.sh "$(vars_file)"
 
 # Plan the Terraform resources
 .PHONY: plan
 plan:
-	bash $(ROOT)/terraform/$(provider)/scripts/plan.sh
+	bash $(ROOT)/terraform/$(provider)/scripts/plan.sh "$(vars_file)"
 
 # Run terraform console for debug
 .PHONY: console
 console:
-	bash $(ROOT)/terraform/$(provider)/scripts/console.sh
+	bash $(ROOT)/terraform/$(provider)/scripts/console.sh "$(vars_file)"
 
 # Apply the Terraform resources
 .PHONY: apply
 apply:
-	bash $(ROOT)/terraform/$(provider)/scripts/apply.sh
+	bash $(ROOT)/terraform/$(provider)/scripts/apply.sh "$(vars_file)"
 
 # Destroy the terraform resources
 .PHONY: destroy
 destroy:
-	bash $(ROOT)/terraform/$(provider)/scripts/destroy.sh
+	bash $(ROOT)/terraform/$(provider)/scripts/destroy.sh "$(vars_file)"
 
 .PHONY: lint
 lint: check_shell check_terraform check_shebangs check_tflint check_tfsec

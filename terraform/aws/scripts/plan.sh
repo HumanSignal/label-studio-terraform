@@ -3,7 +3,8 @@
 set -euo pipefail ${DEBUG:+-x}
 
 # Locate the root directory
-ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+VARS_FILE="${1}"
 
 # Run common.sh script for variable declaration and validation
 source "${ROOT}/scripts/common.sh"
