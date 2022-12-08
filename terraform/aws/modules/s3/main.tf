@@ -50,13 +50,21 @@ resource "aws_s3_bucket_versioning" "s3_bucket_versioning" {
   }
 }
 
+resource "aws_kms_key" "bucket" {
+  description              = format("KMS key for %s-ls-s3-log-bucket bucket", var.name)
+  customer_master_key_spec = "SYMMETRIC_DEFAULT"
+  enable_key_rotation      = true
+  deletion_window_in_days  = 10
+}
+
 # Enable bucket server side encryption
 resource "aws_s3_bucket_server_side_encryption_configuration" "s3_bucket_encryption" {
   bucket = aws_s3_bucket.s3_bucket.bucket
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      kms_master_key_id = aws_kms_key.bucket.arn
+      sse_algorithm     = "aws:kms"
     }
   }
 }
@@ -67,7 +75,8 @@ resource "aws_s3_bucket_cors_configuration" "s3_bucket_cors" {
 
   cors_rule {
     allowed_headers = ["*"]
-    allowed_methods = ["GET", "POST", "PUT", "DELETE"] # TODO: Found unsupported HTTP method in CORS config. Unsupported methods are "PATCH", "OPTIONS",
+    allowed_methods = ["GET", "POST", "PUT", "DELETE"]
+    # TODO: Found unsupported HTTP method in CORS config. Unsupported methods are "PATCH", "OPTIONS",
     allowed_origins = ["*"] # TODO: Fix with correct URL name
     expose_headers  = ["x-amz-server-side-encryption", "x-amz-request-id", "x-amz-id-2"]
     max_age_seconds = 3600 # 1hr
