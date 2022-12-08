@@ -6,13 +6,13 @@ vars_file := ${}
 .PHONY: help
 help:
 	@echo 'Usage:'
-	@echo '    make init    "provider=<REPLACEME>" vars_file=<REPLACEME> Initialize and configure Terraform Backend.'
-	@echo '    make plan    "provider=<REPLACEME>" vars_file=<REPLACEME> Plan all Terraform resources.'
-	@echo '    make apply   "provider=<REPLACEME>" vars_file=<REPLACEME> Create or update Terraform resources.'
-	@echo '    make destroy "provider=<REPLACEME>" vars_file=<REPLACEME> Destroy all Terraform resources.'
-	@echo '    make console "provider=<REPLACEME>" vars_file=<REPLACEME> Run terraform console to debug terraform resources.'
-	@echo '    make lint	                                             Check syntax of all scripts.'
-	@echo '    make docs	                                             Generate documentation for terraform modules'
+	@echo '    make init    "provider=<REPLACEME>" "vars_file=<REPLACEME>" Initialize and configure Terraform Backend.'
+	@echo '    make plan    "provider=<REPLACEME>" "vars_file=<REPLACEME>" Plan all Terraform resources.'
+	@echo '    make apply   "provider=<REPLACEME>" "vars_file=<REPLACEME>" Create or update Terraform resources.'
+	@echo '    make destroy "provider=<REPLACEME>" "vars_file=<REPLACEME>" Destroy all Terraform resources.'
+	@echo '    make console "provider=<REPLACEME>" "vars_file=<REPLACEME>" Run terraform console to debug terraform resources.'
+	@echo '    make lint	                                               Check syntax of all scripts.'
+	@echo '    make docs	                                               Generate documentation for terraform modules.'
 	@echo
 
 # Before you run this command please export the required variables.
