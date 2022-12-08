@@ -1,7 +1,8 @@
 resource "aws_kms_key" "eks" {
-  description             = format("KMS key for %s-eks-cluster secrets", var.name)
+  description              = format("KMS key for %s-eks-cluster secrets", var.name)
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
-  deletion_window_in_days = 10
+  enable_key_rotation      = true
+  deletion_window_in_days  = 10
 }
 
 # Elastic Kubernetes Service Cluster configuration
