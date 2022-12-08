@@ -33,6 +33,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_set"></a> [additional\_set](#input\_additional\_set) | Additional sets for Label Studio Helm chart release | `map(string)` | `{}` | no |
 | <a name="input_certificate_issuer_name"></a> [certificate\_issuer\_name](#input\_certificate\_issuer\_name) | Cluster Issuer name to create certificate with | `string` | n/a | yes |
+| <a name="input_cloud_provider"></a> [cloud\_provider](#input\_cloud\_provider) | Cloud provider | `string` | `""` | no |
 | <a name="input_enterprise"></a> [enterprise](#input\_enterprise) | Deploy enterprise version of Label Studio | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Name of the environment where infrastructure is being built | `string` | n/a | yes |
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Label Studio Helm chart name to be installed | `string` | `"label-studio"` | no |
@@ -51,13 +52,13 @@ No modules.
 | <a name="input_postgresql_password"></a> [postgresql\_password](#input\_postgresql\_password) | Postgresql password | `string` | `"labelstudio"` | no |
 | <a name="input_postgresql_port"></a> [postgresql\_port](#input\_postgresql\_port) | Postgresql port | `number` | `5432` | no |
 | <a name="input_postgresql_username"></a> [postgresql\_username](#input\_postgresql\_username) | Postgresql username | `string` | `"labelstudio"` | no |
-| <a name="input_redis"></a> [redis](#input\_redis) | Redis type | `string` | `"internal"` | no |
+| <a name="input_redis"></a> [redis](#input\_redis) | Redis deployment type | `string` | `"internal"` | no |
 | <a name="input_redis_host"></a> [redis\_host](#input\_redis\_host) | Redis fqdn | `string` | n/a | yes |
 | <a name="input_redis_password"></a> [redis\_password](#input\_redis\_password) | Redis password | `string` | n/a | yes |
-| <a name="input_registry_email"></a> [registry\_email](#input\_registry\_email) | Docker email to pull label studio image | `string` | `""` | no |
-| <a name="input_registry_password"></a> [registry\_password](#input\_registry\_password) | Docker password to pull label studio image. | `string` | `""` | no |
-| <a name="input_registry_server"></a> [registry\_server](#input\_registry\_server) | Docker registry fqdn to pull label studio image from | `string` | `"https://index.docker.io/v2/"` | no |
-| <a name="input_registry_username"></a> [registry\_username](#input\_registry\_username) | Docker username to pull label studio image | `string` | `""` | no |
+| <a name="input_registry_email"></a> [registry\_email](#input\_registry\_email) | Docker email to pull Label Studio image | `string` | `""` | no |
+| <a name="input_registry_password"></a> [registry\_password](#input\_registry\_password) | Docker password to pull Label Studio image. | `string` | `""` | no |
+| <a name="input_registry_server"></a> [registry\_server](#input\_registry\_server) | Docker Registry Hub | `string` | `"https://index.docker.io/v2/"` | no |
+| <a name="input_registry_username"></a> [registry\_username](#input\_registry\_username) | Docker username to pull Label Studio image | `string` | `""` | no |
 
 ## Outputs
 
