@@ -166,6 +166,7 @@ module "label-studio" {
   helm_chart_repo_username = var.label_studio_helm_chart_repo_username
   helm_chart_repo_password = var.label_studio_helm_chart_repo_password
   helm_chart_name          = var.label_studio_helm_chart_name
+  helm_chart_version       = var.label_studio_helm_chart_version
   registry_server          = var.label_studio_registry_server
   registry_username        = var.label_studio_registry_username
   registry_email           = var.label_studio_registry_email

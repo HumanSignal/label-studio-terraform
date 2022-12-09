@@ -59,6 +59,7 @@
 | <a name="input_label_studio_helm_chart_repo"></a> [label\_studio\_helm\_chart\_repo](#input\_label\_studio\_helm\_chart\_repo) | Heartex repository name. | `string` | `"https://charts.heartex.com"` | no |
 | <a name="input_label_studio_helm_chart_repo_password"></a> [label\_studio\_helm\_chart\_repo\_password](#input\_label\_studio\_helm\_chart\_repo\_password) | Password for HTTP basic authentication against the Helm repository. | `string` | `""` | no |
 | <a name="input_label_studio_helm_chart_repo_username"></a> [label\_studio\_helm\_chart\_repo\_username](#input\_label\_studio\_helm\_chart\_repo\_username) | Username for HTTP basic authentication against the Helm repository. | `string` | `""` | no |
+| <a name="input_label_studio_helm_chart_version"></a> [label\_studio\_helm\_chart\_version](#input\_label\_studio\_helm\_chart\_version) | Label Studio Helm chart version | `string` | `"0.0.9"` | no |
 | <a name="input_label_studio_registry_email"></a> [label\_studio\_registry\_email](#input\_label\_studio\_registry\_email) | Docker email to pull Label Studio image | `string` | `""` | no |
 | <a name="input_label_studio_registry_password"></a> [label\_studio\_registry\_password](#input\_label\_studio\_registry\_password) | Docker password to pull Label Studio image. | `string` | `""` | no |
 | <a name="input_label_studio_registry_server"></a> [label\_studio\_registry\_server](#input\_label\_studio\_registry\_server) | Docker registry fqdn to pull Label Studio image from | `string` | `"https://index.docker.io/v2/"` | no |

@@ -127,6 +127,12 @@ variable "label_studio_helm_chart_name" {
   default     = "label-studio"
 }
 
+variable "label_studio_helm_chart_version" {
+  description = "Label Studio Helm chart version"
+  type        = string
+  default     = "0.0.9"
+}
+
 # Docker config
 variable "label_studio_registry_server" {
   description = "Docker registry fqdn to pull Label Studio image from"

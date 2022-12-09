@@ -23,7 +23,7 @@ variable "helm_chart_release_name" {
 variable "helm_chart_version" {
   description = "Label Studio Helm chart version"
   type        = string
-  default     = "1.0.0"
+  default     = "0.0.9"
 }
 
 variable "helm_chart_repo" {
