@@ -31,6 +31,7 @@ data "aws_iam_policy_document" "eks_oidc_assume_role" {
   }
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "this" {
   name        = format("%s-aws-load-balancer-controller-policy", var.name)
   description = "Permissions that are required to manage AWS Application Load Balancers."
