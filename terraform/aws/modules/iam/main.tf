@@ -37,32 +37,6 @@ resource "aws_iam_role_policy_attachment" "EKSVPCResourceController_iam_role_pol
   role       = aws_iam_role.iam_role.name
 }
 
-# If no loadbalancer was ever created in this region, then this following role is necessary
-resource "aws_iam_role_policy" "service_linked_iam_role_policy" {
-  name   = format("%s-eks-service-linked-role", var.name)
-  role   = aws_iam_role.iam_role.name
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "iam:CreateServiceLinkedRole",
-            "Resource": "arn:aws:iam::*:role/aws-service-role/*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:DescribeAccountAttributes"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-EOF
-
-}
-
 # Create AWS worker iam role.
 resource "aws_iam_role" "worker_iam_role" {
   name                  = format("%s-eks-worker-role", var.name)
