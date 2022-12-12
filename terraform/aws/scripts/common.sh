@@ -38,7 +38,7 @@ else
   fi
 fi
 
-export TF_PARAMS="-var-file=${VARS_FILE}"
+export TF_PARAMS="-var-file=${VARS_FILE} ${ADDITIONAL_TF_PARAMS:-}"
 export TF_VAR_environment=$(sed -n 's#^[ ]*environment[ ]*=[ ]*"\(.*\)"#\1#p' "${VARS_FILE}")
 export TF_VAR_name=$(sed -n 's#^[ ]*name[ ]*=[ ]*"\(.*\)"#\1#p' "${VARS_FILE}")
 export TF_VAR_region=$(sed -n 's#^[ ]*region[ ]*=[ ]*"\(.*\)"#\1#p' "${VARS_FILE}")
