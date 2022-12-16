@@ -209,7 +209,7 @@ module "label-studio" {
   postgresql_username = var.postgresql_type == "rds" ? module.rds[0].username : var.postgresql_username
   postgresql_password = var.postgresql_type == "rds" ? module.rds[0].password : local.postgresql_password
 
-  redis_type     = var.enterprise ? var.redis_type : "internal"
+  redis_type     = var.enterprise ? var.redis_type : "absent"
   redis_host     = var.redis_type == "elasticache" && var.enterprise ? "rediss://${module.elasticache[0].host}:${module.elasticache[0].port}/1" : var.redis_host
   redis_password = var.redis_type == "elasticache" && var.enterprise ? module.elasticache[0].password : local.redis_password
 
