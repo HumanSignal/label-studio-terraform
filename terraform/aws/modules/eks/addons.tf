@@ -148,43 +148,41 @@ POLICY
 resource "aws_iam_policy" "persistence" {
   name        = "${var.name}-s3-persistence"
   description = "Permissions for s3 bucket ${var.name}"
-  policy      = <<-POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket"
-      ],
-      "Resource": [
-        "${var.persistence_s3_bucket_arn}"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject",
-        "s3:GetObject",
-        "s3:DeleteObject"
-      ],
-      "Resource": [
-        "${var.persistence_s3_bucket_arn}/*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "kms:GenerateDataKey",
-        "kms:Decrypt"
-      ],
-      "Resource": [
-        "${var.persistence_s3_kms_arn}"
-      ]
-    }
-  ]
-}
-POLICY
+  policy      = jsonencode({
+    "Version"   = "2012-10-17"
+    "Statement" = [
+      {
+        "Effect" = "Allow"
+        "Action" = [
+          "s3:ListBucket"
+        ],
+        "Resource" = [
+          var.persistence_s3_bucket_arn
+        ]
+      },
+      {
+        "Effect" : "Allow"
+        "Action" : [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:DeleteObject"
+        ],
+        "Resource" : [
+          "${var.persistence_s3_bucket_arn}/*"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ],
+        "Resource" : [
+          var.persistence_s3_kms_arn
+        ]
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "persistence" {
