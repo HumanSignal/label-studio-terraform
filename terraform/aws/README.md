@@ -75,7 +75,6 @@ Deploy Label Studio with AWS RDS as database.
 postgresql_type     = "rds"
 postgresql_database = "<REPLACE_ME>"
 postgresql_username = "<REPLACE_ME>"
-postgresql_password = "<REPLACE_ME>"
 ```
 
 [Full tfvars file example](examples/opensource_rds.tfvars)

@@ -15,4 +15,3 @@ label_studio_additional_set = {
 postgresql_type     = "rds"
 postgresql_database = "<REPLACE_ME>"
 postgresql_username = "<REPLACE_ME>"
-postgresql_password = "<REPLACE_ME>"
