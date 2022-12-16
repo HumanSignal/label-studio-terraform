@@ -52,6 +52,8 @@ jobs:
         run: tfsec -v
 
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.event.after }}
 
       - name: TF Sec
         id: tfsec
@@ -99,6 +101,8 @@ jobs:
         run: tflint -v
 
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.event.after }}
 
       - name: TF Lint
         id: tflint
