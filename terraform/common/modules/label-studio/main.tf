@@ -171,6 +171,8 @@ resource "helm_release" "label_studio" {
         "global.pgConfig.password.secretName" = kubernetes_secret.postgresql[0].metadata[0].name
         "global.pgConfig.password.secretKey"  = local.postgresql_secret_key
 #        "global.pgConfig.ssl.pgSslMode"       = "verify-full"
+        # TODO: Add AWS RDS postgresql SSL configuration
+
       }) : tomap({}),
       # redis
       var.redis_type == "internal" ? tomap({
