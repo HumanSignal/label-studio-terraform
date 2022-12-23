@@ -140,16 +140,7 @@ resource "helm_release" "label_studio" {
         "rqworker.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn" = var.persistence_s3_role_arn
       }),
       # postgres
-      contains(["external", "rds"], var.postgresql_type) ? tomap({
-        "postgresql.enabled"                  = false
-        "global.pgConfig.host"                = var.postgresql_host
-        "global.pgConfig.port"                = var.postgresql_port
-        "global.pgConfig.dbName"              = var.postgresql_database
-        "global.pgConfig.userName"            = var.postgresql_username
-        "global.pgConfig.password.secretName" = kubernetes_secret.postgresql[0].metadata[0].name
-        "global.pgConfig.password.secretKey"  = local.postgresql_secret_key
-        # TODO: Add postgresql SSL configuration
-      }) : tomap({
+      var.postgresql_type == "internal" ? tomap({
         "postgresql.enabled"                         = true
         "postgresql.auth.database"                   = var.postgresql_database
         "postgresql.auth.username"                   = var.postgresql_username
@@ -160,9 +151,29 @@ resource "helm_release" "label_studio" {
         "global.pgConfig.ssl.pgSslRootCertSecretKey" = "ca.crt"
         "global.pgConfig.ssl.pgSslCertSecretKey"     = "tls.crt"
         "global.pgConfig.ssl.pgSslKeySecretKey"      = "tls.key"
-      }),
+      }) : tomap({}),
+      var.postgresql_type == "external" ? tomap({
+        "postgresql.enabled"                  = false
+        "global.pgConfig.host"                = var.postgresql_host
+        "global.pgConfig.port"                = var.postgresql_port
+        "global.pgConfig.dbName"              = var.postgresql_database
+        "global.pgConfig.userName"            = var.postgresql_username
+        "global.pgConfig.password.secretName" = kubernetes_secret.postgresql[0].metadata[0].name
+        "global.pgConfig.password.secretKey"  = local.postgresql_secret_key
+        # TODO: Add external postgresql SSL configuration
+      }) : tomap({}),
+      var.postgresql_type == "rds" ? tomap({
+        "postgresql.enabled"                  = false
+        "global.pgConfig.host"                = var.postgresql_host
+        "global.pgConfig.port"                = var.postgresql_port
+        "global.pgConfig.dbName"              = var.postgresql_database
+        "global.pgConfig.userName"            = var.postgresql_username
+        "global.pgConfig.password.secretName" = kubernetes_secret.postgresql[0].metadata[0].name
+        "global.pgConfig.password.secretKey"  = local.postgresql_secret_key
+#        "global.pgConfig.ssl.pgSslMode"       = "verify-full"
+      }) : tomap({}),
       # redis
-      contains(["internal"], var.redis_type) ? tomap({
+      var.redis_type == "internal" ? tomap({
         "redis.enabled"                                    = true
         "redis.auth.enabled"                               = true
         "redis.tls.enabled"                                = true
@@ -172,14 +183,23 @@ resource "helm_release" "label_studio" {
         "global.redisConfig.ssl.redisSslCaCertsSecretKey"  = "ca.crt"
         "global.redisConfig.ssl.redisSslCertFileSecretKey" = "tls.crt"
         "global.redisConfig.ssl.redisSslKeyFileSecretKey"  = "tls.key"
-      }) : tomap({
-        "redis.enabled" = false
-      }),
-      contains(["external", "elasticache"], var.redis_type) ? tomap({
+      }) : tomap({}),
+      var.redis_type == "external" ? tomap({
+        "redis.enabled"                          = false
         "global.redisConfig.host"                = var.redis_host
         "global.redisConfig.password.secretName" = kubernetes_secret.redis[0].metadata[0].name
         "global.redisConfig.password.secretKey"  = local.redis_secret_key
-        # TODO: Add redis SSL configuration
+        # TODO: Add external redis SSL configuration
+      }) : tomap({}),
+      var.redis_type == "elasticache" ? tomap({
+        "redis.enabled"                           = false
+        "global.redisConfig.host"                 = var.redis_host
+        "global.redisConfig.password.secretName"  = kubernetes_secret.redis[0].metadata[0].name
+        "global.redisConfig.password.secretKey"   = local.redis_secret_key
+        "global.redisConfig.ssl.redisSslCertReqs" = "required"
+      }) : tomap({}),
+      var.redis_type == "absent" ? tomap({
+        "redis.enabled" = false
       }) : tomap({}),
       var.additional_set
     )
