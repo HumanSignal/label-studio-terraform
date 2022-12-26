@@ -69,7 +69,7 @@ module "eks" {
   tags                      = local.tags
   capacity_type             = var.eks_capacity_type
   persistence_s3_bucket_arn = module.s3.bucket_arn
-  persistence_s3_kms_arn = module.s3.kms_arn
+  persistence_s3_kms_arn    = module.s3.kms_arn
 
   depends_on = [
     module.vpc,
@@ -202,16 +202,22 @@ module "label-studio" {
   persistence_s3_bucket_folder = ""
   persistence_s3_role_arn      = module.eks.s3_persistence_role_arn
 
-  postgresql_type     = var.postgresql_type
-  postgresql_host     = var.postgresql_type == "rds" ? module.rds[0].host : var.postgresql_host
-  postgresql_port     = var.postgresql_type == "rds" ? module.rds[0].port : var.postgresql_port
-  postgresql_database = var.postgresql_type == "rds" ? module.rds[0].database : var.postgresql_database
-  postgresql_username = var.postgresql_type == "rds" ? module.rds[0].username : var.postgresql_username
-  postgresql_password = var.postgresql_type == "rds" ? module.rds[0].password : local.postgresql_password
+  postgresql_type         = var.postgresql_type
+  postgresql_host         = var.postgresql_type == "rds" ? module.rds[0].host : var.postgresql_host
+  postgresql_port         = var.postgresql_type == "rds" ? module.rds[0].port : var.postgresql_port
+  postgresql_database     = var.postgresql_type == "rds" ? module.rds[0].database : var.postgresql_database
+  postgresql_username     = var.postgresql_type == "rds" ? module.rds[0].username : var.postgresql_username
+  postgresql_password     = var.postgresql_type == "rds" ? module.rds[0].password : local.postgresql_password
+  postgresql_tls_key_file = var.postgresql_tls_key_file
+  postgresql_tls_crt_file = var.postgresql_tls_crt_file
+  postgresql_ca_crt_file  = var.postgresql_ca_crt_file
 
-  redis_type     = var.enterprise ? var.redis_type : "absent"
-  redis_host     = var.redis_type == "elasticache" && var.enterprise ? "rediss://${module.elasticache[0].host}:${module.elasticache[0].port}/1" : var.redis_host
-  redis_password = var.redis_type == "elasticache" && var.enterprise ? module.elasticache[0].password : local.redis_password
+  redis_type         = var.enterprise ? var.redis_type : "absent"
+  redis_host         = var.redis_type == "elasticache" && var.enterprise ? "rediss://${module.elasticache[0].host}:${module.elasticache[0].port}/1" : var.redis_host
+  redis_password     = var.redis_type == "elasticache" && var.enterprise ? module.elasticache[0].password : local.redis_password
+  redis_tls_key_file = var.redis_tls_key_file
+  redis_tls_crt_file = var.redis_tls_crt_file
+  redis_ca_crt_file  = var.redisl_ca_crt_file
 
   host                    = local.create_r53_record ? module.route53[0].fqdn : module.nic.host
   certificate_issuer_name = module.cert-manager.issuer_name

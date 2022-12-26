@@ -144,6 +144,15 @@ variable "postgresql_password" {
   default     = "labelstudio"
   sensitive   = true
 }
+variable "postgresql_tls_key_file" {
+  default = null
+}
+variable "postgresql_tls_crt_file" {
+  default = null
+}
+variable "postgresql_ca_crt_file" {
+  default = null
+}
 
 # Redis
 variable "redis_type" {
@@ -164,6 +173,16 @@ variable "redis_password" {
   type        = string
   sensitive   = true
 }
+variable "redis_ca_crt_file" {
+  default = null
+}
+variable "redis_tls_crt_file" {
+  default = null
+}
+variable "redis_tls_key_file" {
+  default = null
+}
+
 
 variable "host" {
   description = "Label Studio fqdn"
