@@ -217,7 +217,7 @@ module "label-studio" {
   redis_password     = var.redis_type == "elasticache" && var.enterprise ? module.elasticache[0].password : local.redis_password
   redis_tls_key_file = var.redis_tls_key_file
   redis_tls_crt_file = var.redis_tls_crt_file
-  redis_ca_crt_file  = var.redisl_ca_crt_file
+  redis_ca_crt_file  = var.redis_ca_crt_file
 
   host                    = local.create_r53_record ? module.route53[0].fqdn : module.nic.host
   certificate_issuer_name = module.cert-manager.issuer_name

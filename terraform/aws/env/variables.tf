@@ -213,12 +213,15 @@ variable "postgresql_password" {
   sensitive   = true
 }
 variable "postgresql_tls_key_file" {
+  type    = string
   default = null
 }
 variable "postgresql_tls_crt_file" {
+  type    = string
   default = null
 }
 variable "postgresql_ca_crt_file" {
+  type    = string
   default = null
 }
 
@@ -254,12 +257,15 @@ variable "redis_password" {
   sensitive   = true
 }
 variable "redis_ca_crt_file" {
+  type    = string
   default = null
 }
 variable "redis_tls_crt_file" {
+  type    = string
   default = null
 }
 variable "redis_tls_key_file" {
+  type    = string
   default = null
 }
 
