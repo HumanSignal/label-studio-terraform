@@ -1,3 +1,5 @@
+[Website](https://labelstud.io/) • [Docs](https://labelstud.io/guide/) • [Twitter](https://twitter.com/labelstudiohq) • [Join Slack Community <img src="https://app.heartex.ai/docs/images/slack-mini.png" width="18px"/>](https://slack.labelstudio.heartex.com/?source=github-1)
+
 ## Label Studio Terraform
 The LabelStudio terraform module allows users to easily deploy a fully-featured instance of [Label Studio/Label Studio Enterprise](https://labelstud.io/) on multiple cloud providers, including AWS, Google Cloud(support in 2023) and Azure(support in late 2023).
 
@@ -57,3 +59,9 @@ Link to [AWS Provider Documentation](./terraform/aws/README.md)
 
 If you run into an issue, bug or have a question, please reach out to the Label Studio
 community via [Label Studio Slack Community](https://slack.labelstudio.heartex.com/).
+
+## License
+
+This software is licensed under the [Apache 2.0 LICENSE](/LICENSE) © [Heartex](https://www.heartex.com/). 2020-2022
+
+<img src="https://user-images.githubusercontent.com/12534576/192582529-cf628f58-abc5-479b-a0d4-8a3542a4b35e.png" title="Hey everyone!" width="180" />
