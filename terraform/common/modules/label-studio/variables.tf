@@ -193,7 +193,7 @@ variable "redis_password" {
 }
 variable "redis_ssl_mode" {
   type    = string
-  default = "require"
+  default = "required"
   validation {
     condition = contains([
       "none",
