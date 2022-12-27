@@ -276,14 +276,11 @@ variable "redis_ssl_mode" {
   default = "require"
   validation {
     condition = contains([
-      "disable",
-      "allow",
-      "prefer",
-      "require",
-      "verify-ca",
-      "verify-full"
+      "none",
+      "optional",
+      "required",
     ], var.redis_ssl_mode)
-    error_message = "redis_ssl_mode must be `disable`, `allow`, `prefer`, `require`, `verify-ca`, either `verify-full`"
+    error_message = "redis_ssl_mode must be `none`, `optional`, either `required`"
   }
 }
 variable "redis_ca_crt_file" {
