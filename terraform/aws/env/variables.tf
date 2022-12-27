@@ -212,6 +212,21 @@ variable "postgresql_password" {
   default     = null
   sensitive   = true
 }
+variable "postgresql_ssl_mode" {
+  type    = string
+  default = "require"
+  validation {
+    condition = contains([
+      "disable",
+      "allow",
+      "prefer",
+      "require",
+      "verify-ca",
+      "verify-full"
+    ], var.postgresql_ssl_mode)
+    error_message = "postgresql_ssl_mode must be `disable`, `allow`, `prefer`, `require`, `verify-ca`, either `verify-full`"
+  }
+}
 variable "postgresql_tls_key_file" {
   type    = string
   default = null
@@ -255,6 +270,21 @@ variable "redis_password" {
   type        = string
   default     = null
   sensitive   = true
+}
+variable "redis_ssl_mode" {
+  type    = string
+  default = "require"
+  validation {
+    condition = contains([
+      "disable",
+      "allow",
+      "prefer",
+      "require",
+      "verify-ca",
+      "verify-full"
+    ], var.redis_ssl_mode)
+    error_message = "redis_ssl_mode must be `disable`, `allow`, `prefer`, `require`, `verify-ca`, either `verify-full`"
+  }
 }
 variable "redis_ca_crt_file" {
   type    = string

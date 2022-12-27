@@ -208,6 +208,7 @@ module "label-studio" {
   postgresql_database     = var.postgresql_type == "rds" ? module.rds[0].database : var.postgresql_database
   postgresql_username     = var.postgresql_type == "rds" ? module.rds[0].username : var.postgresql_username
   postgresql_password     = var.postgresql_type == "rds" ? module.rds[0].password : local.postgresql_password
+  postgresql_ssl_mode     = var.postgresql_ssl_mode
   postgresql_tls_key_file = var.postgresql_tls_key_file
   postgresql_tls_crt_file = var.postgresql_tls_crt_file
   postgresql_ca_crt_file  = var.postgresql_ca_crt_file
@@ -215,12 +216,13 @@ module "label-studio" {
   redis_type         = var.enterprise ? var.redis_type : "absent"
   redis_host         = var.redis_type == "elasticache" && var.enterprise ? "rediss://${module.elasticache[0].host}:${module.elasticache[0].port}/1" : var.redis_host
   redis_password     = var.redis_type == "elasticache" && var.enterprise ? module.elasticache[0].password : local.redis_password
+  redis_ssl_mode     = var.redis_ssl_mode
   redis_tls_key_file = var.redis_tls_key_file
   redis_tls_crt_file = var.redis_tls_crt_file
   redis_ca_crt_file  = var.redis_ca_crt_file
 
-  host                    = local.create_r53_record ? module.route53[0].fqdn : module.nic.host
-  certificate_issuer_name = module.cert-manager.issuer_name
+  host                    = try(local.create_r53_record ? module.route53[0].fqdn : module.nic.host, "")
+  certificate_issuer_name = try(module.cert-manager.issuer_name, "")
 
   depends_on = [
     module.lbc,

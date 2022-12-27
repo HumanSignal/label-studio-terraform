@@ -200,7 +200,7 @@ resource "helm_release" "label_studio" {
         "global.pgConfig.password.secretKey"  = local.postgresql_secret_key
       }) : tomap({}),
       var.postgresql_type == "external" && local.postgresql_ssl_enabled ? tomap({
-        "global.pgConfig.ssl.pgSslMode"              = "verify-full"
+        "global.pgConfig.ssl.pgSslMode"              = var.postgresql_ssl_mode
         "global.pgConfig.ssl.pgSslSecretName"        = kubernetes_secret.postgresql-ssl-cert[0].metadata[0].name
         "global.pgConfig.ssl.pgSslRootCertSecretKey" = local.postgresql_ca_crt_secret_key
         "global.pgConfig.ssl.pgSslCertSecretKey"     = local.postgresql_tls_crt_secret_key
@@ -235,7 +235,7 @@ resource "helm_release" "label_studio" {
         "global.redisConfig.password.secretKey"  = local.redis_secret_key
       }) : tomap({}),
       var.redis_type == "external" && local.redis_ssl_enabled ? tomap({
-        "global.redisConfig.ssl.redisSslCertReqs"          = "required"
+        "global.redisConfig.ssl.redisSslCertReqs"          = var.redis_ssl_mode
         "global.redisConfig.ssl.redisSslSecretName"        = kubernetes_secret.redis-ssl-cert[0].metadata[0].name
         "global.redisConfig.ssl.redisSslCaCertsSecretKey"  = local.redis_ca_crt_secret_key
         "global.redisConfig.ssl.redisSslCertFileSecretKey" = local.redis_tls_crt_secret_key
