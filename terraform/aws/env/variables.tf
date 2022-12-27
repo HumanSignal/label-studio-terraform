@@ -212,6 +212,10 @@ variable "postgresql_password" {
   default     = null
   sensitive   = true
 }
+variable "postgresql_ssl_mode" {
+  type    = string
+  default = "require"
+}
 variable "postgresql_tls_key_file" {
   type    = string
   default = null
@@ -255,6 +259,10 @@ variable "redis_password" {
   type        = string
   default     = null
   sensitive   = true
+}
+variable "redis_ssl_mode" {
+  type    = string
+  default = "required"
 }
 variable "redis_ca_crt_file" {
   type    = string

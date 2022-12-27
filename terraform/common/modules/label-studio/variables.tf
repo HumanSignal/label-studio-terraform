@@ -144,6 +144,21 @@ variable "postgresql_password" {
   default     = "labelstudio"
   sensitive   = true
 }
+variable "postgresql_ssl_mode" {
+  type    = string
+  default = "require"
+  validation {
+    condition = contains([
+      "disable",
+      "allow",
+      "prefer",
+      "require",
+      "verify-ca",
+      "verify-full"
+    ], var.postgresql_ssl_mode)
+    error_message = "postgresql_ssl_mode must be `disable`, `allow`, `prefer`, `require`, `verify-ca`, either `verify-full`"
+  }
+}
 variable "postgresql_tls_key_file" {
   type    = string
   default = null
@@ -175,6 +190,18 @@ variable "redis_password" {
   description = "Redis password"
   type        = string
   sensitive   = true
+}
+variable "redis_ssl_mode" {
+  type    = string
+  default = "required"
+  validation {
+    condition = contains([
+      "none",
+      "optional",
+      "required",
+    ], var.redis_ssl_mode)
+    error_message = "redis_ssl_mode must be `none`, `optional`, either `required`"
+  }
 }
 variable "redis_ca_crt_file" {
   type    = string
