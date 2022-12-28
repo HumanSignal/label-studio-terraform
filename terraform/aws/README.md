@@ -94,6 +94,25 @@ postgresql_password = "<REPLACE_ME>"
 
 [Full tfvars file example](examples/opensource_external_postgresql.tfvars)
 
+### Label Studio with external PostgreSQL with SSL
+
+Deploy Label Studio connected to the external postgresql database with SSL(e.g. already provisioned).
+
+```hcl
+postgresql_type     = "external"
+postgresql_database = "<REPLACE_ME>"
+postgresql_host     = "<REPLACE_ME>"
+postgresql_port     = "<REPLACE_ME>"
+postgresql_username = "<REPLACE_ME>"
+postgresql_password = "<REPLACE_ME>"
+postgresql_ssl_mode = "verify-ca"
+postgresql_tls_key_file = "<REPLACE_ME>/postgres.key"
+postgresql_tls_crt_file = "<REPLACE_ME>/postgres.crt"
+postgresql_ca_crt_file = "<REPLACE_ME>/postgresCA.crt"
+```
+
+[Full tfvars file example](examples/opensource_external_postgresql_ssl.tfvars)
+
 ### Label Studio with domain name
 
 Deploy and assign domain name with singed by Let's Encrypt certificate using cert-manager.
@@ -125,6 +144,34 @@ label_studio_additional_set = {
 ```
 
 [Full tfvars file example](examples/enterprise.tfvars)
+
+### Label Studio Enterprise with external Redis
+
+Deploy a Label Studio Enterprise with external Redis(e.g. already provisioned).
+
+```hcl
+redis_type = "external"
+redis_host = "redis://<SECRET>:<SECRET>/1"
+redis_password = "<SECRET>"
+```
+
+[Full tfvars file example](examples/enterprise_external_redis.tfvars)
+
+### Label Studio Enterprise with external Redis with SSL
+
+Deploy a Label Studio Enterprise with external Redis with SSL(e.g. already provisioned)..
+
+```hcl
+redis_type = "external"
+redis_host = "rediss://<REPLACE_ME>:<REPLACE_ME>/1"
+redis_password = "<SECRET>"
+redis_ssl_mode = "required"
+redis_tls_key_file = "<REPLACE_ME>/redis.key"
+redis_tls_crt_file = "<REPLACE_ME>/redis.crt"
+redis_ca_crt_file = "<REPLACE_ME>/redisCA.crt"
+```
+
+[Full tfvars file example](examples/enterprise_external_redis_ssl.tfvars)
 
 ## Usage
 
