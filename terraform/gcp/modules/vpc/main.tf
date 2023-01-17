@@ -76,6 +76,7 @@ resource "google_compute_firewall" "http_compute_firewall" {
     protocol = "tcp"
     ports    = ["80"]
   }
+  source_ranges = ["0.0.0.0/0"]
   source_tags = ["web"]
   target_tags = ["http"]
 }
@@ -89,6 +90,7 @@ resource "google_compute_firewall" "https_compute_firewall" {
     protocol = "tcp"
     ports    = ["443"]
   }
+  source_ranges = ["0.0.0.0/0"]
   source_tags = ["web"]
   target_tags = ["https"]
 }

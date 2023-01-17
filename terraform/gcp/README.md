@@ -15,6 +15,7 @@ This document will provide an overview of the deployment process and the prerequ
 |--------------------------------------------------------------|---------|
 | [Common prerequisites](../../README.md#Common-prerequisites) |         | 
 | gcloud                                                       | 413.0.0 |
+| gke-gcloud-auth-plugin                                       |         |
 
 ### How to install gcloud
 

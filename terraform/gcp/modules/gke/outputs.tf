@@ -15,3 +15,7 @@ output "cluster_name" {
   description = "GKE cluster name"
   value       = google_container_cluster.container_cluster.name
 }
+
+output "cluster_location" {
+  value = google_container_cluster.container_cluster.location
+}

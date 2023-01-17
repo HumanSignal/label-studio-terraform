@@ -107,7 +107,7 @@ module "label-studio" {
   redis_tls_crt_file = var.redis_tls_crt_file
   redis_ca_crt_file  = var.redis_ca_crt_file
 
-  host                    = ""
+  host                    = "to-do.replace.me"
   certificate_issuer_name = ""
 
   depends_on = [
