@@ -89,13 +89,22 @@ variable "license_literal" {
 }
 
 # Persistence
+variable "persistence_type" {
+  type = string
+  validation {
+    condition     = contains(["disabled", "s3", "gcs"], var.persistence_type)
+    error_message = "postgresql_type must be `disabled`, `s3`, either `gcs`"
+  }
+}
 variable "persistence_s3_bucket_name" {
   description = "TBD"
   type        = string
+  default     = ""
 }
 variable "persistence_s3_bucket_region" {
   description = "TBD"
   type        = string
+  default     = ""
 }
 variable "persistence_s3_bucket_folder" {
   description = "TBD"
@@ -105,6 +114,7 @@ variable "persistence_s3_bucket_folder" {
 variable "persistence_s3_role_arn" {
   description = "TBD"
   type        = string
+  default     = ""
 }
 
 

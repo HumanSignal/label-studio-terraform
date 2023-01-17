@@ -168,15 +168,22 @@ resource "helm_release" "label_studio" {
         "enterprise.enterpriseLicense.secretKey"  = local.license_secret_key
       }) : tomap({}),
       # persistence
-      tomap({
+      var.persistence_type == "s3" ? tomap({
         "global.persistence.enabled"                                         = true
-        "global.persistence.type"                                            = "s3"
+        "global.persistence.type"                                            = var.persistence_type
         "global.persistence.config.s3.bucket"                                = var.persistence_s3_bucket_name
         "global.persistence.config.s3.region"                                = var.persistence_s3_bucket_region
         "global.persistence.config.s3.folder"                                = var.persistence_s3_bucket_folder
         "app.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"      = var.persistence_s3_role_arn
         "rqworker.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn" = var.persistence_s3_role_arn
-      }),
+      }) : tomap({}),
+      var.persistence_type == "gcs" ? tomap({
+        "global.persistence.enabled"              = true
+        "global.persistence.type"                 = var.persistence_type
+        "global.persistence.config.gcs.bucket"    = var.persistence_s3_bucket_name
+        "global.persistence.config.gcs.projectID" = var.persistence_s3_bucket_region
+        "global.persistence.config.gcs.folder"    = var.persistence_s3_bucket_folder
+      }) : tomap({}),
       # postgres
       var.postgresql_type == "internal" ? tomap({
         "postgresql.enabled"                         = true

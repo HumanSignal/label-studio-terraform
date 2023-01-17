@@ -1,0 +1,4 @@
+We use GitHub Actions and [tfsec](https://github.com/aquasecurity/tfsec) to check our terraform code using static analysis to spot potential security issues. There are some checks that should be skipped:
+
+| File                                     | Issue ID                                   | Impact                                                                                                                                        | Resolution                                                                                                                            |
+|------------------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
