@@ -94,8 +94,8 @@ module "route53" {
   domain_name            = var.domain_name
   tags                   = local.tags
   alias_zone_id          = var.region
-  load_balancer_dns_name = module.nic.load_balancer_dns_name
-  load_balancer_zone_id  = module.nic.load_balancer_zone_id
+  load_balancer_dns_name = module.nic-lb-data.load_balancer_dns_name
+  load_balancer_zone_id  = module.nic-lb-data.load_balancer_zone_id
 }
 
 module "acm" {
@@ -164,10 +164,33 @@ module "nic" {
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
   namespace               = var.ingress_namespace
-  load_balancer_name      = local.name_prefix
+
+  settings = {
+    controller : {
+      service : {
+        annotations : {
+          "service.beta.kubernetes.io/aws-load-balancer-name" : local.name_prefix
+          "service.beta.kubernetes.io/aws-load-balancer-type" : "external"
+          "service.beta.kubernetes.io/aws-load-balancer-scheme" : "internet-facing"
+          "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" : "ip"
+        }
+      }
+    }
+  }
 
   depends_on = [
     module.eks,
+  ]
+}
+
+module "nic-lb-data" {
+  source = "../modules/nginx-ingress-controller-loadbalancer-data"
+
+  helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
+  namespace               = "kube-system"
+
+  depends_on = [
+    module.nic,
   ]
 }
 
@@ -230,7 +253,7 @@ module "label-studio" {
   redis_tls_crt_file = var.redis_tls_crt_file
   redis_ca_crt_file  = var.redis_ca_crt_file
 
-  host                    = try(local.create_r53_record ? module.route53[0].fqdn : module.nic.host, "")
+  host                    = try(local.create_r53_record ? module.route53[0].fqdn : module.nic-lb-data.host, "")
   certificate_issuer_name = try(module.cert-manager.issuer_name, "")
 
   depends_on = [

@@ -24,7 +24,7 @@ output "connect_cluster" {
 }
 
 output "load_balancer_host" {
-  value = module.nic.load_balancer_dns_name
+  value = module.nic-lb-data.load_balancer_dns_name
 }
 
 output "host" {

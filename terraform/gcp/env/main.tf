@@ -66,14 +66,24 @@ module "iam" {
 }
 
 module "nic" {
-  source = "../modules/nginx-ingress-controller"
+  source = "../../common/modules/nginx-ingress-controller"
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
   namespace               = "kube-system"
-  load_balancer_name      = local.name_prefix
 
   depends_on = [
     module.gke,
+  ]
+}
+
+module "nic-lb-data" {
+  source = "../modules/nginx-ingress-controller-loadbalancer-data"
+
+  helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
+  namespace               = "kube-system"
+
+  depends_on = [
+    module.nic,
   ]
 }
 
@@ -132,7 +142,7 @@ module "label-studio" {
   redis_tls_crt_file = var.redis_tls_crt_file
   redis_ca_crt_file  = var.redis_ca_crt_file
 
-  host                    = "to-do.replace.me"
+  host                    = try(format("%s.nip.io", module.nic-lb-data.ip), "")
   certificate_issuer_name = try(module.cert-manager.issuer_name, "")
 
   depends_on = [

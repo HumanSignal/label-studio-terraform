@@ -28,11 +28,6 @@ variable "namespace" {
   default     = "ingress-controller"
 }
 
-variable "load_balancer_name" {
-  description = "Load Balancer name to create"
-  type = string
-}
-
 variable "settings" {
   description = "Additional yaml encoded values which will be passed to the Helm chart"
   default = {}
