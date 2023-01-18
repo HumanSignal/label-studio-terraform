@@ -6,12 +6,14 @@
 # Locate the root directory. Used by scripts that source this one.
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+
+# TODO: gcloud installed check
 # AWS CLI v2 is installed
-command -v aws > /dev/null 2>&1 || {
-  echo >&2 "AWS CLI v2 is required, but it's not installed.  Aborting."
-  echo >&2 "Refer to: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html"
-  exit 1
-}
+#command -v aws > /dev/null 2>&1 || {
+#  echo >&2 "AWS CLI v2 is required, but it's not installed.  Aborting."
+#  echo >&2 "Refer to: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html"
+#  exit 1
+#}
 
 # kubectl is installed
 command -v kubectl unbound variable > /dev/null 2>&1 || {

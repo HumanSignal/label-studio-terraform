@@ -205,6 +205,7 @@ module "label-studio" {
   enterprise               = var.enterprise
   cloud_provider           = "aws"
 
+  persistence_type             = "s3"
   persistence_s3_bucket_name   = module.s3.bucket_name
   persistence_s3_bucket_region = module.s3.bucket_region
   persistence_s3_bucket_folder = ""

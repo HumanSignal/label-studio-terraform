@@ -118,22 +118,22 @@ resource "kubernetes_secret" "redis-ssl-cert" {
   }
 }
 
-#resource "kubectl_manifest" "certificate" {
-#  yaml_body = <<-EOF
-#    apiVersion: "cert-manager.io/v1"
-#    kind: "Certificate"
-#    metadata:
-#      name: "${var.name}-label-studio-certificate"
-#      namespace: "${kubernetes_namespace.this.metadata[0].name}"
-#    spec:
-#      dnsNames:
-#        - "${var.host}"
-#      secretName: "${local.tls_secret_name}"
-#      issuerRef:
-#        kind: "ClusterIssuer"
-#        name: "${var.certificate_issuer_name}"
-#    EOF
-#}
+resource "kubectl_manifest" "certificate" {
+  yaml_body = <<-EOF
+    apiVersion: "cert-manager.io/v1"
+    kind: "Certificate"
+    metadata:
+      name: "${var.name}-label-studio-certificate"
+      namespace: "${kubernetes_namespace.this.metadata[0].name}"
+    spec:
+      dnsNames:
+        - "${var.host}"
+      secretName: "${local.tls_secret_name}"
+      issuerRef:
+        kind: "ClusterIssuer"
+        name: "${var.certificate_issuer_name}"
+    EOF
+}
 
 resource "helm_release" "label_studio" {
   name      = var.helm_chart_release_name
@@ -288,7 +288,7 @@ resource "helm_release" "label_studio" {
     kubernetes_secret.redis,
     kubernetes_secret.redis-ssl-cert,
     kubernetes_secret.license,
-#    kubectl_manifest.certificate,
+    kubectl_manifest.certificate,
     kubernetes_secret.heartex_pull_key,
   ]
 }

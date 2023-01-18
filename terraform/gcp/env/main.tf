@@ -65,6 +65,31 @@ module "iam" {
   project_services                 = var.project_services
 }
 
+module "nic" {
+  source = "../modules/nginx-ingress-controller"
+
+  helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
+  namespace               = "kube-system"
+  load_balancer_name      = local.name_prefix
+
+  depends_on = [
+    module.gke,
+  ]
+}
+
+module "cert-manager" {
+  source = "../../common/modules/cert-manager"
+
+  helm_chart_release_name = format("%s-cert-manager", local.name_prefix)
+  namespace               = "cert-manager"
+  email                   = var.lets_encrypt_email
+  selfsigned              = true
+
+  depends_on = [
+    module.gke,
+  ]
+}
+
 module "label-studio" {
   source = "../../common/modules/label-studio"
 
@@ -84,7 +109,7 @@ module "label-studio" {
   license_literal          = var.license_literal
   additional_set           = var.label_studio_additional_set
   enterprise               = var.enterprise
-  cloud_provider           = "aws"
+  cloud_provider           = "gcp"
 
   persistence_type = "disabled"
 
@@ -108,9 +133,11 @@ module "label-studio" {
   redis_ca_crt_file  = var.redis_ca_crt_file
 
   host                    = "to-do.replace.me"
-  certificate_issuer_name = ""
+  certificate_issuer_name = try(module.cert-manager.issuer_name, "")
 
   depends_on = [
     module.gke,
+    module.cert-manager,
+    module.nic,
   ]
 }
