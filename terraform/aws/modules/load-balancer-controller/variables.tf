@@ -42,5 +42,5 @@ variable "helm_chart_repo" {
 variable "namespace" {
   description = "Kubernetes namespace to deploy AWS Load Balancer Controller Helm chart"
   type        = string
-  default     = "kube-system"
+  default     = "ingress"
 }

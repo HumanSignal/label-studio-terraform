@@ -101,6 +101,18 @@ variable "eks_capacity_type" {
   }
 }
 
+variable "ingress_namespace" {
+  description = "Namespace for ingress"
+  type        = string
+  default     = "ingress"
+}
+
+variable "monitoring_namespace" {
+  description = "Namespace for monitoring"
+  type        = string
+  default = "monitoring"
+}
+
 # Label Studio Helm Chart
 variable "label_studio_helm_chart_repo" {
   description = "Heartex repository name."

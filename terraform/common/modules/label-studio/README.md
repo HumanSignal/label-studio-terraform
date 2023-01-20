@@ -25,7 +25,9 @@ No modules.
 | [kubernetes_secret.heartex_pull_key](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.license](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.postgresql](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
+| [kubernetes_secret.postgresql-ssl-cert](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.redis](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
+| [kubernetes_secret.redis-ssl-cert](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 
 ## Inputs
 
@@ -45,7 +47,7 @@ No modules.
 | <a name="input_helm_chart_repo"></a> [helm\_chart\_repo](#input\_helm\_chart\_repo) | Heartex repository name | `string` | `"https://charts.heartex.com/"` | no |
 | <a name="input_helm_chart_repo_password"></a> [helm\_chart\_repo\_password](#input\_helm\_chart\_repo\_password) | Password for HTTP basic authentication against the Helm repository | `string` | `""` | no |
 | <a name="input_helm_chart_repo_username"></a> [helm\_chart\_repo\_username](#input\_helm\_chart\_repo\_username) | Username for HTTP basic authentication against the Helm repository | `string` | `""` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Label Studio Helm chart version | `string` | `"0.0.9"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Label Studio Helm chart version | `string` | `"1.0.3"` | no |
 | <a name="input_host"></a> [host](#input\_host) | Label Studio fqdn | `string` | n/a | yes |
 | <a name="input_license_literal"></a> [license\_literal](#input\_license\_literal) | License link for enterprise Label Studio | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name is the prefix to use for resources that needs to be created | `string` | n/a | yes |
@@ -54,14 +56,22 @@ No modules.
 | <a name="input_persistence_s3_bucket_name"></a> [persistence\_s3\_bucket\_name](#input\_persistence\_s3\_bucket\_name) | TBD | `string` | n/a | yes |
 | <a name="input_persistence_s3_bucket_region"></a> [persistence\_s3\_bucket\_region](#input\_persistence\_s3\_bucket\_region) | TBD | `string` | n/a | yes |
 | <a name="input_persistence_s3_role_arn"></a> [persistence\_s3\_role\_arn](#input\_persistence\_s3\_role\_arn) | TBD | `string` | n/a | yes |
+| <a name="input_postgresql_ca_crt_file"></a> [postgresql\_ca\_crt\_file](#input\_postgresql\_ca\_crt\_file) | n/a | `string` | `null` | no |
 | <a name="input_postgresql_database"></a> [postgresql\_database](#input\_postgresql\_database) | Postgresql database name | `string` | `"labelstudio"` | no |
 | <a name="input_postgresql_host"></a> [postgresql\_host](#input\_postgresql\_host) | Postgresql fqdn | `string` | `""` | no |
 | <a name="input_postgresql_password"></a> [postgresql\_password](#input\_postgresql\_password) | Postgresql password | `string` | `"labelstudio"` | no |
 | <a name="input_postgresql_port"></a> [postgresql\_port](#input\_postgresql\_port) | Postgresql port | `number` | `5432` | no |
+| <a name="input_postgresql_ssl_mode"></a> [postgresql\_ssl\_mode](#input\_postgresql\_ssl\_mode) | n/a | `string` | `"require"` | no |
+| <a name="input_postgresql_tls_crt_file"></a> [postgresql\_tls\_crt\_file](#input\_postgresql\_tls\_crt\_file) | n/a | `string` | `null` | no |
+| <a name="input_postgresql_tls_key_file"></a> [postgresql\_tls\_key\_file](#input\_postgresql\_tls\_key\_file) | n/a | `string` | `null` | no |
 | <a name="input_postgresql_type"></a> [postgresql\_type](#input\_postgresql\_type) | Postgresql type | `string` | `"internal"` | no |
 | <a name="input_postgresql_username"></a> [postgresql\_username](#input\_postgresql\_username) | Postgresql username | `string` | `"labelstudio"` | no |
+| <a name="input_redis_ca_crt_file"></a> [redis\_ca\_crt\_file](#input\_redis\_ca\_crt\_file) | n/a | `string` | `null` | no |
 | <a name="input_redis_host"></a> [redis\_host](#input\_redis\_host) | Redis fqdn | `string` | n/a | yes |
 | <a name="input_redis_password"></a> [redis\_password](#input\_redis\_password) | Redis password | `string` | n/a | yes |
+| <a name="input_redis_ssl_mode"></a> [redis\_ssl\_mode](#input\_redis\_ssl\_mode) | n/a | `string` | `"required"` | no |
+| <a name="input_redis_tls_crt_file"></a> [redis\_tls\_crt\_file](#input\_redis\_tls\_crt\_file) | n/a | `string` | `null` | no |
+| <a name="input_redis_tls_key_file"></a> [redis\_tls\_key\_file](#input\_redis\_tls\_key\_file) | n/a | `string` | `null` | no |
 | <a name="input_redis_type"></a> [redis\_type](#input\_redis\_type) | Redis deployment type | `string` | `"internal"` | no |
 
 ## Outputs

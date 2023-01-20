@@ -88,6 +88,12 @@ variable "metrics_server_enabled" {
   default     = true
 }
 
+variable "monitoring_namespace" {
+  description = "Namespace for monitoring"
+  type        = string
+  default     = "monitoring"
+}
+
 variable "eks_cluster_enabled_log_types" {
   description = "A list of the desired control plane logging to enable. For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html). Possible values: api, audit, authenticator, controllerManager, scheduler"
   type        = list(string)
