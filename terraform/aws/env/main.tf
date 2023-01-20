@@ -70,6 +70,7 @@ module "eks" {
   capacity_type             = var.eks_capacity_type
   persistence_s3_bucket_arn = module.s3.bucket_arn
   persistence_s3_kms_arn    = module.s3.kms_arn
+  monitoring_namespace      = var.monitoring_namespace
 
   depends_on = [
     module.vpc,
@@ -155,7 +156,7 @@ module "nic" {
   source = "../../common/modules/nginx-ingress-controller"
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
-  namespace               = "kube-system"
+  namespace               = var.ingress_namespace
   load_balancer_name      = local.name_prefix
 
   depends_on = [
