@@ -103,11 +103,13 @@ variable "eks_capacity_type" {
 
 variable "ingress_namespace" {
   description = "Namespace for ingress"
-  default = "ingress"
+  type        = string
+  default     = "ingress"
 }
 
 variable "monitoring_namespace" {
   description = "Namespace for monitoring"
+  type        = string
   default = "monitoring"
 }
 

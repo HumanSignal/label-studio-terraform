@@ -43,7 +43,7 @@ No modules.
 | <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Metrics Server Helm chart version | `string` | `"1.4.6"` | no |
 | <a name="input_iam_oidc_provider"></a> [iam\_oidc\_provider](#input\_iam\_oidc\_provider) | AWS EKS IRSA provider | <pre>object({<br>    url = string<br>    arn = string<br>  })</pre> | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name is the prefix to use for resources that needs to be created | `string` | n/a | yes |
-| <a name="input_namespace"></a> [namespace](#input\_namespace) | Kubernetes namespace to deploy AWS Load Balancer Controller Helm chart | `string` | `"kube-system"` | no |
+| <a name="input_namespace"></a> [namespace](#input\_namespace) | Kubernetes namespace to deploy AWS Load Balancer Controller Helm chart | `string` | `"ingress"` | no |
 
 ## Outputs
 

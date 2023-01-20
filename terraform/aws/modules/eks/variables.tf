@@ -90,7 +90,8 @@ variable "metrics_server_enabled" {
 
 variable "monitoring_namespace" {
   description = "Namespace for monitoring"
-  default = "monitoring"
+  type        = string
+  default     = "monitoring"
 }
 
 variable "eks_cluster_enabled_log_types" {

@@ -52,6 +52,7 @@ No requirements.
 | <a name="input_max_size"></a> [max\_size](#input\_max\_size) | Maximum number of the instances in autoscaling group | `number` | n/a | yes |
 | <a name="input_metrics_server_enabled"></a> [metrics\_server\_enabled](#input\_metrics\_server\_enabled) | Enable Metrics server | `bool` | `true` | no |
 | <a name="input_min_size"></a> [min\_size](#input\_min\_size) | Minimum number of the instances in autoscaling group | `number` | n/a | yes |
+| <a name="input_monitoring_namespace"></a> [monitoring\_namespace](#input\_monitoring\_namespace) | Namespace for monitoring | `string` | `"monitoring"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name is the prefix to use for resources that needs to be created | `string` | n/a | yes |
 | <a name="input_persistence_s3_bucket_arn"></a> [persistence\_s3\_bucket\_arn](#input\_persistence\_s3\_bucket\_arn) | n/a | `any` | n/a | yes |
 | <a name="input_persistence_s3_kms_arn"></a> [persistence\_s3\_kms\_arn](#input\_persistence\_s3\_kms\_arn) | n/a | `any` | n/a | yes |
