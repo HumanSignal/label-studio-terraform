@@ -45,11 +45,12 @@ TF_PARAMS="-var-file=${VAR_FILE} ${ADDITIONAL_TF_PARAMS:-}"
 TF_VAR_environment=$(sed -n 's#^[ ]*environment[ ]*=[ ]*"\(.*\)"#\1#p' "${VAR_FILE}")
 TF_VAR_name=$(sed -n 's#^[ ]*name[ ]*=[ ]*"\(.*\)"#\1#p' "${VAR_FILE}")
 TF_VAR_region=$(sed -n 's#^[ ]*region[ ]*=[ ]*"\(.*\)"#\1#p' "${VAR_FILE}")
+TF_VAR_project_id=$(sed -n 's#^[ ]*project_id[ ]*=[ ]*"\(.*\)"#\1#p' "${VAR_FILE}")
 
-export TF_PARAMS TF_VAR_environment TF_VAR_name TF_VAR_region
+export TF_PARAMS TF_VAR_environment TF_VAR_name TF_VAR_region TF_VAR_project_id
 
 # Make sure you initialize the following TF_VAR's before you initialize the environment
-if [ -z "${TF_VAR_environment:-}" ] || [ -z "${TF_VAR_name:-}" ] || [ -z "${TF_VAR_region:-}" ] || [ -z "${TF_PARAMS:-}" ]; then
+if [ -z "${TF_VAR_environment:-}" ] || [ -z "${TF_VAR_name:-}" ] || [ -z "${TF_VAR_region:-}" ] || [ -z "${TF_PARAMS:-}" ] || [ -z "${TF_VAR_project_id}"]; then
   echo "[ERROR] This step requires to export the following variables TF_VAR_environment, TF_VAR_name, TF_VAR_region, TF_PARAMS"
   exit 1
 else
@@ -58,6 +59,8 @@ fi
 
 # TODO: Create GCP state bucket if not exist
 export BUCKET_NAME=${TF_VAR_environment}-${TF_VAR_region}-ls-terraform-state-bucket
+
+gcloud storage buckets create "gs://${BUCKET_NAME}" --project="${TF_VAR_project_id}" --location="${TF_VAR_region}" --uniform-bucket-level-access
 #if ! aws s3api head-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" > /dev/null 2>&1; then
 #  echo "[INFO] Creating S3 bucket to store Terraform state: ${BUCKET_NAME}"
 #  aws s3api create-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" --create-bucket-configuration LocationConstraint="${TF_VAR_region}" > /dev/null
