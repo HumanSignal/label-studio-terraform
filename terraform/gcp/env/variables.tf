@@ -89,6 +89,18 @@ variable "eks_capacity_type" {
   }
 }
 
+variable "gke_preemptible_nodes" {
+  description = "Whether the GKE node VMs are preemptible"
+  type = bool
+  default = false
+}
+
+variable "gke_spot_nodes" {
+  description = "Whether the GKE node VMs are spot"
+  type = bool
+  default = false
+}
+
 variable "ingress_namespace" {
   description = "Namespace for ingress"
   type        = string

@@ -21,6 +21,7 @@ variable "initial_node_count" {
 variable "max_node_count" {
   type = number
 }
+
 variable "min_node_count" {
   type = number
 }
@@ -28,11 +29,23 @@ variable "min_node_count" {
 variable "machine_type" {
   description = "Type of machines which are used by cluster node pool"
   type        = string
-  default     = "e2-highmem-8"
+  default     = "n1-standard-1"
+}
+
+variable "preemptible_nodes" {
+  description = "Whether the underlying node VMs are preemptible"
+  type = bool
+  default = false
+}
+
+variable "spot_nodes" {
+  description = "Whether the underlying node VMs are spot"
+  type = bool
+  default = false
 }
 
 variable "region" {
-  description = "The location of the GKE cluster."
+  description = "The location of the GKE cluster"
   type        = string
 }
 
