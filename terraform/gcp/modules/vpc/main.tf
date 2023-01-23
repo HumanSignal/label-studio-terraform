@@ -107,16 +107,3 @@ resource "google_compute_firewall" "ssh_compute_firewall" {
   source_tags = ["web"]
   target_tags = ["ssh"]
 }
-
-# Allow rdp traffic
-resource "google_compute_firewall" "rdp_compute_firewall" {
-  name    = format("%s-fw-allow-rdp", var.name)
-  network = google_compute_network.compute_network.name
-  project = var.project_id
-  allow {
-    protocol = "tcp"
-    ports    = ["3389"]
-  }
-  source_tags = ["web"]
-  target_tags = ["rdp"]
-}
