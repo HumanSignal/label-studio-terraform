@@ -93,7 +93,7 @@ variable "persistence_type" {
   type = string
   validation {
     condition     = contains(["disabled", "s3", "gcs"], var.persistence_type)
-    error_message = "postgresql_type must be `disabled`, `s3`, either `gcs`"
+    error_message = "persistence_type must be `disabled`, `s3`, either `gcs`"
   }
 }
 variable "persistence_s3_bucket_name" {
