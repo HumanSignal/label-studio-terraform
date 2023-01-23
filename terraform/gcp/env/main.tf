@@ -69,7 +69,7 @@ module "nic" {
   source = "../../common/modules/nginx-ingress-controller"
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
-  namespace               = "kube-system"
+  namespace               = var.ingress_namespace
 
   depends_on = [
     module.gke,
@@ -80,7 +80,7 @@ module "nic-lb-data" {
   source = "../modules/nginx-ingress-controller-loadbalancer-data"
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
-  namespace               = "kube-system"
+  namespace               = var.ingress_namespace
 
   depends_on = [
     module.nic,
