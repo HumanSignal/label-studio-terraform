@@ -56,7 +56,7 @@ resource "google_container_node_pool" "container_node_pool" {
     machine_type = var.machine_type
     preemptible  = var.preemptible_nodes
     spot         = var.spot_nodes
-    disk_size_gb = 10
+    disk_size_gb = var.node_disk_size_gb
     tags         = ["http", "ssh"]
 
     metadata = {

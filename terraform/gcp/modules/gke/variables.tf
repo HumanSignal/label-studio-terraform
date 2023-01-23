@@ -44,6 +44,12 @@ variable "spot_nodes" {
   default = false
 }
 
+variable "node_disk_size_gb" {
+  description = "Size of the disk attached to each node, specified in GB"
+  type = number
+  default = 30
+}
+
 variable "region" {
   description = "The location of the GKE cluster"
   type        = string

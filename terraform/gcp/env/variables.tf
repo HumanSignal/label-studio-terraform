@@ -101,6 +101,12 @@ variable "gke_spot_nodes" {
   default = false
 }
 
+variable "gke_node_disk_size_gb" {
+  description = "Size of the disk attached to each node in GKE, specified in GB"
+  type = number
+  default = 30
+}
+
 variable "ingress_namespace" {
   description = "Namespace for ingress"
   type        = string

@@ -50,6 +50,7 @@ module "gke" {
   min_node_count     = var.min_size
   max_node_count     = var.max_size
   machine_type       = var.instance_type
+  node_disk_size_gb  = var.gke_node_disk_size_gb
   preemptible_nodes  = var.gke_preemptible_nodes
   spot_nodes         = var.gke_spot_nodes
   network_link       = module.vpc.network_selflink
