@@ -11,6 +11,10 @@ resource "google_container_cluster" "container_cluster" {
   network    = var.network_link
   subnetwork = var.subnetwork_link
 
+  pod_security_policy_config {
+    enabled = "true"
+  }
+
   master_auth {
     # Whether client certificate authorization is enabled for this cluster.
     client_certificate_config {
