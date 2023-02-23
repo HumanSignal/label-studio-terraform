@@ -50,7 +50,7 @@ TF_VAR_project_id=$(sed -n 's#^[ ]*project_id[ ]*=[ ]*"\(.*\)"#\1#p' "${VAR_FILE
 export TF_PARAMS TF_VAR_environment TF_VAR_name TF_VAR_region TF_VAR_project_id
 
 # Make sure you initialize the following TF_VAR's before you initialize the environment
-if [ -z "${TF_VAR_environment:-}" ] || [ -z "${TF_VAR_name:-}" ] || [ -z "${TF_VAR_region:-}" ] || [ -z "${TF_PARAMS:-}" ] || [ -z "${TF_VAR_project_id}"]; then
+if [ -z "${TF_VAR_environment:-}" ] || [ -z "${TF_VAR_name:-}" ] || [ -z "${TF_VAR_region:-}" ] || [ -z "${TF_PARAMS:-}" ] || [ -z "${TF_VAR_project_id}" ]; then
   echo "[ERROR] This step requires to export the following variables TF_VAR_environment, TF_VAR_name, TF_VAR_region, TF_PARAMS"
   exit 1
 else
