@@ -18,25 +18,25 @@ variable "project_id" {
   type        = string
 }
 
-variable "instance_type" {
+variable "gke_instance_type" {
   description = "Type of instance to be used for the Kubernetes cluster."
   type        = string
-  default     = "n2-standard-2"
+  default     = "e2-medium"
 }
 
-variable "desired_capacity" {
+variable "gke_desired_capacity" {
   description = "Desired capacity for the autoscaling Group."
   type        = number
   default     = 3
 }
 
-variable "max_size" {
+variable "gke_max_size" {
   description = "Maximum number of the instances in autoscaling group"
   type        = number
   default     = 5
 }
 
-variable "min_size" {
+variable "gke_min_size" {
   description = "Minimum number of the instances in autoscaling group"
   type        = number
   default     = 3
@@ -189,8 +189,8 @@ variable "postgresql_type" {
   type        = string
   default     = "internal"
   validation {
-    condition     = contains(["internal", "external", "rds"], var.postgresql_type)
-    error_message = "postgresql_type must be `internal`, `external` either `rds`"
+    condition     = contains(["internal", "external", "cloudsql"], var.postgresql_type)
+    error_message = "postgresql_type must be `internal`, `external` either `cloudsql`"
   }
 }
 variable "postgresql_machine_type" {
@@ -240,6 +240,11 @@ variable "postgresql_ca_crt_file" {
   type    = string
   default = null
 }
+variable "cloudsql_deletion_protection" {
+  type = bool
+  default = false
+}
+
 
 # Redis
 variable "redis_type" {
@@ -247,8 +252,8 @@ variable "redis_type" {
   type        = string
   default     = "internal"
   validation {
-    condition     = contains(["internal", "external", "elasticache", "absent"], var.redis_type)
-    error_message = "redis_type must be `internal`, `external`, `elasticache`, either `absent`"
+    condition     = contains(["internal", "external", "memorystore", "absent"], var.redis_type)
+    error_message = "redis_type must be `internal`, `external`, `memorystore`, either `absent`"
   }
 }
 variable "redis_machine_type" {

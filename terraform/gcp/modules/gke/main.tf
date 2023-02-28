@@ -11,9 +11,9 @@ resource "google_container_cluster" "container_cluster" {
   network    = var.network_link
   subnetwork = var.subnetwork_link
 
-  pod_security_policy_config {
-    enabled = "true"
-  }
+  #  pod_security_policy_config {
+  #    enabled = "true"
+  #  }
 
   master_auth {
     # Whether client certificate authorization is enabled for this cluster.
@@ -49,11 +49,11 @@ resource "google_container_cluster" "container_cluster" {
 
 # Google container node pool configuration
 resource "google_container_node_pool" "container_node_pool" {
-  name       = format("%s-node-pool", var.name)
-  project    = var.project_id
-  location   = var.region
-  cluster    = google_container_cluster.container_cluster.name
-  node_count = var.initial_node_count
+  name               = format("%s-node-pool", var.name)
+  project            = var.project_id
+  location           = var.region
+  cluster            = google_container_cluster.container_cluster.name
+  initial_node_count = var.initial_node_count
 
   # Node configuration
   node_config {

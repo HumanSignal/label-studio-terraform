@@ -29,7 +29,6 @@ variable "min_node_count" {
 variable "machine_type" {
   description = "Type of machines which are used by cluster node pool"
   type        = string
-  default     = "n1-standard-1"
 }
 
 variable "preemptible_nodes" {

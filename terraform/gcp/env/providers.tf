@@ -32,8 +32,8 @@ provider "random" {
 }
 
 data "google_container_cluster" "gke" {
-  name     = module.gke.cluster_name
-  location = module.gke.cluster_location
+  name       = module.gke.cluster_name
+  location   = module.gke.cluster_location
   depends_on = [module.gke]
 }
 

@@ -60,7 +60,7 @@ fi
 # TODO: Create GCP state bucket if not exist
 export BUCKET_NAME=${TF_VAR_environment}-${TF_VAR_region}-ls-terraform-state-bucket
 
-gcloud storage buckets create "gs://${BUCKET_NAME}" --project="${TF_VAR_project_id}" --location="${TF_VAR_region}" --uniform-bucket-level-access
+gcloud storage buckets create "gs://${BUCKET_NAME}" --project="${TF_VAR_project_id}" --location="${TF_VAR_region}" --uniform-bucket-level-access || true
 #if ! aws s3api head-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" > /dev/null 2>&1; then
 #  echo "[INFO] Creating S3 bucket to store Terraform state: ${BUCKET_NAME}"
 #  aws s3api create-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" --create-bucket-configuration LocationConstraint="${TF_VAR_region}" > /dev/null

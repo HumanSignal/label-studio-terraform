@@ -67,7 +67,7 @@ resource "kubernetes_secret" "license" {
 }
 
 resource "kubernetes_secret" "postgresql" {
-  count = contains(["external", "rds"], var.postgresql_type) ? 1 : 0
+  count = contains(["external", "rds", "cloudsql"], var.postgresql_type) ? 1 : 0
   metadata {
     name      = local.postgresql_secret_name
     namespace = kubernetes_namespace.this.metadata[0].name
@@ -93,7 +93,7 @@ resource "kubernetes_secret" "postgresql-ssl-cert" {
 }
 
 resource "kubernetes_secret" "redis" {
-  count = contains(["external", "elasticache"], var.redis_type) ? 1 : 0
+  count = contains(["external", "elasticache", "memorystore"], var.redis_type) ? 1 : 0
   metadata {
     name      = local.redis_secret_name
     namespace = kubernetes_namespace.this.metadata[0].name
@@ -214,6 +214,16 @@ resource "helm_release" "label_studio" {
         "global.pgConfig.ssl.pgSslKeySecretKey"      = local.postgresql_tls_key_secret_key
       }) : tomap({}),
       var.postgresql_type == "rds" ? tomap({
+        "postgresql.enabled"                  = false
+        "global.pgConfig.host"                = var.postgresql_host
+        "global.pgConfig.port"                = var.postgresql_port
+        "global.pgConfig.dbName"              = var.postgresql_database
+        "global.pgConfig.userName"            = var.postgresql_username
+        "global.pgConfig.password.secretName" = kubernetes_secret.postgresql[0].metadata[0].name
+        "global.pgConfig.password.secretKey"  = local.postgresql_secret_key
+        "global.pgConfig.ssl.pgSslMode"       = "require"
+      }) : tomap({}),
+      var.postgresql_type == "cloudsql" ? tomap({
         "postgresql.enabled"                  = false
         "global.pgConfig.host"                = var.postgresql_host
         "global.pgConfig.port"                = var.postgresql_port

@@ -124,8 +124,8 @@ variable "postgresql_type" {
   type        = string
   default     = "internal"
   validation {
-    condition     = contains(["internal", "external", "rds"], var.postgresql_type)
-    error_message = "postgresql_type must be `internal`, `external`, either `rds`"
+    condition     = contains(["internal", "external", "cloudsql", "rds"], var.postgresql_type)
+    error_message = "postgresql_type must be `internal`, `external`, `rds`, `cloudsql`"
   }
 }
 variable "postgresql_database" {
@@ -188,8 +188,8 @@ variable "redis_type" {
   type        = string
   default     = "internal"
   validation {
-    condition     = contains(["internal", "external", "elasticache", "absent"], var.redis_type)
-    error_message = "redis_type must be `internal`, `external`, `elasticache`, either `absent`"
+    condition     = contains(["internal", "external", "elasticache", "memorystore", "absent"], var.redis_type)
+    error_message = "redis_type must be `internal`, `external`, `elasticache`, `memorystore`, either `absent`"
   }
 }
 variable "redis_host" {

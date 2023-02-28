@@ -46,10 +46,10 @@ module "gke" {
   name               = local.name_prefix
   region             = var.region
   project_id         = var.project_id
-  initial_node_count = var.desired_capacity
-  min_node_count     = var.min_size
-  max_node_count     = var.max_size
-  machine_type       = var.instance_type
+  initial_node_count = var.gke_desired_capacity
+  min_node_count     = var.gke_min_size
+  max_node_count     = var.gke_max_size
+  machine_type       = var.gke_instance_type
   node_disk_size_gb  = var.gke_node_disk_size_gb
   preemptible_nodes  = var.gke_preemptible_nodes
   spot_nodes         = var.gke_spot_nodes
@@ -67,6 +67,29 @@ module "iam" {
   service_account_iam_roles        = var.service_account_iam_roles
   project_services                 = var.project_services
 }
+
+module "cloudsql" {
+  source = "../modules/cloudsql"
+
+  count = var.postgresql_type == "cloudsql" ? 1 : 0
+
+  name                = local.name_prefix
+  region              = var.region
+  database            = var.postgresql_database
+  username            = var.postgresql_username
+  password            = local.postgresql_password
+  deletion_protection = var.cloudsql_deletion_protection
+
+  tags = local.tags
+}
+
+#module "memorystore" {
+#  source = "../modules/memorystore"
+#
+#  count = var.redis_type == "memorystore" && var.enterprise ? 1 : 0
+#
+#
+#}
 
 module "nic" {
   source = "../../common/modules/nginx-ingress-controller"
@@ -127,11 +150,11 @@ module "label-studio" {
   persistence_type = "disabled"
 
   postgresql_type         = var.postgresql_type
-  postgresql_host         = var.postgresql_host
-  postgresql_port         = var.postgresql_port
-  postgresql_database     = var.postgresql_database
-  postgresql_username     = var.postgresql_username
-  postgresql_password     = local.postgresql_password
+  postgresql_host         = var.postgresql_type == "cloudsql" ? module.cloudsql[0].host : var.postgresql_host
+  postgresql_port         = var.postgresql_type == "cloudsql" ? module.cloudsql[0].port : var.postgresql_port
+  postgresql_database     = var.postgresql_type == "cloudsql" ? module.cloudsql[0].database : var.postgresql_database
+  postgresql_username     = var.postgresql_type == "cloudsql" ? module.cloudsql[0].username : var.postgresql_username
+  postgresql_password     = var.postgresql_type == "cloudsql" ? module.cloudsql[0].password : local.postgresql_password
   postgresql_ssl_mode     = var.postgresql_ssl_mode
   postgresql_tls_key_file = var.postgresql_tls_key_file
   postgresql_tls_crt_file = var.postgresql_tls_crt_file
@@ -140,6 +163,8 @@ module "label-studio" {
   redis_type         = var.enterprise ? var.redis_type : "absent"
   redis_host         = var.redis_host
   redis_password     = local.redis_password
+  #  redis_host         = var.redis_type == "memorystore" && var.enterprise ? "rediss://${module.memorystore[0].host}:${module.elasticache[0].port}/1" : var.redis_host
+  #  redis_password     = var.redis_type == "memorystore" && var.enterprise ? module.memorystore[0].password : local.redis_password
   redis_ssl_mode     = var.redis_ssl_mode
   redis_tls_key_file = var.redis_tls_key_file
   redis_tls_crt_file = var.redis_tls_crt_file
