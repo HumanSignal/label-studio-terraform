@@ -59,13 +59,12 @@ module "gke" {
 }
 
 module "iam" {
-  source                           = "../modules/iam"
-  name                             = local.name_prefix
-  region                           = var.region
-  project_id                       = var.project_id
-  service_account_custom_iam_roles = var.service_account_custom_iam_roles
-  service_account_iam_roles        = var.service_account_iam_roles
-  project_services                 = var.project_services
+  source                    = "../modules/iam"
+  name                      = local.name_prefix
+  region                    = var.region
+  project_id                = var.project_id
+  service_account_iam_roles = var.service_account_iam_roles
+  project_services          = var.project_services
 }
 
 module "cloudsql" {
@@ -79,8 +78,12 @@ module "cloudsql" {
   username            = var.postgresql_username
   password            = local.postgresql_password
   deletion_protection = var.cloudsql_deletion_protection
+  network_id          = module.vpc.network_id
+  tags                = local.tags
 
-  tags = local.tags
+  depends_on = [
+    module.vpc,
+  ]
 }
 
 #module "memorystore" {

@@ -7,13 +7,16 @@ resource "google_container_cluster" "container_cluster" {
   remove_default_node_pool = true
   initial_node_count       = var.initial_node_count
 
-  # VPC and Sub-network self links. 
   network    = var.network_link
   subnetwork = var.subnetwork_link
 
   #  pod_security_policy_config {
   #    enabled = "true"
   #  }
+
+  workload_identity_config {
+    workload_pool = "${var.project_id}.svc.id.goog"
+  }
 
   master_auth {
     # Whether client certificate authorization is enabled for this cluster.
@@ -79,6 +82,9 @@ resource "google_container_node_pool" "container_node_pool" {
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
+    workload_metadata_config {
+      mode = "GKE_METADATA"
+    }
   }
 
   autoscaling {

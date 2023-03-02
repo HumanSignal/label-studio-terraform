@@ -10,20 +10,11 @@ resource "google_service_account_key" "service_account_key" {
 }
 
 # Add the service account to the project
-resource "google_project_iam_member" "service_account" {
-  count   = length(var.service_account_iam_roles)
-  project = var.project_id
-  role    = element(var.service_account_iam_roles, count.index)
-  member  = format("serviceAccount:%s", google_service_account.service_account.email)
-}
-
-
-# Add user-specified roles
-resource "google_project_iam_member" "service_account_custom" {
-  count   = length(var.service_account_custom_iam_roles)
-  project = var.project_id
-  role    = element(var.service_account_custom_iam_roles, count.index)
-  member  = format("serviceAccount:%s", google_service_account.service_account.email)
+resource "google_project_iam_member" "roles" {
+  for_each = toset(var.service_account_iam_roles)
+  project  = var.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.service_account.email}"
 }
 
 # Allows management of single API service for an existing Google Cloud Platform project.

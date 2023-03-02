@@ -8,20 +8,22 @@ variable "project_id" {
   type        = string
 }
 
-variable "service_account_custom_iam_roles" {
-  description = "service account custom iam roles"
-  type        = list(string)
-  default     = []
-}
-
 variable "region" {
   description = "The region in which to create the VPC network"
   type        = string
 }
 
 variable "service_account_iam_roles" {
-  description = "service account custom iam roles"
+  description = "list of roles for the node pool service account"
   type        = list(string)
+  default     = [
+    "roles/artifactregistry.reader",
+    "roles/storage.objectViewer",
+    "roles/servicemanagement.serviceController",
+    "roles/logging.logWriter",
+    "roles/monitoring.admin",
+    "roles/cloudtrace.agent"
+  ]
 }
 
 variable "project_services" {

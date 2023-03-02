@@ -19,7 +19,7 @@ terraform init -backend-config="bucket=${BUCKET_NAME}" \
                -force-copy \
                -get=true \
                -input=false \
-               "${ADDITIONAL_TF_PARAMS:=-input=false}" #workaround for SC2086
+               ${ADDITIONAL_TF_PARAMS:=-input=false} #workaround for SC2086
 
 # Validate the Terraform resources.
 terraform validate

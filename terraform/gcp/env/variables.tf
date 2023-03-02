@@ -15,7 +15,7 @@ variable "region" {
 }
 
 variable "project_id" {
-  type        = string
+  type = string
 }
 
 variable "gke_instance_type" {
@@ -91,20 +91,20 @@ variable "eks_capacity_type" {
 
 variable "gke_preemptible_nodes" {
   description = "Whether the GKE node VMs are preemptible"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "gke_spot_nodes" {
   description = "Whether the GKE node VMs are spot"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "gke_node_disk_size_gb" {
   description = "Size of the disk attached to each node in GKE, specified in GB"
-  type = number
-  default = 30
+  type        = number
+  default     = 30
 }
 
 variable "ingress_namespace" {
@@ -241,7 +241,7 @@ variable "postgresql_ca_crt_file" {
   default = null
 }
 variable "cloudsql_deletion_protection" {
-  type = bool
+  type    = bool
   default = false
 }
 
@@ -300,29 +300,20 @@ variable "lets_encrypt_email" {
   default     = null
 }
 
-
-
-
-variable "service_account_custom_iam_roles" {
-  type    = list(string)
-  default = []
-
-  description = <<-EOF
-  List of arbitrary additional IAM roles to attach to the service account on
-  the GKE nodes.
-  EOF
-}
-
 variable "service_account_iam_roles" {
-  type = list(string)
-
-  default = [
+  description = "List of the default IAM roles to attach to the service account on the GKE Nodes."
+  type        = list(string)
+  default     = [
+    "roles/artifactregistry.reader",
+    "roles/cloudtrace.agent",
     "roles/logging.logWriter",
+    "roles/monitoring.admin",
     "roles/monitoring.metricWriter",
     "roles/monitoring.viewer",
+    "roles/servicemanagement.serviceController",
     "roles/stackdriver.resourceMetadata.writer",
+    "roles/storage.objectViewer",
   ]
-  description = "List of the default IAM roles to attach to the service account on the GKE Nodes."
 }
 
 variable "project_services" {

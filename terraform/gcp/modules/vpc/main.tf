@@ -77,8 +77,8 @@ resource "google_compute_firewall" "http_compute_firewall" {
     ports    = ["80"]
   }
   source_ranges = ["0.0.0.0/0"]
-  source_tags = ["web"]
-  target_tags = ["http"]
+  source_tags   = ["web"]
+  target_tags   = ["http"]
 }
 
 # Allow https traffic
@@ -91,8 +91,8 @@ resource "google_compute_firewall" "https_compute_firewall" {
     ports    = ["443"]
   }
   source_ranges = ["0.0.0.0/0"]
-  source_tags = ["web"]
-  target_tags = ["https"]
+  source_tags   = ["web"]
+  target_tags   = ["https"]
 }
 
 # Allow ssh traffic
@@ -106,4 +106,24 @@ resource "google_compute_firewall" "ssh_compute_firewall" {
   }
   source_tags = ["web"]
   target_tags = ["ssh"]
+}
+
+resource "google_compute_global_address" "private_ip_address" {
+  provider = google-beta
+
+  project = var.project_id
+
+  name          = "private-ip-address"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = google_compute_network.compute_network.id
+}
+
+resource "google_service_networking_connection" "private_vpc_connection" {
+  provider = google-beta
+
+  network                 = google_compute_network.compute_network.id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
 }

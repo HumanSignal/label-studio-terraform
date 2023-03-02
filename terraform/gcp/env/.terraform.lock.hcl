@@ -38,6 +38,25 @@ provider "registry.terraform.io/hashicorp/google" {
   ]
 }
 
+provider "registry.terraform.io/hashicorp/google-beta" {
+  version = "4.55.0"
+  hashes = [
+    "h1:0qns5Q/+FWEc280PXSdsJj0D6XcXlU9CZFOhr5yg7+Q=",
+    "zh:50fc733ffda7f547657cb35ffb976603dfb30ad19d64dbffb073a8609f4781fb",
+    "zh:5dc4f53eeaa9f02e331b1de85d02e2e284764cdb6824a0077c5f47f2aa556521",
+    "zh:67e3a48f6f404bfde5e50461ec4f0e23bc15912e90b56b5f620ceda3d3153fd7",
+    "zh:68a798b21ae19d09cf765b3e1ecbd496d1c34a5347b6635f032cf15577bf272f",
+    "zh:71af36f2649faa8205ada41233ed8e4e29be5cc4a8dfbbe59e5c1366ddf4acc5",
+    "zh:85d8098c7865f32a1c1f1cd50661211e6868d88af7eadce995d77b37584e6b9d",
+    "zh:979077bf607888b7b4899161d84850167c0a990acb5b1a87bfadea99f0877e87",
+    "zh:a67600720a1c75638332fc830fdd8d6f5074c0c1f92f5783434f7121a80531e0",
+    "zh:a954d1542966c9cffa2bcbe73f3f7b31dece290d68a1e488c7d1fc368dec2202",
+    "zh:b35624d14224bec658fd0bfafbf862e4a43fe51f13ab6233f85a2863fe63f8b7",
+    "zh:d6ea523ae48a3c21c7bdb8bded8b9846a90df37fcf955c15b0c8de54c61e06b4",
+    "zh:f569b65999264a9416862bca5cd2a6177d94ccb0424f3a4ef424428912b9cb3c",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/helm" {
   version     = "2.8.0"
   constraints = "2.8.0"

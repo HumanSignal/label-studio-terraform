@@ -1,3 +1,6 @@
+variable "network_id" {
+  default = ""
+}
 resource "google_sql_database_instance" "instance" {
   name             = var.name
   region           = var.region
@@ -7,11 +10,15 @@ resource "google_sql_database_instance" "instance" {
 
   settings {
     tier = var.machine_type
+    ip_configuration {
+      ipv4_enabled                                  = false
+      private_network                               = var.network_id
+    }
   }
 }
 
 resource "google_sql_user" "user" {
-  name     = var.name
+  name     = var.username
   instance = google_sql_database_instance.instance.name
   password = var.password
 }
