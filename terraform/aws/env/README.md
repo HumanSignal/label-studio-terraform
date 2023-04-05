@@ -30,6 +30,7 @@
 | <a name="module_label-studio"></a> [label-studio](#module\_label-studio) | ../../common/modules/label-studio | n/a |
 | <a name="module_lbc"></a> [lbc](#module\_lbc) | ../modules/load-balancer-controller | n/a |
 | <a name="module_nic"></a> [nic](#module\_nic) | ../../common/modules/nginx-ingress-controller | n/a |
+| <a name="module_nic-lb-data"></a> [nic-lb-data](#module\_nic-lb-data) | ../modules/nginx-ingress-controller-loadbalancer-data | n/a |
 | <a name="module_rds"></a> [rds](#module\_rds) | ../modules/rds | n/a |
 | <a name="module_route53"></a> [route53](#module\_route53) | ../modules/route53 | n/a |
 | <a name="module_s3"></a> [s3](#module\_s3) | ../modules/s3 | n/a |
