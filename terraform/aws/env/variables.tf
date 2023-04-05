@@ -110,7 +110,7 @@ variable "ingress_namespace" {
 variable "monitoring_namespace" {
   description = "Namespace for monitoring"
   type        = string
-  default = "monitoring"
+  default     = "monitoring"
 }
 
 # Label Studio Helm Chart
@@ -293,4 +293,17 @@ variable "lets_encrypt_email" {
   description = "Email address for certificate sing via Let's Encrypt"
   type        = string
   default     = null
+}
+
+# Predefined VPC
+variable "predefined_vpc" {
+  type = object(
+    {
+      id : string
+      subnet_public_ids : list(string)
+      subnet_private_ids : list(string)
+      security_group_id : string
+    }
+  )
+  default = null
 }

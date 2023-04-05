@@ -21,6 +21,8 @@ locals {
 module "vpc" {
   source = "../modules/vpc"
 
+  count = var.predefined_vpc == null ? 1 : 0
+
   name               = local.name_prefix
   environment        = var.environment
   region             = var.region
@@ -62,9 +64,9 @@ module "eks" {
   min_size                  = var.min_size
   role_arn                  = module.iam.role_arn
   worker_role_arn           = module.iam.worker_role_arn
-  subnet_ids                = module.vpc.aws_subnet_private_ids
-  security_group_id         = module.vpc.security_group_id
-  public_subnets            = module.vpc.aws_subnet_public_ids
+  public_subnets            = var.predefined_vpc == null ? module.vpc.aws_subnet_public_ids : var.predefined_vpc.subnet_public_ids
+  subnet_ids                = var.predefined_vpc == null ? module.vpc.aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
+  security_group_id         = var.predefined_vpc == null ? module.vpc.security_group_id : var.predefined_vpc.security_group_id
   instance_profile_name     = module.iam.iam_instance_profile
   tags                      = local.tags
   capacity_type             = var.eks_capacity_type
@@ -107,8 +109,8 @@ module "rds" {
 
   name         = local.name_prefix
   environment  = var.environment
-  vpc_id       = module.vpc.aws_vpc_id
-  subnet_ids   = module.vpc.aws_subnet_private_ids
+  vpc_id       = var.predefined_vpc == null ? module.vpc.aws_vpc_id : var.predefined_vpc.id
+  subnet_ids   = var.predefined_vpc == null ? module.vpc.aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
   machine_type = var.postgresql_machine_type
   database     = var.postgresql_database
   username     = var.postgresql_username
@@ -126,8 +128,8 @@ module "elasticache" {
   count = var.redis_type == "elasticache" && var.enterprise ? 1 : 0
 
   name         = local.name_prefix
-  vpc_id       = module.vpc.aws_vpc_id
-  subnet_ids   = module.vpc.aws_subnet_private_ids
+  vpc_id       = var.predefined_vpc == null ? module.vpc.aws_vpc_id : var.predefined_vpc.id
+  subnet_ids   = var.predefined_vpc == null ? module.vpc.aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
   machine_type = var.redis_machine_type
   port         = var.redis_port
   password     = local.redis_password

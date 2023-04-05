@@ -128,6 +128,21 @@ email           = "test@test.com"
 
 [Full tfvars file example](examples/opensource_route53.tfvars)
 
+### Label Studio with predefined VPC
+
+Deploy to existing VPC.
+
+```hcl
+predefined_vpc = {
+  id                 = "vpc-***",
+  subnet_public_ids  = ["subnet-***", "subnet-***", "subnet-***"],
+  subnet_private_ids = ["subnet-***", "subnet-***", "subnet-***"],
+  security_group_id  = "sg-***"
+}
+```
+
+[Full tfvars file example](examples/opensource_predefined_vpc.tfvars)
+
 ### Label Studio Enterprise
 
 Deploy a Label Studio Enterprise with ElastiCache and RDS.
