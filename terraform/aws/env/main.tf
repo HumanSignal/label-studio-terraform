@@ -55,24 +55,25 @@ module "s3" {
 module "eks" {
   source = "../modules/eks"
 
-  name                      = local.name_prefix
-  region                    = var.region
-  environment               = var.environment
-  instance_type             = var.instance_type
-  desired_capacity          = var.desired_capacity
-  max_size                  = var.max_size
-  min_size                  = var.min_size
-  role_arn                  = module.iam.role_arn
-  worker_role_arn           = module.iam.worker_role_arn
-  public_subnets            = var.predefined_vpc == null ? module.vpc.aws_subnet_public_ids : var.predefined_vpc.subnet_public_ids
-  subnet_ids                = var.predefined_vpc == null ? module.vpc.aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
-  security_group_id         = var.predefined_vpc == null ? module.vpc.security_group_id : var.predefined_vpc.security_group_id
-  instance_profile_name     = module.iam.iam_instance_profile
-  tags                      = local.tags
-  capacity_type             = var.eks_capacity_type
-  persistence_s3_bucket_arn = module.s3.bucket_arn
-  persistence_s3_kms_arn    = module.s3.kms_arn
-  monitoring_namespace      = var.monitoring_namespace
+  name                                 = local.name_prefix
+  region                               = var.region
+  environment                          = var.environment
+  instance_type                        = var.instance_type
+  desired_capacity                     = var.desired_capacity
+  max_size                             = var.max_size
+  min_size                             = var.min_size
+  role_arn                             = module.iam.role_arn
+  worker_role_arn                      = module.iam.worker_role_arn
+  public_subnets                       = var.predefined_vpc == null ? module.vpc.aws_subnet_public_ids : var.predefined_vpc.subnet_public_ids
+  subnet_ids                           = var.predefined_vpc == null ? module.vpc.aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
+  security_group_id                    = var.predefined_vpc == null ? module.vpc.security_group_id : var.predefined_vpc.security_group_id
+  instance_profile_name                = module.iam.iam_instance_profile
+  tags                                 = local.tags
+  capacity_type                        = var.eks_capacity_type
+  persistence_s3_bucket_arn            = module.s3.bucket_arn
+  persistence_s3_kms_arn               = module.s3.kms_arn
+  monitoring_namespace                 = var.monitoring_namespace
+  cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
 
   depends_on = [
     module.vpc,
