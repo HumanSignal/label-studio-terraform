@@ -3,11 +3,11 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.3.6 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | = 4.46.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.7.1 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.4.4 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | = 4.61.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.9.0 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | = 1.14.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.16.1 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.19.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | = 3.4.3 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | = 4.0.4 |
 
@@ -15,7 +15,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.46.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.61.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.4.3 |
 
 ## Modules
@@ -41,9 +41,9 @@
 |------|------|
 | [random_password.postgresql_password](https://registry.terraform.io/providers/hashicorp/random/3.4.3/docs/resources/password) | resource |
 | [random_password.redis_password](https://registry.terraform.io/providers/hashicorp/random/3.4.3/docs/resources/password) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/4.46.0/docs/data-sources/caller_identity) | data source |
-| [aws_eks_cluster.eks](https://registry.terraform.io/providers/hashicorp/aws/4.46.0/docs/data-sources/eks_cluster) | data source |
-| [aws_eks_cluster_auth.eks](https://registry.terraform.io/providers/hashicorp/aws/4.46.0/docs/data-sources/eks_cluster_auth) | data source |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/4.61.0/docs/data-sources/caller_identity) | data source |
+| [aws_eks_cluster.eks](https://registry.terraform.io/providers/hashicorp/aws/4.61.0/docs/data-sources/eks_cluster) | data source |
+| [aws_eks_cluster_auth.eks](https://registry.terraform.io/providers/hashicorp/aws/4.61.0/docs/data-sources/eks_cluster_auth) | data source |
 
 ## Inputs
 
@@ -86,6 +86,7 @@
 | <a name="input_postgresql_tls_key_file"></a> [postgresql\_tls\_key\_file](#input\_postgresql\_tls\_key\_file) | n/a | `string` | `null` | no |
 | <a name="input_postgresql_type"></a> [postgresql\_type](#input\_postgresql\_type) | Postgresql type | `string` | `"internal"` | no |
 | <a name="input_postgresql_username"></a> [postgresql\_username](#input\_postgresql\_username) | Postgresql username | `string` | `"labelstudio"` | no |
+| <a name="input_predefined_s3_bucket"></a> [predefined\_s3\_bucket](#input\_predefined\_s3\_bucket) | Predefined S3 Bucket | <pre>object(<br>    {<br>      name : string<br>      region : string<br>      folder : string<br>    }<br>  )</pre> | `null` | no |
 | <a name="input_predefined_vpc"></a> [predefined\_vpc](#input\_predefined\_vpc) | Predefined VPC | <pre>object(<br>    {<br>      id : string<br>      subnet_public_ids : list(string)<br>      subnet_private_ids : list(string)<br>      security_group_id : string<br>    }<br>  )</pre> | `null` | no |
 | <a name="input_private_cidr_block"></a> [private\_cidr\_block](#input\_private\_cidr\_block) | List of private subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.1.0/24",<br>  "10.0.2.0/24",<br>  "10.0.3.0/24"<br>]</pre> | no |
 | <a name="input_public_cidr_block"></a> [public\_cidr\_block](#input\_public\_cidr\_block) | List of public subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.101.0/24",<br>  "10.0.102.0/24",<br>  "10.0.103.0/24"<br>]</pre> | no |

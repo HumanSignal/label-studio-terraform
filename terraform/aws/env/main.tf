@@ -49,6 +49,15 @@ module "s3" {
   name        = local.name_prefix
   environment = var.environment
   tags        = local.tags
+
+  predefined_s3_bucket = var.predefined_s3_bucket
+
+  iam_oidc_provider_arn = module.eks.iam_oidc_provider_arn
+  iam_oidc_provider_url = module.eks.iam_oidc_provider_url
+
+  depends_on = [
+    module.eks,
+  ]
 }
 
 # Create Elastic Kubernetes Service
@@ -70,8 +79,6 @@ module "eks" {
   instance_profile_name                = module.iam.iam_instance_profile
   tags                                 = local.tags
   capacity_type                        = var.eks_capacity_type
-  persistence_s3_bucket_arn            = module.s3.bucket_arn
-  persistence_s3_kms_arn               = module.s3.kms_arn
   monitoring_namespace                 = var.monitoring_namespace
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
 
@@ -207,8 +214,8 @@ module "label-studio" {
 
   persistence_s3_bucket_name   = module.s3.bucket_name
   persistence_s3_bucket_region = module.s3.bucket_region
-  persistence_s3_bucket_folder = ""
-  persistence_s3_role_arn      = module.eks.s3_persistence_role_arn
+  persistence_s3_bucket_folder = module.s3.bucket_folder
+  persistence_s3_role_arn      = module.s3.s3_persistence_role_arn
 
   postgresql_type         = var.postgresql_type
   postgresql_host         = var.postgresql_type == "rds" ? module.rds[0].host : var.postgresql_host
