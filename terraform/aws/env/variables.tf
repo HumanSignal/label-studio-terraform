@@ -113,6 +113,25 @@ variable "monitoring_namespace" {
   default     = "monitoring"
 }
 
+# EKS AWS auth
+variable "aws_auth_roles" {
+  description = "List of role maps to add to the aws-auth configmap"
+  type        = list(any)
+  default     = []
+}
+
+variable "aws_auth_users" {
+  description = "List of user maps to add to the aws-auth configmap"
+  type        = list(any)
+  default     = []
+}
+
+variable "aws_auth_accounts" {
+  description = "List of account maps to add to the aws-auth configmap"
+  type        = list(any)
+  default     = []
+}
+
 # Label Studio Helm Chart
 variable "label_studio_helm_chart_repo" {
   description = "Heartex repository name."

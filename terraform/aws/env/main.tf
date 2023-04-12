@@ -75,6 +75,10 @@ module "eks" {
   monitoring_namespace                 = var.monitoring_namespace
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
 
+  aws_auth_roles = var.aws_auth_roles
+  aws_auth_users = var.aws_auth_users
+  aws_auth_accounts = var.aws_auth_accounts
+
   depends_on = [
     module.vpc,
   ]
