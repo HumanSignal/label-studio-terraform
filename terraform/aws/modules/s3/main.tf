@@ -1,5 +1,5 @@
 # Create s3 bucket resource
-#tfsec:ignore:aws-s3-enable-bucket-logging
+#tfsec:ignore:aws-s3-enable-bucket-logging tfsec:ignore:aws-s3-enable-versioning
 resource "aws_s3_bucket" "s3_bucket" {
   count = var.predefined_s3_bucket == null ? 1 : 0
 
@@ -12,20 +12,6 @@ resource "aws_s3_bucket" "s3_bucket" {
   lifecycle {
     create_before_destroy = true
   }
-}
-
-data "aws_s3_bucket" "predefined_s3_bucket" {
-  count = var.predefined_s3_bucket == null ? 0 : 1
-
-  bucket = var.predefined_s3_bucket.name
-}
-
-locals {
-  aws_s3_bucket_id     = var.predefined_s3_bucket == null ? aws_s3_bucket.s3_bucket[0].id : data.aws_s3_bucket.predefined_s3_bucket[0].id
-  aws_s3_bucket_arn    = var.predefined_s3_bucket == null ? aws_s3_bucket.s3_bucket[0].arn : data.aws_s3_bucket.predefined_s3_bucket[0].arn
-  aws_s3_bucket_bucket = var.predefined_s3_bucket == null ? aws_s3_bucket.s3_bucket[0].bucket : data.aws_s3_bucket.predefined_s3_bucket[0].bucket
-  aws_s3_bucket_region = var.predefined_s3_bucket == null ? aws_s3_bucket.s3_bucket[0].region : data.aws_s3_bucket.predefined_s3_bucket[0].region
-  aws_s3_bucket_folder = var.predefined_s3_bucket == null ? var.folder : var.predefined_s3_bucket.folder
 }
 
 resource "aws_s3_bucket" "s3_log_bucket" {
@@ -52,7 +38,7 @@ resource "aws_s3_bucket_acl" "s3_log_bucket_acl" {
 resource "aws_s3_bucket_logging" "s3_bucket_logging" {
   count = var.enable_log_bucket ? 1 : 0
 
-  bucket = local.aws_s3_bucket_id
+  bucket = aws_s3_bucket.s3_bucket[0].id
 
   target_bucket = aws_s3_bucket.s3_log_bucket[count.index]
   target_prefix = "log/"
@@ -62,7 +48,7 @@ resource "aws_s3_bucket_logging" "s3_bucket_logging" {
 resource "aws_s3_bucket_versioning" "s3_bucket_versioning" {
   count = var.enable_bucket_versioning ? 1 : 0
 
-  bucket = local.aws_s3_bucket_id
+  bucket = aws_s3_bucket.s3_bucket[0].id
   versioning_configuration {
     status = "Enabled"
   }
@@ -77,7 +63,7 @@ resource "aws_kms_key" "bucket" {
 
 # Enable bucket server side encryption
 resource "aws_s3_bucket_server_side_encryption_configuration" "s3_bucket_encryption" {
-  bucket = local.aws_s3_bucket_bucket
+  bucket = aws_s3_bucket.s3_bucket[0].bucket
 
   rule {
     apply_server_side_encryption_by_default {
@@ -89,7 +75,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "s3_bucket_encrypt
 
 # Enable CORS on bucket
 resource "aws_s3_bucket_cors_configuration" "s3_bucket_cors" {
-  bucket = local.aws_s3_bucket_id
+  bucket = aws_s3_bucket.s3_bucket[0].id
 
   cors_rule {
     allowed_headers = ["*"]
@@ -103,7 +89,7 @@ resource "aws_s3_bucket_cors_configuration" "s3_bucket_cors" {
 
 # Block public access to the bucket
 resource "aws_s3_bucket_public_access_block" "s3_bucket_public_access_block" {
-  bucket = local.aws_s3_bucket_id
+  bucket = aws_s3_bucket.s3_bucket[0].id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -136,6 +122,7 @@ resource "aws_iam_role" "persistence" {
 POLICY
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "persistence" {
   name        = "${var.name}-s3-persistence"
   description = "Permissions for s3 bucket ${var.name}"
@@ -148,7 +135,7 @@ resource "aws_iam_policy" "persistence" {
           "s3:ListBucket"
         ],
         "Resource" = [
-          local.aws_s3_bucket_arn
+          aws_s3_bucket.s3_bucket[0].arn
         ]
       },
       {
@@ -159,7 +146,7 @@ resource "aws_iam_policy" "persistence" {
           "s3:DeleteObject"
         ],
         "Resource" : [
-          "${local.aws_s3_bucket_arn}/*"
+          "${aws_s3_bucket.s3_bucket[0].arn}/*"
         ]
       },
       {
