@@ -60,6 +60,8 @@ resource "aws_s3_bucket_logging" "s3_bucket_logging" {
 
 # Enable bucket versioning
 resource "aws_s3_bucket_versioning" "s3_bucket_versioning" {
+  count = var.enable_bucket_versioning ? 1 : 0
+
   bucket = local.aws_s3_bucket_id
   versioning_configuration {
     status = "Enabled"
