@@ -1,7 +1,7 @@
 [Website](https://labelstud.io/) • [Docs](https://labelstud.io/guide/) • [Twitter](https://twitter.com/labelstudiohq) • [Join Slack Community <img src="https://app.heartex.ai/docs/images/slack-mini.png" width="18px"/>](https://slack.labelstudio.heartex.com/?source=github-1)
 
 ## Label Studio Terraform
-The LabelStudio terraform module allows users to easily deploy a fully-featured instance of [Label Studio/Label Studio Enterprise](https://labelstud.io/) on multiple cloud providers, including AWS, Google Cloud(support in 2023) and Azure(support in late 2023).
+The LabelStudio terraform module allows users to easily deploy a fully-featured instance of [Label Studio/Label Studio Enterprise](https://labelstud.io/) on multiple cloud providers, including AWS, Google Cloud (support in 2023) and Azure (support in late 2023).
 
 With [Label Studio/Label Studio Enterprise](https://labelstud.io/), users can create custom labeling interfaces, manage the labeling process, and export labeled data for use in machine learning and other applications.
 
