@@ -15,7 +15,7 @@ Using the module, you can quickly set up a Label Studio/Label Studio Enterprise 
 | NAME        | Version | 
 |-------------|---------|
 | MacOS/Linux | any     |
-| Terraform   | 1.3.6   |
+| Terraform   | 1.4.4   |
 | Helm        | 3.10.x  |
 | kubectl     | 1.24.x  |
 
