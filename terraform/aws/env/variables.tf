@@ -340,6 +340,7 @@ variable "predefined_s3_bucket" {
       name : string
       region : string
       folder : string
+      kms_arn : string
     }
   )
   default = null

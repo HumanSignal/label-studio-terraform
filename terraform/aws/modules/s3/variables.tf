@@ -36,24 +36,3 @@ variable "enable_bucket_versioning" {
   type        = bool
   default     = false
 }
-
-variable "iam_oidc_provider_arn" {
-  description = "AWS EKS IRSA arn"
-  type        = string
-}
-
-variable "iam_oidc_provider_url" {
-  description = "AWS EKS IRSA url"
-  type        = string
-}
-
-variable "predefined_s3_bucket" {
-  type = object(
-    {
-      name : string
-      region : string
-      folder : string
-    }
-  )
-  default = null
-}

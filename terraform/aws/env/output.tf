@@ -15,7 +15,7 @@ output "cluster_endpoint" {
 
 output "bucket_id" {
   description = "Bucket Name (aka ID)"
-  value       = module.s3.bucket_id
+  value       = var.predefined_s3_bucket == null ? module.s3[0].bucket_name : var.predefined_s3_bucket.name
 }
 
 output "connect_cluster" {

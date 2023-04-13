@@ -1,21 +1,21 @@
 # AWS s3 bucket id
 output "bucket_id" {
-  value       = aws_s3_bucket.s3_bucket[0].id
+  value       = aws_s3_bucket.s3_bucket.id
   description = "Bucket Name (aka ID)"
 }
 
 # AWS s3 bucket arn
 output "bucket_arn" {
-  value       = aws_s3_bucket.s3_bucket[0].arn
+  value       = aws_s3_bucket.s3_bucket.arn
   description = "The arn of the bucket will be in format arn:aws:s3::bucketname"
 }
 
 output "bucket_name" {
-  value = aws_s3_bucket.s3_bucket[0].bucket
+  value = aws_s3_bucket.s3_bucket.bucket
 }
 
 output "bucket_region" {
-  value = aws_s3_bucket.s3_bucket[0].region
+  value = aws_s3_bucket.s3_bucket.region
 }
 
 output "bucket_folder" {
@@ -24,8 +24,4 @@ output "bucket_folder" {
 
 output "kms_arn" {
   value = aws_kms_key.bucket.arn
-}
-
-output "s3_persistence_role_arn" {
-  value = aws_iam_role.persistence.arn
 }
