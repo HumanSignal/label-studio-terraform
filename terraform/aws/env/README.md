@@ -33,6 +33,7 @@
 | <a name="module_rds"></a> [rds](#module\_rds) | ../modules/rds | n/a |
 | <a name="module_route53"></a> [route53](#module\_route53) | ../modules/route53 | n/a |
 | <a name="module_s3"></a> [s3](#module\_s3) | ../modules/s3 | n/a |
+| <a name="module_s3_role"></a> [s3\_role](#module\_s3\_role) | ../modules/s3_role | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | ../modules/vpc | n/a |
 
 ## Resources
@@ -49,6 +50,9 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_aws_auth_accounts"></a> [aws\_auth\_accounts](#input\_aws\_auth\_accounts) | List of account maps to add to the aws-auth configmap | `list(any)` | `[]` | no |
+| <a name="input_aws_auth_roles"></a> [aws\_auth\_roles](#input\_aws\_auth\_roles) | List of role maps to add to the aws-auth configmap | `list(any)` | `[]` | no |
+| <a name="input_aws_auth_users"></a> [aws\_auth\_users](#input\_aws\_auth\_users) | List of user maps to add to the aws-auth configmap | `list(any)` | `[]` | no |
 | <a name="input_cluster_endpoint_public_access_cidrs"></a> [cluster\_endpoint\_public\_access\_cidrs](#input\_cluster\_endpoint\_public\_access\_cidrs) | List of CIDR blocks which can access the Amazon EKS public API server endpoint | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_create_acm_certificate"></a> [create\_acm\_certificate](#input\_create\_acm\_certificate) | Whether to create acm certificate or use existing | `bool` | `false` | no |
 | <a name="input_create_r53_zone"></a> [create\_r53\_zone](#input\_create\_r53\_zone) | Create R53 zone for main public domain | `bool` | `false` | no |
@@ -86,7 +90,7 @@
 | <a name="input_postgresql_tls_key_file"></a> [postgresql\_tls\_key\_file](#input\_postgresql\_tls\_key\_file) | n/a | `string` | `null` | no |
 | <a name="input_postgresql_type"></a> [postgresql\_type](#input\_postgresql\_type) | Postgresql type | `string` | `"internal"` | no |
 | <a name="input_postgresql_username"></a> [postgresql\_username](#input\_postgresql\_username) | Postgresql username | `string` | `"labelstudio"` | no |
-| <a name="input_predefined_s3_bucket"></a> [predefined\_s3\_bucket](#input\_predefined\_s3\_bucket) | Predefined S3 Bucket | <pre>object(<br>    {<br>      name : string<br>      region : string<br>      folder : string<br>    }<br>  )</pre> | `null` | no |
+| <a name="input_predefined_s3_bucket"></a> [predefined\_s3\_bucket](#input\_predefined\_s3\_bucket) | Predefined S3 Bucket | <pre>object(<br>    {<br>      name : string<br>      region : string<br>      folder : string<br>      kms_arn : string<br>    }<br>  )</pre> | `null` | no |
 | <a name="input_predefined_vpc"></a> [predefined\_vpc](#input\_predefined\_vpc) | Predefined VPC | <pre>object(<br>    {<br>      id : string<br>      subnet_public_ids : list(string)<br>      subnet_private_ids : list(string)<br>      security_group_id : string<br>    }<br>  )</pre> | `null` | no |
 | <a name="input_private_cidr_block"></a> [private\_cidr\_block](#input\_private\_cidr\_block) | List of private subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.1.0/24",<br>  "10.0.2.0/24",<br>  "10.0.3.0/24"<br>]</pre> | no |
 | <a name="input_public_cidr_block"></a> [public\_cidr\_block](#input\_public\_cidr\_block) | List of public subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.101.0/24",<br>  "10.0.102.0/24",<br>  "10.0.103.0/24"<br>]</pre> | no |
