@@ -53,9 +53,10 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | Name is the prefix to use for resources that needs to be created | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Kubernetes namespace to deploy Label Studio Helm chart | `string` | `"labelstudio"` | no |
 | <a name="input_persistence_s3_bucket_folder"></a> [persistence\_s3\_bucket\_folder](#input\_persistence\_s3\_bucket\_folder) | TBD | `string` | `""` | no |
-| <a name="input_persistence_s3_bucket_name"></a> [persistence\_s3\_bucket\_name](#input\_persistence\_s3\_bucket\_name) | TBD | `string` | n/a | yes |
-| <a name="input_persistence_s3_bucket_region"></a> [persistence\_s3\_bucket\_region](#input\_persistence\_s3\_bucket\_region) | TBD | `string` | n/a | yes |
-| <a name="input_persistence_s3_role_arn"></a> [persistence\_s3\_role\_arn](#input\_persistence\_s3\_role\_arn) | TBD | `string` | n/a | yes |
+| <a name="input_persistence_s3_bucket_name"></a> [persistence\_s3\_bucket\_name](#input\_persistence\_s3\_bucket\_name) | TBD | `string` | `""` | no |
+| <a name="input_persistence_s3_bucket_region"></a> [persistence\_s3\_bucket\_region](#input\_persistence\_s3\_bucket\_region) | TBD | `string` | `""` | no |
+| <a name="input_persistence_s3_role_arn"></a> [persistence\_s3\_role\_arn](#input\_persistence\_s3\_role\_arn) | TBD | `string` | `""` | no |
+| <a name="input_persistence_type"></a> [persistence\_type](#input\_persistence\_type) | Persistence | `string` | n/a | yes |
 | <a name="input_postgresql_ca_crt_file"></a> [postgresql\_ca\_crt\_file](#input\_postgresql\_ca\_crt\_file) | n/a | `string` | `null` | no |
 | <a name="input_postgresql_database"></a> [postgresql\_database](#input\_postgresql\_database) | Postgresql database name | `string` | `"labelstudio"` | no |
 | <a name="input_postgresql_host"></a> [postgresql\_host](#input\_postgresql\_host) | Postgresql fqdn | `string` | `""` | no |

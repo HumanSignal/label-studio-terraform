@@ -67,7 +67,7 @@ resource "kubernetes_secret" "license" {
 }
 
 resource "kubernetes_secret" "postgresql" {
-  count = contains(["external", "rds"], var.postgresql_type) ? 1 : 0
+  count = contains(["external", "rds", "cloudsql"], var.postgresql_type) ? 1 : 0
   metadata {
     name      = local.postgresql_secret_name
     namespace = kubernetes_namespace.this.metadata[0].name
@@ -93,7 +93,7 @@ resource "kubernetes_secret" "postgresql-ssl-cert" {
 }
 
 resource "kubernetes_secret" "redis" {
-  count = contains(["external", "elasticache"], var.redis_type) ? 1 : 0
+  count = contains(["external", "elasticache", "memorystore"], var.redis_type) ? 1 : 0
   metadata {
     name      = local.redis_secret_name
     namespace = kubernetes_namespace.this.metadata[0].name
@@ -168,15 +168,22 @@ resource "helm_release" "label_studio" {
         "enterprise.enterpriseLicense.secretKey"  = local.license_secret_key
       }) : tomap({}),
       # persistence
-      tomap({
+      var.persistence_type == "s3" ? tomap({
         "global.persistence.enabled"                                         = true
-        "global.persistence.type"                                            = "s3"
+        "global.persistence.type"                                            = var.persistence_type
         "global.persistence.config.s3.bucket"                                = var.persistence_s3_bucket_name
         "global.persistence.config.s3.region"                                = var.persistence_s3_bucket_region
         "global.persistence.config.s3.folder"                                = var.persistence_s3_bucket_folder
         "app.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"      = var.persistence_s3_role_arn
         "rqworker.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn" = var.persistence_s3_role_arn
-      }),
+      }) : tomap({}),
+      var.persistence_type == "gcs" ? tomap({
+        "global.persistence.enabled"              = true
+        "global.persistence.type"                 = var.persistence_type
+        "global.persistence.config.gcs.bucket"    = var.persistence_s3_bucket_name
+        "global.persistence.config.gcs.projectID" = var.persistence_s3_bucket_region
+        "global.persistence.config.gcs.folder"    = var.persistence_s3_bucket_folder
+      }) : tomap({}),
       # postgres
       var.postgresql_type == "internal" ? tomap({
         "postgresql.enabled"                         = true
@@ -207,6 +214,16 @@ resource "helm_release" "label_studio" {
         "global.pgConfig.ssl.pgSslKeySecretKey"      = local.postgresql_tls_key_secret_key
       }) : tomap({}),
       var.postgresql_type == "rds" ? tomap({
+        "postgresql.enabled"                  = false
+        "global.pgConfig.host"                = var.postgresql_host
+        "global.pgConfig.port"                = var.postgresql_port
+        "global.pgConfig.dbName"              = var.postgresql_database
+        "global.pgConfig.userName"            = var.postgresql_username
+        "global.pgConfig.password.secretName" = kubernetes_secret.postgresql[0].metadata[0].name
+        "global.pgConfig.password.secretKey"  = local.postgresql_secret_key
+        "global.pgConfig.ssl.pgSslMode"       = "require"
+      }) : tomap({}),
+      var.postgresql_type == "cloudsql" ? tomap({
         "postgresql.enabled"                  = false
         "global.pgConfig.host"                = var.postgresql_host
         "global.pgConfig.port"                = var.postgresql_port

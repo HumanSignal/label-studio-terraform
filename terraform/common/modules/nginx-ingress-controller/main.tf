@@ -13,23 +13,7 @@ resource "helm_release" "this" {
   version    = var.helm_chart_version
 
   values = [
-    yamlencode(
-      merge(
-        {
-          controller : {
-            service : {
-              annotations : {
-                "service.beta.kubernetes.io/aws-load-balancer-name" : var.load_balancer_name
-                "service.beta.kubernetes.io/aws-load-balancer-type" : "external"
-                "service.beta.kubernetes.io/aws-load-balancer-scheme" : "internet-facing"
-                "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" : "ip"
-              }
-            }
-          }
-        },
-        var.settings,
-      )
-    )
+    yamlencode(var.settings)
   ]
 
   depends_on = [

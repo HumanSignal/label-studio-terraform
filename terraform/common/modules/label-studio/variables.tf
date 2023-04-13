@@ -89,13 +89,22 @@ variable "license_literal" {
 }
 
 # Persistence
+variable "persistence_type" {
+  type = string
+  validation {
+    condition     = contains(["disabled", "s3", "gcs"], var.persistence_type)
+    error_message = "persistence_type must be `disabled`, `s3`, either `gcs`"
+  }
+}
 variable "persistence_s3_bucket_name" {
   description = "TBD"
   type        = string
+  default     = ""
 }
 variable "persistence_s3_bucket_region" {
   description = "TBD"
   type        = string
+  default     = ""
 }
 variable "persistence_s3_bucket_folder" {
   description = "TBD"
@@ -105,6 +114,7 @@ variable "persistence_s3_bucket_folder" {
 variable "persistence_s3_role_arn" {
   description = "TBD"
   type        = string
+  default     = ""
 }
 
 
@@ -114,8 +124,8 @@ variable "postgresql_type" {
   type        = string
   default     = "internal"
   validation {
-    condition     = contains(["internal", "external", "rds"], var.postgresql_type)
-    error_message = "postgresql_type must be `internal`, `external`, either `rds`"
+    condition     = contains(["internal", "external", "cloudsql", "rds"], var.postgresql_type)
+    error_message = "postgresql_type must be `internal`, `external`, `rds`, `cloudsql`"
   }
 }
 variable "postgresql_database" {
@@ -178,8 +188,8 @@ variable "redis_type" {
   type        = string
   default     = "internal"
   validation {
-    condition     = contains(["internal", "external", "elasticache", "absent"], var.redis_type)
-    error_message = "redis_type must be `internal`, `external`, `elasticache`, either `absent`"
+    condition     = contains(["internal", "external", "elasticache", "memorystore", "absent"], var.redis_type)
+    error_message = "redis_type must be `internal`, `external`, `elasticache`, `memorystore`, either `absent`"
   }
 }
 variable "redis_host" {

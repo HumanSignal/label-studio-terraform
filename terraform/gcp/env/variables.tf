@@ -1,0 +1,334 @@
+variable "name" {
+  description = "Name is the prefix to use for resources that needs to be created."
+  type        = string
+}
+
+variable "environment" {
+  description = "Name of the environment where infrastructure is being built."
+  type        = string
+}
+
+variable "region" {
+  description = "The AWS region where terraform build resources."
+  type        = string
+  default     = "us-east-1"
+}
+
+variable "project_id" {
+  type = string
+}
+
+variable "gke_instance_type" {
+  description = "Type of instance to be used for the Kubernetes cluster."
+  type        = string
+  default     = "e2-medium"
+}
+
+variable "gke_desired_capacity" {
+  description = "Desired capacity for the autoscaling Group."
+  type        = number
+  default     = 3
+}
+
+variable "gke_max_size" {
+  description = "Maximum number of the instances in autoscaling group"
+  type        = number
+  default     = 5
+}
+
+variable "gke_min_size" {
+  description = "Minimum number of the instances in autoscaling group"
+  type        = number
+  default     = 3
+}
+
+# Expose Subnet Settings
+variable "public_cidr_block" {
+  description = "List of public subnet cidr blocks"
+  type        = list(string)
+  default     = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+}
+
+variable "private_cidr_block" {
+  description = "List of private subnet cidr blocks"
+  type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+}
+
+variable "create_r53_zone" {
+  default     = false
+  type        = bool
+  description = "Create R53 zone for main public domain"
+}
+
+variable "create_acm_certificate" {
+  default     = false
+  type        = bool
+  description = "Whether to create acm certificate or use existing"
+}
+
+variable "domain_name" {
+  default     = null
+  type        = string
+  description = "Main public domain name"
+}
+
+variable "record_name" {
+  default     = null
+  type        = string
+  description = "Main record domain name"
+}
+
+variable "eks_capacity_type" {
+  description = "Type of capacity associated with the EKS Node Group"
+  type        = string
+  default     = "ON_DEMAND"
+  validation {
+    condition     = contains(["ON_DEMAND", "SPOT"], var.eks_capacity_type)
+    error_message = "VM Size must be `ON_DEMAND` or `SPOT`"
+  }
+}
+
+variable "gke_preemptible_nodes" {
+  description = "Whether the GKE node VMs are preemptible"
+  type        = bool
+  default     = false
+}
+
+variable "gke_spot_nodes" {
+  description = "Whether the GKE node VMs are spot"
+  type        = bool
+  default     = false
+}
+
+variable "gke_node_disk_size_gb" {
+  description = "Size of the disk attached to each node in GKE, specified in GB"
+  type        = number
+  default     = 30
+}
+
+variable "ingress_namespace" {
+  description = "Namespace for ingress"
+  type        = string
+  default     = "ingress"
+}
+
+# Label Studio Helm Chart
+variable "label_studio_helm_chart_repo" {
+  description = "Heartex repository name."
+  type        = string
+  default     = "https://charts.heartex.com"
+}
+variable "label_studio_helm_chart_repo_username" {
+  description = "Username for HTTP basic authentication against the Helm repository."
+  type        = string
+  default     = ""
+}
+variable "label_studio_helm_chart_repo_password" {
+  description = "Password for HTTP basic authentication against the Helm repository."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+variable "label_studio_helm_chart_name" {
+  description = "Label Studio Helm chart name to be installed"
+  type        = string
+  default     = "label-studio"
+}
+variable "label_studio_helm_chart_version" {
+  description = "Label Studio Helm chart version"
+  type        = string
+  default     = "1.0.3"
+}
+
+# Label Studio Docker registry
+variable "label_studio_docker_registry_server" {
+  description = "Docker registry fqdn to pull Label Studio image from"
+  type        = string
+  default     = "https://index.docker.io/v2/"
+}
+variable "label_studio_docker_registry_username" {
+  description = "Docker username to pull Label Studio image"
+  type        = string
+  default     = ""
+}
+variable "label_studio_docker_registry_password" {
+  description = "Docker password to pull Label Studio image."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+variable "label_studio_docker_registry_email" {
+  description = "Docker email to pull Label Studio image"
+  type        = string
+  default     = ""
+}
+
+variable "label_studio_additional_set" {
+  description = "Additional sets for Label Studio Helm chart release"
+  type        = map(string)
+  default     = {}
+}
+
+variable "enterprise" {
+  description = "Deploy enterprise version of Label Studio"
+  type        = bool
+  default     = false
+}
+
+variable "license_literal" {
+  description = "License link for enterprise Label Studio"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+
+# Postgres
+variable "postgresql_type" {
+  description = "Postgresql type"
+  type        = string
+  default     = "internal"
+  validation {
+    condition     = contains(["internal", "external", "cloudsql"], var.postgresql_type)
+    error_message = "postgresql_type must be `internal`, `external` either `cloudsql`"
+  }
+}
+variable "postgresql_machine_type" {
+  description = "Postgresql machine type"
+  type        = string
+  default     = "db.m5.large"
+}
+variable "postgresql_database" {
+  description = "Postgresql database name"
+  type        = string
+  default     = "labelstudio"
+}
+variable "postgresql_host" {
+  description = "Postgresql fqdn"
+  type        = string
+  default     = ""
+}
+variable "postgresql_port" {
+  description = "Postgresql port"
+  type        = number
+  default     = 5432
+}
+variable "postgresql_username" {
+  description = "Postgresql username"
+  type        = string
+  default     = "labelstudio"
+}
+variable "postgresql_password" {
+  description = "Postgresql password"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+variable "postgresql_ssl_mode" {
+  type    = string
+  default = "require"
+}
+variable "postgresql_tls_key_file" {
+  type    = string
+  default = null
+}
+variable "postgresql_tls_crt_file" {
+  type    = string
+  default = null
+}
+variable "postgresql_ca_crt_file" {
+  type    = string
+  default = null
+}
+variable "cloudsql_deletion_protection" {
+  type    = bool
+  default = false
+}
+
+
+# Redis
+variable "redis_type" {
+  description = "Redis deployment type"
+  type        = string
+  default     = "internal"
+  validation {
+    condition     = contains(["internal", "external", "memorystore", "absent"], var.redis_type)
+    error_message = "redis_type must be `internal`, `external`, `memorystore`, either `absent`"
+  }
+}
+variable "redis_machine_type" {
+  description = "Redis machine type"
+  type        = string
+  default     = "cache.t3.micro"
+}
+variable "redis_host" {
+  description = "Redis fqdn"
+  type        = string
+  default     = ""
+}
+variable "redis_port" {
+  description = "Redis port"
+  type        = string
+  default     = 6379
+}
+variable "redis_password" {
+  description = "Redis password"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+variable "redis_ssl_mode" {
+  type    = string
+  default = "required"
+}
+variable "redis_ca_crt_file" {
+  type    = string
+  default = null
+}
+variable "redis_tls_crt_file" {
+  type    = string
+  default = null
+}
+variable "redis_tls_key_file" {
+  type    = string
+  default = null
+}
+
+variable "lets_encrypt_email" {
+  description = "Email address for certificate sing via Let's Encrypt"
+  type        = string
+  default     = null
+}
+
+variable "service_account_iam_roles" {
+  description = "List of the default IAM roles to attach to the service account on the GKE Nodes."
+  type        = list(string)
+  default     = [
+    "roles/artifactregistry.reader",
+    "roles/cloudtrace.agent",
+    "roles/logging.logWriter",
+    "roles/monitoring.admin",
+    "roles/monitoring.metricWriter",
+    "roles/monitoring.viewer",
+    "roles/servicemanagement.serviceController",
+    "roles/stackdriver.resourceMetadata.writer",
+    "roles/storage.objectViewer",
+  ]
+}
+
+variable "project_services" {
+  type = list(string)
+
+  default = [
+    "cloudresourcemanager.googleapis.com",
+    "servicenetworking.googleapis.com",
+    "container.googleapis.com",
+    "compute.googleapis.com",
+    "iam.googleapis.com",
+    "logging.googleapis.com",
+    "monitoring.googleapis.com",
+    "sqladmin.googleapis.com",
+    "securetoken.googleapis.com",
+  ]
+  description = "The GCP APIs that should be enabled in this project."
+}
