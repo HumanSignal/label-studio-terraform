@@ -24,42 +24,43 @@ POLICY
 }
 
 locals {
-  kms_policy = {
-    "Effect" = "Allow",
-    "Action" = [
-      "kms:GenerateDataKey",
-      "kms:Decrypt"
-    ],
-    "Resource" = [
-      var.aws_kms_key_bucket_arn
-    ]
-  }
+  kms_policy_statements = var.aws_kms_key_bucket_arn == "" ? [] : [
+    {
+      Effect = "Allow",
+      Action = [
+        "kms:GenerateDataKey",
+        "kms:Decrypt"
+      ],
+      Resource = [
+        var.aws_kms_key_bucket_arn
+      ]
+    },
+  ]
+  bucket_policy_statements = [
+    {
+      Effect = "Allow"
+      Action = [
+        "s3:ListBucket"
+      ],
+      Resource = [
+        var.aws_s3_bucket_arn
+      ]
+    },
+    {
+      Effect = "Allow"
+      Action = [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      Resource = [
+        "${var.aws_s3_bucket_arn}/*"
+      ]
+    },
+  ]
   policy = {
-    "Version"   = "2012-10-17"
-    "Statement" = concat([
-      {
-        Effect = "Allow"
-        Action = [
-          "s3:ListBucket"
-        ],
-        Resource = [
-          var.aws_s3_bucket_arn
-        ]
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:DeleteObject"
-        ],
-        Resource = [
-          "${var.aws_s3_bucket_arn}/*"
-        ]
-      },
-    ],
-      var.aws_kms_key_bucket_arn == "" ? [] : [local.kms_policy]
-    )
+    Version   = "2012-10-17"
+    Statement = concat(local.bucket_policy_statements, local.kms_policy_statements)
   }
 }
 
