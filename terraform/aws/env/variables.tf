@@ -332,3 +332,16 @@ variable "cluster_endpoint_public_access_cidrs" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
+
+# Predefined S3 Bucket
+variable "predefined_s3_bucket" {
+  type = object(
+    {
+      name : string
+      region : string
+      folder : string
+      kms_arn : string
+    }
+  )
+  default = null
+}

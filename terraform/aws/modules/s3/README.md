@@ -31,8 +31,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_enable_bucket_versioning"></a> [enable\_bucket\_versioning](#input\_enable\_bucket\_versioning) | Enable bucket versioning | `bool` | `false` | no |
 | <a name="input_enable_log_bucket"></a> [enable\_log\_bucket](#input\_enable\_log\_bucket) | Enable log bucket | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Name of the environment where infrastructure is being built. | `string` | n/a | yes |
+| <a name="input_folder"></a> [folder](#input\_folder) | n/a | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name is the prefix to use for resources that needs to be created. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS region where terraform builds resources. | `string` | `"us-east-1"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Common tags to attach all the resources create in this project. | `map(string)` | n/a | yes |
@@ -42,6 +44,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_bucket_arn"></a> [bucket\_arn](#output\_bucket\_arn) | The arn of the bucket will be in format arn:aws:s3::bucketname |
+| <a name="output_bucket_folder"></a> [bucket\_folder](#output\_bucket\_folder) | n/a |
 | <a name="output_bucket_id"></a> [bucket\_id](#output\_bucket\_id) | Bucket Name (aka ID) |
 | <a name="output_bucket_name"></a> [bucket\_name](#output\_bucket\_name) | n/a |
 | <a name="output_bucket_region"></a> [bucket\_region](#output\_bucket\_region) | n/a |

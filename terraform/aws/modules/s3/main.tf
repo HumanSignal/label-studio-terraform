@@ -1,5 +1,5 @@
 # Create s3 bucket resource
-#tfsec:ignore:aws-s3-enable-bucket-logging
+#tfsec:ignore:aws-s3-enable-bucket-logging tfsec:ignore:aws-s3-enable-versioning
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = format("%s-ls-s3-bucket", var.name)
   tags   = var.tags
@@ -44,6 +44,8 @@ resource "aws_s3_bucket_logging" "s3_bucket_logging" {
 
 # Enable bucket versioning
 resource "aws_s3_bucket_versioning" "s3_bucket_versioning" {
+  count = var.enable_bucket_versioning ? 1 : 0
+
   bucket = aws_s3_bucket.s3_bucket.id
   versioning_configuration {
     status = "Enabled"

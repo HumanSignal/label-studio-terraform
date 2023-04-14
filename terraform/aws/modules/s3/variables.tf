@@ -20,8 +20,19 @@ variable "region" {
   default     = "us-east-1"
 }
 
+variable "folder" {
+  type    = string
+  default = ""
+}
+
 variable "enable_log_bucket" {
   description = "Enable log bucket"
+  type        = bool
+  default     = false
+}
+
+variable "enable_bucket_versioning" {
+  description = "Enable bucket versioning"
   type        = bool
   default     = false
 }

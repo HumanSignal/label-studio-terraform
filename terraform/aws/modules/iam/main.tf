@@ -3,14 +3,16 @@ resource "aws_iam_role" "iam_role" {
   name                  = format("%s-eks-role", var.name)
   force_detach_policies = true
   tags                  = var.tags
-  assume_role_policy = jsonencode({
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Principal = {
-        Service = "eks.amazonaws.com"
+  assume_role_policy    = jsonencode({
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Principal = {
+          Service = "eks.amazonaws.com"
+        }
       }
-    }]
+    ]
     Version = "2012-10-17"
   })
   lifecycle {
@@ -42,14 +44,16 @@ resource "aws_iam_role" "worker_iam_role" {
   name                  = format("%s-eks-worker-role", var.name)
   force_detach_policies = true
   tags                  = var.tags
-  assume_role_policy = jsonencode({
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Principal = {
-        Service = "ec2.amazonaws.com"
+  assume_role_policy    = jsonencode({
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
       }
-    }]
+    ]
     Version = "2012-10-17"
   })
   lifecycle {

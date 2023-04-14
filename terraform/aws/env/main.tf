@@ -39,16 +39,37 @@ module "iam" {
   region      = var.region
   environment = var.environment
   tags        = local.tags
-  bucket_id   = module.s3.bucket_id
+  bucket_id   = var.predefined_s3_bucket == null ? module.s3[0].bucket_name : var.predefined_s3_bucket.name
 }
 
 # Create S3 bucket
 module "s3" {
   source = "../modules/s3"
 
+  count = var.predefined_s3_bucket == null ? 1 : 0
+
   name        = local.name_prefix
   environment = var.environment
   tags        = local.tags
+
+  depends_on = [
+    module.eks,
+  ]
+}
+
+module "s3_role" {
+  source = "../modules/s3_role"
+
+  name                   = local.name_prefix
+  aws_s3_bucket_arn      = var.predefined_s3_bucket == null ? module.s3[0].bucket_arn : "arn:aws:s3:::${var.predefined_s3_bucket.name}"
+  aws_kms_key_bucket_arn = var.predefined_s3_bucket == null ? module.s3[0].kms_arn : var.predefined_s3_bucket.kms_arn
+  iam_oidc_provider_arn  = module.eks.iam_oidc_provider_arn
+  iam_oidc_provider_url  = module.eks.iam_oidc_provider_url
+
+  depends_on = [
+    module.eks,
+    module.s3,
+  ]
 }
 
 # Create Elastic Kubernetes Service
@@ -70,13 +91,11 @@ module "eks" {
   instance_profile_name                = module.iam.iam_instance_profile
   tags                                 = local.tags
   capacity_type                        = var.eks_capacity_type
-  persistence_s3_bucket_arn            = module.s3.bucket_arn
-  persistence_s3_kms_arn               = module.s3.kms_arn
   monitoring_namespace                 = var.monitoring_namespace
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
 
-  aws_auth_roles = var.aws_auth_roles
-  aws_auth_users = var.aws_auth_users
+  aws_auth_roles    = var.aws_auth_roles
+  aws_auth_users    = var.aws_auth_users
   aws_auth_accounts = var.aws_auth_accounts
 
   depends_on = [
@@ -205,10 +224,10 @@ module "label-studio" {
   enterprise               = var.enterprise
   cloud_provider           = "aws"
 
-  persistence_s3_bucket_name   = module.s3.bucket_name
-  persistence_s3_bucket_region = module.s3.bucket_region
-  persistence_s3_bucket_folder = ""
-  persistence_s3_role_arn      = module.eks.s3_persistence_role_arn
+  persistence_s3_bucket_name   = var.predefined_s3_bucket == null ? module.s3[0].bucket_name : var.predefined_s3_bucket.name
+  persistence_s3_bucket_region = var.predefined_s3_bucket == null ? module.s3[0].bucket_region : var.predefined_s3_bucket.region
+  persistence_s3_bucket_folder = var.predefined_s3_bucket == null ? module.s3[0].bucket_folder : var.predefined_s3_bucket.folder
+  persistence_s3_role_arn      = module.s3_role.s3_persistence_role_arn
 
   postgresql_type         = var.postgresql_type
   postgresql_host         = var.postgresql_type == "rds" ? module.rds[0].host : var.postgresql_host

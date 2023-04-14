@@ -22,6 +22,12 @@ output "iam_oidc_provider" {
   value       = aws_iam_openid_connect_provider.aws_iam_openid_connect_provider
 }
 
-output "s3_persistence_role_arn" {
-  value = aws_iam_role.persistence.arn
+output "iam_oidc_provider_arn" {
+  description = "AWS EKS IRSA arn"
+  value       = aws_iam_openid_connect_provider.aws_iam_openid_connect_provider.arn
+}
+
+output "iam_oidc_provider_url" {
+  description = "AWS EKS IRSA url"
+  value       = aws_iam_openid_connect_provider.aws_iam_openid_connect_provider.url
 }

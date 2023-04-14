@@ -118,12 +118,6 @@ variable "cluster_endpoint_public_access" {
   default     = true
 }
 
-variable "persistence_s3_bucket_arn" {
-}
-
-variable "persistence_s3_kms_arn" {
-}
-
 variable "aws_auth_roles" {
   description = "List of role maps to add to the aws-auth configmap"
   type        = list(any)

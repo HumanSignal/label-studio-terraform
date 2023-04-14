@@ -18,6 +18,10 @@ output "bucket_region" {
   value = aws_s3_bucket.s3_bucket.region
 }
 
+output "bucket_folder" {
+  value = var.folder
+}
+
 output "kms_arn" {
   value = aws_kms_key.bucket.arn
 }
