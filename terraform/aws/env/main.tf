@@ -204,6 +204,8 @@ module "cert-manager" {
 }
 
 module "label-studio" {
+  count            = var.deploy_label_studio ? 1 : 0
+
   source = "../../common/modules/label-studio"
 
   name                     = local.name_prefix

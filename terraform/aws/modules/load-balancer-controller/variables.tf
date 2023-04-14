@@ -23,8 +23,8 @@ variable "cluster_name" {
 
 variable "helm_chart_version" {
   type        = string
-  default     = "1.4.6"
-  description = "Metrics Server Helm chart version"
+  default     = "1.5.0"
+  description = "AWS Load Balancer Helm chart version"
 }
 
 variable "helm_chart_release_name" {

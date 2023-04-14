@@ -17,8 +17,8 @@ enterprise      = true
 license_literal = "<SECRET>"
 
 # Docker private registry credentials
-label_studio_registry_username = "<SECRET>"
-label_studio_registry_password = "<SECRET>"
+label_studio_docker_registry_username = "<SECRET>"
+label_studio_docker_registry_password = "<SECRET>"
 
 # Redis
 redis_type     = "elasticache"

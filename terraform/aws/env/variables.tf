@@ -157,7 +157,7 @@ variable "label_studio_helm_chart_name" {
 variable "label_studio_helm_chart_version" {
   description = "Label Studio Helm chart version"
   type        = string
-  default     = "1.0.3"
+  default     = "1.0.16"
 }
 
 # Label Studio Docker registry
@@ -193,6 +193,12 @@ variable "enterprise" {
   description = "Deploy enterprise version of Label Studio"
   type        = bool
   default     = false
+}
+
+variable "deploy_label_studio" {
+  description = "Include Label Studio module?"
+  type        = bool
+  default     = true
 }
 
 variable "license_literal" {

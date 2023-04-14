@@ -20,7 +20,7 @@ concurrency:
 
 env:
   TFSEC_VERSION: "v1.28.1"
-  TFLINT_VERSION: "v0.42.2"
+  TFLINT_VERSION: "v0.46.0"
 
 jobs:
 

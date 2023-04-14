@@ -19,7 +19,7 @@ variable "helm_chart_name" {
 variable "helm_chart_version" {
   description = "Metrics Server Helm chart version"
   type    = string
-  default = "4.1.4"
+  default = "4.6.0"
 }
 
 variable "namespace" {
