@@ -137,7 +137,6 @@ predefined_vpc = {
   id                 = "vpc-***",
   subnet_public_ids  = ["subnet-***", "subnet-***", "subnet-***"],
   subnet_private_ids = ["subnet-***", "subnet-***", "subnet-***"],
-  security_group_id  = "sg-***"
 }
 ```
 

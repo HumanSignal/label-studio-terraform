@@ -55,15 +55,6 @@ variable "tags" {
   default     = {}
 }
 
-# Allow workstation to communicate with the cluster API Server.
-# This security group controls networking access to the Kubernetes masters. We configure this with an ingress rule to allow traffic from the worker nodes.
-# Allow inbound traffic from your local workstation external IP to the Kubernetes.
-variable "cluster_api_cidr" {
-  description = "Allow workstation to communicate with the cluster API Server"
-  type        = string
-  default     = "10.2.0.0/32"
-}
-
 # Availability Zones variables.
 # Create a NAT gateway in each availability zone to ensure a zone independent architecture.
 variable "multi_az_nat_gateway" {

@@ -32,7 +32,7 @@ No modules.
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Cert-manager Helm chart name to be installed | `string` | `"cert-manager"` | no |
 | <a name="input_helm_chart_release_name"></a> [helm\_chart\_release\_name](#input\_helm\_chart\_release\_name) | Helm release name | `string` | `"cert-manager"` | no |
 | <a name="input_helm_chart_repo"></a> [helm\_chart\_repo](#input\_helm\_chart\_repo) | Cert-manager repository name. | `string` | `"https://charts.jetstack.io"` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Cert-manager Helm chart version. | `string` | `"1.10.1"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Cert-manager Helm chart version. | `string` | `"1.11.1"` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Kubernetes namespace to deploy Metrics Server Helm chart. | `string` | `"cert-manager"` | no |
 | <a name="input_selfsigned"></a> [selfsigned](#input\_selfsigned) | n/a | `bool` | `true` | no |
 | <a name="input_settings"></a> [settings](#input\_settings) | Additional yaml encoded values which will be passed to the Helm chart. | `map` | `{}` | no |

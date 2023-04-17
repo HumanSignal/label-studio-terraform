@@ -87,7 +87,7 @@ module "eks" {
   worker_role_arn                      = module.iam.worker_role_arn
   public_subnets                       = var.predefined_vpc == null ? module.vpc[0].aws_subnet_public_ids : var.predefined_vpc.subnet_public_ids
   subnet_ids                           = var.predefined_vpc == null ? module.vpc[0].aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
-  security_group_id                    = var.predefined_vpc == null ? module.vpc[0].security_group_id : var.predefined_vpc.security_group_id
+  vpc_id                               = var.predefined_vpc == null ? module.vpc[0].aws_vpc_id : var.predefined_vpc.id
   instance_profile_name                = module.iam.iam_instance_profile
   tags                                 = local.tags
   capacity_type                        = var.eks_capacity_type

@@ -23,16 +23,18 @@ variable "region" {
   type        = string
 }
 
-variable "subnet_ids" {
-  description = "Subnet id to attach the EKS cluster"
-}
-
-variable "security_group_id" {
-  description = "Security group id to configure EKS cluster"
+variable "vpc_id" {
+  description = "VPC id"
   type        = string
 }
 
+variable "subnet_ids" {
+  type        = list(string)
+  description = "Subnet id to attach the EKS cluster"
+}
+
 variable "public_subnets" {
+  type        = list(string)
   description = "List of public subnets to create the resources"
 }
 
@@ -134,4 +136,13 @@ variable "aws_auth_accounts" {
   description = "List of account maps to add to the aws-auth configmap"
   type        = list(any)
   default     = []
+}
+
+# Allow workstation to communicate with the cluster API Server.
+# This security group controls networking access to the Kubernetes masters. We configure this with an ingress rule to allow traffic from the worker nodes.
+# Allow inbound traffic from your local workstation external IP to the Kubernetes.
+variable "cluster_api_cidr" {
+  description = "Allow workstation to communicate with the cluster API Server"
+  type        = string
+  default     = "10.2.0.0/32"
 }

@@ -38,12 +38,3 @@ output "aws_nat_gateway_ids" {
 output "aws_eip_nat_ips" {
   value = aws_eip.mod_nat_eip.*.public_ip
 }
-
-# Output attributes of the Security Groups.
-output "security_group_id" {
-  value = aws_security_group.security_group.id
-}
-
-output "worker_security_group_id" {
-  value = aws_security_group.worker_security_group.id
-}

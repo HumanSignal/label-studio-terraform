@@ -47,7 +47,7 @@ No modules.
 | <a name="input_helm_chart_repo"></a> [helm\_chart\_repo](#input\_helm\_chart\_repo) | Heartex repository name | `string` | `"https://charts.heartex.com/"` | no |
 | <a name="input_helm_chart_repo_password"></a> [helm\_chart\_repo\_password](#input\_helm\_chart\_repo\_password) | Password for HTTP basic authentication against the Helm repository | `string` | `""` | no |
 | <a name="input_helm_chart_repo_username"></a> [helm\_chart\_repo\_username](#input\_helm\_chart\_repo\_username) | Username for HTTP basic authentication against the Helm repository | `string` | `""` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Label Studio Helm chart version | `string` | `"1.0.3"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Label Studio Helm chart version | `string` | `"1.0.16"` | no |
 | <a name="input_host"></a> [host](#input\_host) | Label Studio fqdn | `string` | n/a | yes |
 | <a name="input_license_literal"></a> [license\_literal](#input\_license\_literal) | License link for enterprise Label Studio | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name is the prefix to use for resources that needs to be created | `string` | n/a | yes |

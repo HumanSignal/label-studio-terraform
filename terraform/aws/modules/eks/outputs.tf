@@ -31,3 +31,14 @@ output "iam_oidc_provider_url" {
   description = "AWS EKS IRSA url"
   value       = aws_iam_openid_connect_provider.aws_iam_openid_connect_provider.url
 }
+
+# Output attributes of the Security Groups.
+output "security_group_id" {
+  description = "AWS EKS cluster security group"
+  value = aws_security_group.security_group.id
+}
+
+output "worker_security_group_id" {
+  description = "AWS EKS cluster communication security group"
+  value = aws_security_group.worker_security_group.id
+}

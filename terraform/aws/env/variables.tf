@@ -327,7 +327,6 @@ variable "predefined_vpc" {
       id : string
       subnet_public_ids : list(string)
       subnet_private_ids : list(string)
-      security_group_id : string
     }
   )
   default = null

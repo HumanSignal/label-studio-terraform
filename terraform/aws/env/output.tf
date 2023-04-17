@@ -28,5 +28,5 @@ output "load_balancer_host" {
 }
 
 output "host" {
-  value = module.label-studio.host
+  value = try(module.label-studio.host, "")
 }

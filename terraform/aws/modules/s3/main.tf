@@ -77,8 +77,7 @@ resource "aws_s3_bucket_cors_configuration" "s3_bucket_cors" {
 
   cors_rule {
     allowed_headers = ["*"]
-    allowed_methods = ["GET", "POST", "PUT", "DELETE"]
-    # TODO: Found unsupported HTTP method in CORS config. Unsupported methods are "PATCH", "OPTIONS",
+    allowed_methods = ["GET", "POST", "PUT", "DELETE", "HEAD"]
     allowed_origins = ["*"] # TODO: Fix with correct URL name
     expose_headers  = ["x-amz-server-side-encryption", "x-amz-request-id", "x-amz-id-2"]
     max_age_seconds = 3600 # 1hr

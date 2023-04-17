@@ -4,7 +4,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.4.4 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | = 4.61.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | = 4.63.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.9.0 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | = 1.14.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.19.0 |
@@ -15,7 +15,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.61.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.63.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.4.3 |
 
 ## Modules
@@ -42,9 +42,9 @@
 |------|------|
 | [random_password.postgresql_password](https://registry.terraform.io/providers/hashicorp/random/3.4.3/docs/resources/password) | resource |
 | [random_password.redis_password](https://registry.terraform.io/providers/hashicorp/random/3.4.3/docs/resources/password) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/4.61.0/docs/data-sources/caller_identity) | data source |
-| [aws_eks_cluster.eks](https://registry.terraform.io/providers/hashicorp/aws/4.61.0/docs/data-sources/eks_cluster) | data source |
-| [aws_eks_cluster_auth.eks](https://registry.terraform.io/providers/hashicorp/aws/4.61.0/docs/data-sources/eks_cluster_auth) | data source |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/4.63.0/docs/data-sources/caller_identity) | data source |
+| [aws_eks_cluster.eks](https://registry.terraform.io/providers/hashicorp/aws/4.63.0/docs/data-sources/eks_cluster) | data source |
+| [aws_eks_cluster_auth.eks](https://registry.terraform.io/providers/hashicorp/aws/4.63.0/docs/data-sources/eks_cluster_auth) | data source |
 
 ## Inputs
 
@@ -56,6 +56,7 @@
 | <a name="input_cluster_endpoint_public_access_cidrs"></a> [cluster\_endpoint\_public\_access\_cidrs](#input\_cluster\_endpoint\_public\_access\_cidrs) | List of CIDR blocks which can access the Amazon EKS public API server endpoint | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_create_acm_certificate"></a> [create\_acm\_certificate](#input\_create\_acm\_certificate) | Whether to create acm certificate or use existing | `bool` | `false` | no |
 | <a name="input_create_r53_zone"></a> [create\_r53\_zone](#input\_create\_r53\_zone) | Create R53 zone for main public domain | `bool` | `false` | no |
+| <a name="input_deploy_label_studio"></a> [deploy\_label\_studio](#input\_deploy\_label\_studio) | Include Label Studio module? | `bool` | `true` | no |
 | <a name="input_desired_capacity"></a> [desired\_capacity](#input\_desired\_capacity) | Desired capacity for the autoscaling Group. | `number` | `3` | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Main public domain name | `string` | `null` | no |
 | <a name="input_eks_capacity_type"></a> [eks\_capacity\_type](#input\_eks\_capacity\_type) | Type of capacity associated with the EKS Node Group | `string` | `"ON_DEMAND"` | no |
@@ -72,7 +73,7 @@
 | <a name="input_label_studio_helm_chart_repo"></a> [label\_studio\_helm\_chart\_repo](#input\_label\_studio\_helm\_chart\_repo) | Heartex repository name. | `string` | `"https://charts.heartex.com"` | no |
 | <a name="input_label_studio_helm_chart_repo_password"></a> [label\_studio\_helm\_chart\_repo\_password](#input\_label\_studio\_helm\_chart\_repo\_password) | Password for HTTP basic authentication against the Helm repository. | `string` | `""` | no |
 | <a name="input_label_studio_helm_chart_repo_username"></a> [label\_studio\_helm\_chart\_repo\_username](#input\_label\_studio\_helm\_chart\_repo\_username) | Username for HTTP basic authentication against the Helm repository. | `string` | `""` | no |
-| <a name="input_label_studio_helm_chart_version"></a> [label\_studio\_helm\_chart\_version](#input\_label\_studio\_helm\_chart\_version) | Label Studio Helm chart version | `string` | `"1.0.3"` | no |
+| <a name="input_label_studio_helm_chart_version"></a> [label\_studio\_helm\_chart\_version](#input\_label\_studio\_helm\_chart\_version) | Label Studio Helm chart version | `string` | `"1.0.16"` | no |
 | <a name="input_lets_encrypt_email"></a> [lets\_encrypt\_email](#input\_lets\_encrypt\_email) | Email address for certificate sing via Let's Encrypt | `string` | `null` | no |
 | <a name="input_license_literal"></a> [license\_literal](#input\_license\_literal) | License link for enterprise Label Studio | `string` | `null` | no |
 | <a name="input_max_size"></a> [max\_size](#input\_max\_size) | Maximum number of the instances in autoscaling group | `number` | `5` | no |
@@ -91,7 +92,7 @@
 | <a name="input_postgresql_type"></a> [postgresql\_type](#input\_postgresql\_type) | Postgresql type | `string` | `"internal"` | no |
 | <a name="input_postgresql_username"></a> [postgresql\_username](#input\_postgresql\_username) | Postgresql username | `string` | `"labelstudio"` | no |
 | <a name="input_predefined_s3_bucket"></a> [predefined\_s3\_bucket](#input\_predefined\_s3\_bucket) | Predefined S3 Bucket | <pre>object(<br>    {<br>      name : string<br>      region : string<br>      folder : string<br>      kms_arn : string<br>    }<br>  )</pre> | `null` | no |
-| <a name="input_predefined_vpc"></a> [predefined\_vpc](#input\_predefined\_vpc) | Predefined VPC | <pre>object(<br>    {<br>      id : string<br>      subnet_public_ids : list(string)<br>      subnet_private_ids : list(string)<br>      security_group_id : string<br>    }<br>  )</pre> | `null` | no |
+| <a name="input_predefined_vpc"></a> [predefined\_vpc](#input\_predefined\_vpc) | Predefined VPC | <pre>object(<br>    {<br>      id : string<br>      subnet_public_ids : list(string)<br>      subnet_private_ids : list(string)<br>    }<br>  )</pre> | `null` | no |
 | <a name="input_private_cidr_block"></a> [private\_cidr\_block](#input\_private\_cidr\_block) | List of private subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.1.0/24",<br>  "10.0.2.0/24",<br>  "10.0.3.0/24"<br>]</pre> | no |
 | <a name="input_public_cidr_block"></a> [public\_cidr\_block](#input\_public\_cidr\_block) | List of public subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.101.0/24",<br>  "10.0.102.0/24",<br>  "10.0.103.0/24"<br>]</pre> | no |
 | <a name="input_record_name"></a> [record\_name](#input\_record\_name) | Main record domain name | `string` | `null` | no |
