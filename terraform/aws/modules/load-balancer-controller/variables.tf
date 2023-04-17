@@ -44,3 +44,13 @@ variable "namespace" {
   type        = string
   default     = "ingress"
 }
+
+variable "private_subnets" {
+  type        = list(string)
+  description = "List of private subnets"
+}
+
+variable "public_subnets" {
+  type        = list(string)
+  description = "List of public subnets"
+}

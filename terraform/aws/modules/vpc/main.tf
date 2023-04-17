@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+    }
+  }
+}
+
 # Create Virtual Private Cloud(VPC).
 #tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-vpcs
 resource "aws_vpc" "vpc" {
@@ -32,8 +40,8 @@ resource "aws_flow_log" "this" {
 }
 
 resource "aws_cloudwatch_log_group" "vpc_flow_log" {
-  count           = var.enable_vpc_log ? 1 : 0
-  name = format("%s-vpc-network-flow-logs", var.name)
+  count = var.enable_vpc_log ? 1 : 0
+  name  = format("%s-vpc-network-flow-logs", var.name)
 
   tags = merge(var.tags, {
     "Name" = format("%s-vpc-network", var.name)
@@ -42,8 +50,8 @@ resource "aws_cloudwatch_log_group" "vpc_flow_log" {
 }
 
 resource "aws_iam_role" "vpc_flow_log_cloudwatch" {
-  count           = var.enable_vpc_log ? 1 : 0
-  name = "${var.name}-vpc-flow-log-to-cloudwatch"
+  count = var.enable_vpc_log ? 1 : 0
+  name  = "${var.name}-vpc-flow-log-to-cloudwatch"
 
   assume_role_policy = <<EOF
 {
@@ -63,8 +71,8 @@ EOF
 }
 
 resource "aws_iam_role_policy" "vpc_flow_log_cloudwatch" {
-  count           = var.enable_vpc_log ? 1 : 0
-  role = aws_iam_role.vpc_flow_log_cloudwatch[count.index]
+  count = var.enable_vpc_log ? 1 : 0
+  role  = aws_iam_role.vpc_flow_log_cloudwatch[count.index]
 
   policy = <<EOF
 {
@@ -95,10 +103,6 @@ resource "aws_subnet" "public_subnet" {
 
   tags = merge(var.tags, {
     "Name" = format("%s-public-subnet-%s", var.name, local.pub_availability_zones[count.index])
-
-    format("kubernetes.io/cluster/%s-eks-cluster", var.name) = "shared"
-
-    "kubernetes.io/role/elb" = 1
   }
   )
 }
@@ -120,10 +124,6 @@ resource "aws_subnet" "private_subnet" {
 
   tags = merge(var.tags, {
     "Name" = format("%s-private-subnet-%s", var.name, local.pri_availability_zones[count.index])
-
-    format("kubernetes.io/cluster/%s-eks-cluster", var.name) = "shared"
-
-    "kubernetes.io/role/internal-elb" = 1
   }
   )
 }

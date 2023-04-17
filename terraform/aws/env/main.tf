@@ -20,6 +20,9 @@ locals {
 # Create VPC
 module "vpc" {
   source = "../modules/vpc"
+  providers = {
+    aws = aws.aws_ignore_tags
+  }
 
   count = var.predefined_vpc == null ? 1 : 0
 
@@ -176,6 +179,8 @@ module "lbc" {
     module.eks,
     module.vpc,
   ]
+  public_subnets  = var.predefined_vpc == null ? module.vpc[0].aws_subnet_public_ids : var.predefined_vpc.subnet_public_ids
+  private_subnets = var.predefined_vpc == null ? module.vpc[0].aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
 }
 
 module "nic" {
