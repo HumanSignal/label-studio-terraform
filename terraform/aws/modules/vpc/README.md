@@ -34,6 +34,7 @@ No modules.
 | [aws_subnet.public_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_availability_zones.availability_zones](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
+| [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
 ## Inputs
 
@@ -43,6 +44,7 @@ No modules.
 | <a name="input_environment"></a> [environment](#input\_environment) | Name of the environment where infrastructure is being built | `string` | n/a | yes |
 | <a name="input_multi_az_nat_gateway"></a> [multi\_az\_nat\_gateway](#input\_multi\_az\_nat\_gateway) | place a NAT gateway in each AZ | `number` | `1` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name is the prefix to use for resources that needs to be created | `string` | n/a | yes |
+| <a name="input_predefined_vpc_id"></a> [predefined\_vpc\_id](#input\_predefined\_vpc\_id) | Predefined VPC ID | `string` | n/a | yes |
 | <a name="input_private_cidr_block"></a> [private\_cidr\_block](#input\_private\_cidr\_block) | List of private subnet CIDR blocks | `list(string)` | n/a | yes |
 | <a name="input_public_cidr_block"></a> [public\_cidr\_block](#input\_public\_cidr\_block) | List of public subnet CIDR blocks | `list(string)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS region in where terraform builds resources | `string` | n/a | yes |
@@ -65,6 +67,5 @@ No modules.
 | <a name="output_aws_route_table_public_ids"></a> [aws\_route\_table\_public\_ids](#output\_aws\_route\_table\_public\_ids) | Output attributes of the route table ids. |
 | <a name="output_aws_subnet_private_ids"></a> [aws\_subnet\_private\_ids](#output\_aws\_subnet\_private\_ids) | n/a |
 | <a name="output_aws_subnet_public_ids"></a> [aws\_subnet\_public\_ids](#output\_aws\_subnet\_public\_ids) | Output attributes of the public and private subnets |
-| <a name="output_aws_vpc_cidr"></a> [aws\_vpc\_cidr](#output\_aws\_vpc\_cidr) | Output attribute of the VPC cidr block. |
 | <a name="output_aws_vpc_id"></a> [aws\_vpc\_id](#output\_aws\_vpc\_id) | Output attribute id of the VPC |
 <!-- END_TF_DOCS -->

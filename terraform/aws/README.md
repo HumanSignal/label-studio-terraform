@@ -133,11 +133,7 @@ email           = "test@test.com"
 Deploy to existing VPC.
 
 ```hcl
-predefined_vpc = {
-  id                 = "vpc-***",
-  subnet_public_ids  = ["subnet-***", "subnet-***", "subnet-***"],
-  subnet_private_ids = ["subnet-***", "subnet-***", "subnet-***"],
-}
+predefined_vpc_id = "vpc-***"
 ```
 
 [Full tfvars file example](examples/opensource_predefined_vpc.tfvars)

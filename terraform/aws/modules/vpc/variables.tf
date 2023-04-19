@@ -98,3 +98,8 @@ variable "traffic_type" {
     error_message = "Valid values: ACCEPT,REJECT, ALL."
   }
 }
+
+variable "predefined_vpc_id" {
+  type        = string
+  description = "Predefined VPC ID"
+}

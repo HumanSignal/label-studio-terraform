@@ -321,14 +321,8 @@ variable "lets_encrypt_email" {
 }
 
 # Predefined VPC
-variable "predefined_vpc" {
-  type = object(
-    {
-      id : string
-      subnet_public_ids : list(string)
-      subnet_private_ids : list(string)
-    }
-  )
+variable "predefined_vpc_id" {
+  type = string
   default = null
 }
 

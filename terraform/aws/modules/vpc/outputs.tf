@@ -1,10 +1,6 @@
 # Output attribute id of the VPC
 output "aws_vpc_id" {
-  value = aws_vpc.vpc.id
-}
-# Output attribute of the VPC cidr block.
-output "aws_vpc_cidr" {
-  value = aws_vpc.vpc.cidr_block
+  value = local.vpc_id
 }
 
 # Output attributes of the public and private subnets

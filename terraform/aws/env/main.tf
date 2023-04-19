@@ -17,14 +17,9 @@ locals {
   redis_password      = var.redis_password == null ? random_password.redis_password[0].result : var.redis_password
 }
 
-# Create VPC
+# Create and/or configure VPC
 module "vpc" {
-  source = "../modules/vpc"
-  providers = {
-    aws = aws.aws_ignore_tags
-  }
-
-  count = var.predefined_vpc == null ? 1 : 0
+  source    = "../modules/vpc"
 
   name               = local.name_prefix
   environment        = var.environment
@@ -32,6 +27,9 @@ module "vpc" {
   public_cidr_block  = var.public_cidr_block
   private_cidr_block = var.private_cidr_block
   tags               = local.tags
+
+  # Predefined VPC
+  predefined_vpc_id = var.predefined_vpc_id
 }
 
 # Create Identity Access Management
@@ -88,9 +86,9 @@ module "eks" {
   min_size                             = var.min_size
   role_arn                             = module.iam.role_arn
   worker_role_arn                      = module.iam.worker_role_arn
-  public_subnets                       = var.predefined_vpc == null ? module.vpc[0].aws_subnet_public_ids : var.predefined_vpc.subnet_public_ids
-  subnet_ids                           = var.predefined_vpc == null ? module.vpc[0].aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
-  vpc_id                               = var.predefined_vpc == null ? module.vpc[0].aws_vpc_id : var.predefined_vpc.id
+  public_subnets                       = module.vpc.aws_subnet_public_ids
+  subnet_ids                           = module.vpc.aws_subnet_private_ids
+  vpc_id                               = module.vpc.aws_vpc_id
   instance_profile_name                = module.iam.iam_instance_profile
   tags                                 = local.tags
   capacity_type                        = var.eks_capacity_type
@@ -136,8 +134,8 @@ module "rds" {
 
   name         = local.name_prefix
   environment  = var.environment
-  vpc_id       = var.predefined_vpc == null ? module.vpc[0].aws_vpc_id : var.predefined_vpc.id
-  subnet_ids   = var.predefined_vpc == null ? module.vpc[0].aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
+  vpc_id       = module.vpc.aws_vpc_id
+  subnet_ids   = module.vpc.aws_subnet_private_ids
   machine_type = var.postgresql_machine_type
   database     = var.postgresql_database
   username     = var.postgresql_username
@@ -155,8 +153,8 @@ module "elasticache" {
   count = var.redis_type == "elasticache" && var.enterprise ? 1 : 0
 
   name         = local.name_prefix
-  vpc_id       = var.predefined_vpc == null ? module.vpc[0].aws_vpc_id : var.predefined_vpc.id
-  subnet_ids   = var.predefined_vpc == null ? module.vpc[0].aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
+  vpc_id       = module.vpc.aws_vpc_id
+  subnet_ids   = module.vpc.aws_subnet_private_ids
   machine_type = var.redis_machine_type
   port         = var.redis_port
   password     = local.redis_password
@@ -179,8 +177,6 @@ module "lbc" {
     module.eks,
     module.vpc,
   ]
-  public_subnets  = var.predefined_vpc == null ? module.vpc[0].aws_subnet_public_ids : var.predefined_vpc.subnet_public_ids
-  private_subnets = var.predefined_vpc == null ? module.vpc[0].aws_subnet_private_ids : var.predefined_vpc.subnet_private_ids
 }
 
 module "nic" {
@@ -209,7 +205,7 @@ module "cert-manager" {
 }
 
 module "label-studio" {
-  count            = var.deploy_label_studio ? 1 : 0
+  count = var.deploy_label_studio ? 1 : 0
 
   source = "../../common/modules/label-studio"
 

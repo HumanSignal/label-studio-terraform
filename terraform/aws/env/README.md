@@ -92,7 +92,7 @@
 | <a name="input_postgresql_type"></a> [postgresql\_type](#input\_postgresql\_type) | Postgresql type | `string` | `"internal"` | no |
 | <a name="input_postgresql_username"></a> [postgresql\_username](#input\_postgresql\_username) | Postgresql username | `string` | `"labelstudio"` | no |
 | <a name="input_predefined_s3_bucket"></a> [predefined\_s3\_bucket](#input\_predefined\_s3\_bucket) | Predefined S3 Bucket | <pre>object(<br>    {<br>      name : string<br>      region : string<br>      folder : string<br>      kms_arn : string<br>    }<br>  )</pre> | `null` | no |
-| <a name="input_predefined_vpc"></a> [predefined\_vpc](#input\_predefined\_vpc) | Predefined VPC | <pre>object(<br>    {<br>      id : string<br>      subnet_public_ids : list(string)<br>      subnet_private_ids : list(string)<br>    }<br>  )</pre> | `null` | no |
+| <a name="input_predefined_vpc_id"></a> [predefined\_vpc\_id](#input\_predefined\_vpc\_id) | Predefined VPC | `string` | `null` | no |
 | <a name="input_private_cidr_block"></a> [private\_cidr\_block](#input\_private\_cidr\_block) | List of private subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.1.0/24",<br>  "10.0.2.0/24",<br>  "10.0.3.0/24"<br>]</pre> | no |
 | <a name="input_public_cidr_block"></a> [public\_cidr\_block](#input\_public\_cidr\_block) | List of public subnet cidr blocks | `list(string)` | <pre>[<br>  "10.0.101.0/24",<br>  "10.0.102.0/24",<br>  "10.0.103.0/24"<br>]</pre> | no |
 | <a name="input_record_name"></a> [record\_name](#input\_record\_name) | Main record domain name | `string` | `null` | no |

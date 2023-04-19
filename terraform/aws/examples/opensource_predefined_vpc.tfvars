@@ -12,8 +12,4 @@ label_studio_additional_set = {
 }
 
 # Predefined VPC
-predefined_vpc = {
-  id                 = "vpc-***",
-  subnet_public_ids  = ["subnet-***", "subnet-***", "subnet-***"],
-  subnet_private_ids = ["subnet-***", "subnet-***", "subnet-***"],
-}
+predefined_vpc_id = "vpc-***"
