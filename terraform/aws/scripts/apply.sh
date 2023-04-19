@@ -13,6 +13,7 @@ source "${ROOT}/scripts/common.sh"
 # Make apply : this command will apply the infrastructure changes
 (
   cd "${ROOT}/env"
+  # shellcheck disable=SC2086
   terraform apply -no-color -auto-approve ${TF_PARAMS:-}
 )
 

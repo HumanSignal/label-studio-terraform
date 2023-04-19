@@ -13,4 +13,5 @@ source "${ROOT}/scripts/common.sh"
 cd "${ROOT}"/env
 
 # Terraform console will run console for debug.
+# shellcheck disable=SC2086
 terraform console ${TF_PARAMS:-}

@@ -56,9 +56,10 @@ fi
 
 # Create s3 state bucket if not exist
 export BUCKET_NAME=${TF_VAR_environment}-${TF_VAR_region}-ls-terraform-state-bucket
+# shellcheck disable=SC2046
 if ! aws s3api head-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" > /dev/null 2>&1; then
   echo "[INFO] Creating S3 bucket to store Terraform state: ${BUCKET_NAME}"
-  aws s3api create-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" "$( [[ "${TF_VAR_region}" != "us-east-1" ]] && echo "--create-bucket-configuration LocationConstraint=${TF_VAR_region}" )" > /dev/null
+  aws s3api create-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" $( [[ "${TF_VAR_region}" != "us-east-1" ]] && echo "--create-bucket-configuration LocationConstraint=${TF_VAR_region}" ) > /dev/null
   aws s3api put-bucket-encryption \
     --bucket "${BUCKET_NAME}" \
     --server-side-encryption-configuration={\"Rules\":[{\"ApplyServerSideEncryptionByDefault\":{\"SSEAlgorithm\":\"AES256\"}}]} > /dev/null
