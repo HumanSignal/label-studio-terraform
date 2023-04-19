@@ -14,7 +14,7 @@ source "${ROOT}/scripts/common.sh"
 (
   cd "${ROOT}/env"
   # shellcheck disable=SC2086
-  terraform apply -no-color -auto-approve ${TF_PARAMS:-}
+  terraform apply -auto-approve ${TF_PARAMS:-}
 )
 
 # Get cluster outputs from the cluster.

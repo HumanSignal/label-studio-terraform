@@ -18,7 +18,7 @@ variable "helm_chart_release_name" {
 variable "helm_chart_version" {
   description = "Metrics Server Helm chart version"
   type        = string
-  default     = "6.2.15"
+  default     = "6.2.17"
 }
 
 variable "helm_chart_repo" {

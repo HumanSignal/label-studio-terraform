@@ -30,7 +30,7 @@ terraform workspace select "${TF_VAR_environment:-}"
 
 # this will destroy all of your resources in the environment workspace
 # shellcheck disable=SC2086
-terraform destroy -no-color -auto-approve ${TF_PARAMS:-}
+terraform destroy -auto-approve ${TF_PARAMS:-}
 
 # Delete terraform workspace.
 terraform workspace select default
