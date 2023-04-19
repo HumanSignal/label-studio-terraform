@@ -30,6 +30,7 @@ module "vpc" {
 
   # Predefined VPC
   predefined_vpc_id = var.predefined_vpc_id
+  create_internet_gateway = var.create_internet_gateway
 }
 
 # Create Identity Access Management

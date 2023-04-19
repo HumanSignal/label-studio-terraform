@@ -344,3 +344,9 @@ variable "predefined_s3_bucket" {
   )
   default = null
 }
+
+variable "create_internet_gateway" {
+  default     = true
+  type        = bool
+  description = "Create Internet gateway"
+}

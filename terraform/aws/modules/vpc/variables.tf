@@ -103,3 +103,9 @@ variable "predefined_vpc_id" {
   type        = string
   description = "Predefined VPC ID"
 }
+
+variable "create_internet_gateway" {
+  default     = true
+  type        = bool
+  description = "Create Internet gateway"
+}
