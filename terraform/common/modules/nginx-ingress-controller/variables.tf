@@ -37,3 +37,8 @@ variable "settings" {
   description = "Additional yaml encoded values which will be passed to the Helm chart"
   default = {}
 }
+
+variable "eip_addresses" {
+  description = "EIP addresses list"
+  default = []
+}
