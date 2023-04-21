@@ -49,7 +49,7 @@ resource "kubectl_manifest" "selfsigned_cluster_issuer" {
     apiVersion: "cert-manager.io/v1"
     kind: "ClusterIssuer"
     metadata:
-      name: "${var.name}-selfsigned-cluster-issuer"
+      name: "selfsigned-cluster-issuer"
     spec:
       selfSigned: {}
     EOF
@@ -66,7 +66,7 @@ resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
     apiVersion: "cert-manager.io/v1"
     kind: "ClusterIssuer"
     metadata:
-      name: "${var.name}-letsencrypt-cluster-issuer"
+      name: "letsencrypt-cluster-issuer"
     spec:
       acme:
         email: "${var.email}"

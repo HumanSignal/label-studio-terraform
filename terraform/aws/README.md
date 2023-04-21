@@ -120,10 +120,10 @@ Deploy and assign domain name with singed by Let's Encrypt certificate using cer
 If you already have Hosted Zone, set `create_r53_zone` to `false`.
 
 ```hcl
-create_r53_zone = false
-domain_name     = "example.com"
-record_name     = "label-studio"
-email           = "test@test.com"
+create_r53_zone    = false
+zone_name          = "example.com"
+record_name        = "label-studio"
+lets_encrypt_email = "test@test.com"
 ```
 
 [Full tfvars file example](examples/opensource_route53.tfvars)
