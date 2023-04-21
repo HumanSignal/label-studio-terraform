@@ -191,14 +191,7 @@ module "nic" {
   load_balancer_name      = local.name_prefix
   eip_addresses           = module.lbc.eip_addresses
   vpc_cidr_block          = var.vpc_cidr_block
-
-  settings = {
-    controller = {
-      extraArgs = {
-        default-ssl-certificate = "cert-manager/${local.name_prefix}-certificate"
-      }
-    }
-  }
+  default_ssl_certificate = "cert-manager/${local.name_prefix}-certificate"
 
   depends_on = [
     module.eks,
@@ -213,8 +206,8 @@ module "cert-manager" {
   namespace               = "cert-manager"
   name                    = local.name_prefix
   email                   = var.lets_encrypt_email
-  selfsigned              = !local.create_r53_record
-  zone_name               = try(local.create_r53_record ? module.route53[0].route53_zone_name : module.nic.host, "")
+  selfsigned              = var.self_signed_cert
+  zone_name               = try(local.create_r53_record ? module.route53[0].route53_zone_name : var.zone_name, module.nic.host)
 
   depends_on = [
     module.eks,

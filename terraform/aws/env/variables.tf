@@ -356,3 +356,9 @@ variable "vpc_cidr_block" {
   type        = string
   default     = "10.0.0.0/16"
 }
+
+variable "self_signed_cert" {
+  description = "Use self-signed cert for Cert-Manager"
+  type    = bool
+  default = false
+}

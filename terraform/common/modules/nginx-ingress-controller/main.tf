@@ -30,9 +30,13 @@ resource "helm_release" "this" {
             config = {
               server-tokens         = "false"
               enable-real-ip        = "true"
-              use-forwarded-headers = "true"
               use-proxy-protocol    = "true"
               real-ip-header        = "proxy_protocol"
+              set-real-ip-from      = "0.0.0.0/0" # IPv4 CIDR to allow all source IPs
+              hide-headers          = "Server, X-Powered-By"
+            },
+            extraArgs = {
+              default-ssl-certificate = var.default_ssl_certificate
             }
           }
         },

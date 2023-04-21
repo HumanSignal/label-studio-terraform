@@ -7,5 +7,5 @@ output "namespace" {
 }
 
 output "tls_secret_name" {
-  value = yamldecode(kubectl_manifest.certificate.yaml_body).secretName
+  value = var.tls_secret_name
 }
