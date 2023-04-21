@@ -96,8 +96,8 @@ resource "kubectl_manifest" "certificate" {
     }
     spec = {
       dnsNames = [
-        - var.zone_name,
-        - "*.${var.zone_name}",
+        var.zone_name,
+        "*.${var.zone_name}",
       ]
     }
     secretName = var.tls_secret_name
