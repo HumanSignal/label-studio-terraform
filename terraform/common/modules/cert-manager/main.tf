@@ -103,7 +103,7 @@ resource "kubectl_manifest" "certificate" {
     secretName = var.tls_secret_name
     issuerRef  = {
       kind = "ClusterIssuer"
-      name = var.selfsigned ? kubectl_manifest.selfsigned_cluster_issuer.name : kubectl_manifest.letsencrypt_cluster_issuer.name
+      name = var.selfsigned ? kubectl_manifest.selfsigned_cluster_issuer[0].name : kubectl_manifest.letsencrypt_cluster_issuer[0].name
     }
   })
 }

@@ -19,7 +19,7 @@ locals {
 
 # Create and/or configure VPC
 module "vpc" {
-  source    = "../modules/vpc"
+  source = "../modules/vpc"
 
   name               = local.name_prefix
   environment        = var.environment
@@ -30,7 +30,7 @@ module "vpc" {
   vpc_cidr_block     = var.vpc_cidr_block
 
   # Predefined VPC
-  predefined_vpc_id = var.predefined_vpc_id
+  predefined_vpc_id       = var.predefined_vpc_id
   create_internet_gateway = var.create_internet_gateway
 }
 
@@ -195,7 +195,7 @@ module "nic" {
   settings = {
     controller = {
       extraArgs = {
-        default-ssl-certificate : "${module.cert-manager.namespace}/${module.cert-manager.tls_secret_name}"
+        default-ssl-certificate = "cert-manager/${local.name_prefix}-certificate"
       }
     }
   }
