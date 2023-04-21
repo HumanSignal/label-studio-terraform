@@ -9,7 +9,7 @@ locals {
     "project-id"    = format("%s", data.aws_caller_identity.current.id)
   }
 
-  create_r53_record = var.domain_name != null && var.record_name != null
+  create_r53_record = var.zone_name != null && var.record_name != null
 }
 
 data "aws_caller_identity" "current" {}
@@ -79,7 +79,7 @@ variable "create_acm_certificate" {
   description = "Whether to create acm certificate or use existing"
 }
 
-variable "domain_name" {
+variable "zone_name" {
   default     = null
   type        = string
   description = "Main public domain name"

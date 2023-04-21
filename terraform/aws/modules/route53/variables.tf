@@ -9,7 +9,7 @@ variable "create_r53_zone" {
   description = "Create R53 zone for main public domain"
 }
 
-variable "domain_name" {
+variable "zone_name" {
   description = "Main public domain name"
 }
 

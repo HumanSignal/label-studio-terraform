@@ -13,7 +13,7 @@ resource "kubernetes_namespace" "this" {
 }
 
 resource "helm_release" "this" {
-  name = var.helm_chart_release_name
+  name      = var.helm_chart_release_name
   namespace = kubernetes_namespace.this.metadata[0].name
 
   repository = var.helm_chart_repo
@@ -42,9 +42,6 @@ variable "selfsigned" {
   type    = bool
   default = true
 }
-locals {
-  cluster_issuer_name = var.selfsigned ? "selfsigned-cluster-issuer" : "letsencrypt-cluster-issuer"
-}
 
 resource "kubectl_manifest" "selfsigned_cluster_issuer" {
   count     = var.selfsigned ? 1 : 0
@@ -52,7 +49,7 @@ resource "kubectl_manifest" "selfsigned_cluster_issuer" {
     apiVersion: "cert-manager.io/v1"
     kind: "ClusterIssuer"
     metadata:
-      name: "${local.cluster_issuer_name}"
+      name: "${var.name}-selfsigned-cluster-issuer"
     spec:
       selfSigned: {}
     EOF
@@ -64,12 +61,12 @@ resource "kubectl_manifest" "selfsigned_cluster_issuer" {
 }
 
 resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
-  count = var.selfsigned ? 0 : 1
+  count     = var.selfsigned ? 0 : 1
   yaml_body = <<-EOF
     apiVersion: "cert-manager.io/v1"
     kind: "ClusterIssuer"
     metadata:
-      name: "${local.cluster_issuer_name}"
+      name: "${var.name}-letsencrypt-cluster-issuer"
     spec:
       acme:
         email: "${var.email}"
@@ -87,4 +84,26 @@ resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
     kubernetes_namespace.this,
     helm_release.this,
   ]
+}
+
+resource "kubectl_manifest" "certificate" {
+  yaml_body = yamlencode({
+    apiVersion = "cert-manager.io/v1"
+    kind       = "Certificate"
+    metadata   = {
+      name      = "${var.name}-certificate"
+      namespace = kubernetes_namespace.this.metadata[0].name
+    }
+    spec = {
+      dnsNames = [
+        - var.zone_name,
+        - "*.${var.zone_name}",
+      ]
+    }
+    secretName = var.tls_secret_name
+    issuerRef  = {
+      kind = "ClusterIssuer"
+      name = var.selfsigned ? kubectl_manifest.selfsigned_cluster_issuer.name : kubectl_manifest.letsencrypt_cluster_issuer.name
+    }
+  })
 }

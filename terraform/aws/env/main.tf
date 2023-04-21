@@ -113,7 +113,7 @@ module "route53" {
 
   create_r53_zone        = var.create_r53_zone
   record_name            = var.record_name
-  domain_name            = var.domain_name
+  zone_name              = var.zone_name
   tags                   = local.tags
   alias_zone_id          = var.region
   load_balancer_dns_name = module.nic.load_balancer_dns_name
@@ -125,7 +125,7 @@ module "acm" {
 
   count = var.create_acm_certificate ? 1 : 0
 
-  domain_name = var.domain_name
+  domain_name = var.zone_name
   tags        = local.tags
 }
 
@@ -192,6 +192,14 @@ module "nic" {
   eip_addresses           = module.lbc.eip_addresses
   vpc_cidr_block          = var.vpc_cidr_block
 
+  settings = {
+    controller = {
+      extraArgs = {
+        default-ssl-certificate : "${module.cert-manager.namespace}/${module.cert-manager.tls_secret_name}"
+      }
+    }
+  }
+
   depends_on = [
     module.eks,
     module.lbc
@@ -203,8 +211,10 @@ module "cert-manager" {
 
   helm_chart_release_name = format("%s-cert-manager", local.name_prefix)
   namespace               = "cert-manager"
+  name                    = local.name_prefix
   email                   = var.lets_encrypt_email
   selfsigned              = !local.create_r53_record
+  zone_name               = try(local.create_r53_record ? module.route53[0].route53_zone_name : module.nic.host, "")
 
   depends_on = [
     module.eks,
@@ -258,8 +268,7 @@ module "label-studio" {
   redis_tls_crt_file = var.redis_tls_crt_file
   redis_ca_crt_file  = var.redis_ca_crt_file
 
-  host                    = try(local.create_r53_record ? module.route53[0].fqdn : module.nic.host, "")
-  certificate_issuer_name = try(module.cert-manager.issuer_name, "")
+  host = try(local.create_r53_record ? module.route53[0].fqdn : module.nic.host, "")
 
   depends_on = [
     module.lbc,

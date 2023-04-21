@@ -28,6 +28,15 @@ variable "namespace" {
   default     = "cert-manager"
 }
 
+variable "name" {
+  description = "Name is the prefix to use for resources that needs to be created."
+  type        = string
+}
+
+variable "zone_name" {
+  default = ""
+}
+
 variable "settings" {
   description = "Additional yaml encoded values which will be passed to the Helm chart."
   default     = {}
@@ -36,4 +45,10 @@ variable "settings" {
 variable "email" {
   description = "Email address for certificate sing via Let's Encrypt"
   type        = string
+}
+
+variable "tls_secret_name" {
+  description = ""
+  type        = string
+  default     = "tls"
 }
