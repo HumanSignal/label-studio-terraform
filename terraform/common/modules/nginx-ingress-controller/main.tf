@@ -16,23 +16,23 @@ resource "helm_release" "this" {
     yamlencode(
       merge(
         {
-          controller : {
-            service : {
-              annotations : {
-                "service.beta.kubernetes.io/aws-load-balancer-name" : var.load_balancer_name
-                "service.beta.kubernetes.io/aws-load-balancer-type" : "external"
-                "service.beta.kubernetes.io/aws-load-balancer-scheme" : "internet-facing"
-                "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" : "ip"
-                "service.beta.kubernetes.io/aws-load-balancer-eip-allocations": join(",", var.eip_addresses)
-                "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol": "*"
+          controller = {
+            service = {
+              annotations = {
+                "service.beta.kubernetes.io/aws-load-balancer-name"            = var.load_balancer_name
+                "service.beta.kubernetes.io/aws-load-balancer-type"            = "external"
+                "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
+                "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "ip"
+                "service.beta.kubernetes.io/aws-load-balancer-eip-allocations" = join(",", var.eip_addresses)
+                "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol"  = "*"
               }
             },
-            config : {
-              server-tokens: "false"
-              enable-real-ip: "true"
-              use-forwarded-headers: "true"
-              use-proxy-protocol: "true"
-              real-ip-header: "proxy_protocol"
+            config = {
+              server-tokens         = "false"
+              enable-real-ip        = "true"
+              use-forwarded-headers = "true"
+              use-proxy-protocol    = "true"
+              real-ip-header        = "proxy_protocol"
             }
           }
         },

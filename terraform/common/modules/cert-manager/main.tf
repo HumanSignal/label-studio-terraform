@@ -45,14 +45,16 @@ variable "selfsigned" {
 
 resource "kubectl_manifest" "selfsigned_cluster_issuer" {
   count     = var.selfsigned ? 1 : 0
-  yaml_body = <<-EOF
-    apiVersion: "cert-manager.io/v1"
-    kind: "ClusterIssuer"
-    metadata:
-      name: "selfsigned-cluster-issuer"
-    spec:
-      selfSigned: {}
-    EOF
+  yaml_body = yamlencode({
+    apiVersion = "cert-manager.io/v1"
+    kind       = "ClusterIssuer"
+    metadata   = {
+      name = "selfsigned-cluster-issuer"
+    }
+    spec = {
+      selfSigned : {}
+    }
+  })
 
   depends_on = [
     kubernetes_namespace.this,
@@ -62,23 +64,28 @@ resource "kubectl_manifest" "selfsigned_cluster_issuer" {
 
 resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
   count     = var.selfsigned ? 0 : 1
-  yaml_body = <<-EOF
-    apiVersion: "cert-manager.io/v1"
-    kind: "ClusterIssuer"
-    metadata:
-      name: "letsencrypt-cluster-issuer"
-    spec:
-      acme:
-        email: "${var.email}"
-        privateKeySecretRef:
-          name: "letsencrypt-private-key"
-        server: "https://acme-v02.api.letsencrypt.org/directory"
-        solvers:
-        - http01:
-            ingress:
-              class: nginx
-          selector: {}
-    EOF
+  yaml_body = yamlencode({
+    apiVersion = "cert-manager.io/v1"
+    kind       = "ClusterIssuer"
+    metadata   = {
+      name = "letsencrypt-cluster-issuer"
+    }
+    spec = {
+      acme = {
+        email               = var.email
+        privateKeySecretRef = {
+          name : "letsencrypt-private-key"
+        }
+        server  = "https://acme-v02.api.letsencrypt.org/directory"
+        solvers = [
+          {
+            http01 = { ingress = { class = "nginx" } }
+            selector : {}
+          }
+        ]
+      }
+    }
+  })
 
   depends_on = [
     kubernetes_namespace.this,
