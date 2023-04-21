@@ -35,7 +35,7 @@ resource "aws_subnet" "private_subnet" {
     {
       "Name"                                                   = format("%s-private-subnet-%s", var.name, local.pri_availability_zones[count.index])
       format("kubernetes.io/cluster/%s-eks-cluster", var.name) = "shared"
-      "kubernetes.io/role/elb"                                 = 1
+      "kubernetes.io/role/internal-elb"                        = 1
     }
   )
 }

@@ -42,3 +42,9 @@ variable "eip_addresses" {
   description = "EIP addresses list"
   default = []
 }
+
+variable "vpc_cidr_block" {
+  description = "Virtual Private Cloud CIDR block"
+  type        = string
+  default     = "10.0.0.0/16"
+}

@@ -27,6 +27,7 @@ module "vpc" {
   public_cidr_block  = var.public_cidr_block
   private_cidr_block = var.private_cidr_block
   tags               = local.tags
+  vpc_cidr_block     = var.vpc_cidr_block
 
   # Predefined VPC
   predefined_vpc_id = var.predefined_vpc_id
@@ -189,6 +190,7 @@ module "nic" {
   namespace               = var.ingress_namespace
   load_balancer_name      = local.name_prefix
   eip_addresses           = module.lbc.eip_addresses
+  vpc_cidr_block          = var.vpc_cidr_block
 
   depends_on = [
     module.eks,
