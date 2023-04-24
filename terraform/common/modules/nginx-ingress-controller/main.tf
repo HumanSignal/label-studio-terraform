@@ -1,9 +1,3 @@
-resource "kubernetes_namespace" "this" {
-  metadata {
-    name = var.namespace
-  }
-}
-
 resource "helm_release" "this" {
   name      = var.helm_chart_release_name
   namespace = var.namespace
@@ -28,12 +22,12 @@ resource "helm_release" "this" {
               }
             },
             config = {
-              server-tokens         = "false"
-              enable-real-ip        = "true"
-              use-proxy-protocol    = "true"
-              real-ip-header        = "proxy_protocol"
-              set-real-ip-from      = "0.0.0.0/0" # IPv4 CIDR to allow all source IPs
-              hide-headers          = "Server, X-Powered-By"
+              server-tokens      = "false"
+              enable-real-ip     = "true"
+              use-proxy-protocol = "true"
+              real-ip-header     = "proxy_protocol"
+              set-real-ip-from   = "0.0.0.0/0" # IPv4 CIDR to allow all source IPs
+              hide-headers       = "Server, X-Powered-By"
             },
             extraArgs = {
               default-ssl-certificate = var.default_ssl_certificate
@@ -43,9 +37,5 @@ resource "helm_release" "this" {
         var.settings,
       )
     )
-  ]
-
-  depends_on = [
-    kubernetes_namespace.this
   ]
 }

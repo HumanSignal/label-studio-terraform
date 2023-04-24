@@ -3,7 +3,7 @@ output "issuer_name" {
 }
 
 output "namespace" {
-  value = kubernetes_namespace.this.metadata[0].name
+  value = var.namespace
 }
 
 output "tls_secret_name" {

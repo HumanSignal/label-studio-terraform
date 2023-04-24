@@ -6,15 +6,9 @@ terraform {
   }
 }
 
-resource "kubernetes_namespace" "this" {
-  metadata {
-    name = var.namespace
-  }
-}
-
 resource "helm_release" "this" {
   name      = var.helm_chart_release_name
-  namespace = kubernetes_namespace.this.metadata[0].name
+  namespace = var.namespace
 
   repository = var.helm_chart_repo
   chart      = var.helm_chart_name
@@ -33,9 +27,6 @@ resource "helm_release" "this" {
       value = set.value
     }
   }
-  depends_on = [
-    kubernetes_namespace.this,
-  ]
 }
 
 resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
@@ -63,7 +54,6 @@ resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
   })
 
   depends_on = [
-    kubernetes_namespace.this,
     helm_release.this,
   ]
 }
@@ -74,7 +64,7 @@ resource "kubectl_manifest" "certificate" {
     kind       = "Certificate"
     metadata   = {
       name      = "${var.name}-certificate"
-      namespace = kubernetes_namespace.this.metadata[0].name
+      namespace = var.namespace
     }
     spec = {
       dnsNames = [

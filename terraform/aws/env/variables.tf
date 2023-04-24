@@ -113,6 +113,12 @@ variable "monitoring_namespace" {
   default     = "monitoring"
 }
 
+variable "cert_manager_namespace" {
+  description = "Namespace for cert-manager"
+  type        = string
+  default     = "cert-manager"
+}
+
 # EKS AWS auth
 variable "aws_auth_roles" {
   description = "List of role maps to add to the aws-auth configmap"

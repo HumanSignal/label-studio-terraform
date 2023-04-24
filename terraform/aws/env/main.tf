@@ -167,10 +167,21 @@ module "elasticache" {
   ]
 }
 
+module "ingress_namespace" {
+  source = "../../common/modules/k8s-namespace"
+
+  namespace = var.ingress_namespace
+
+  depends_on = [
+    module.eks,
+  ]
+}
+
 module "lbc" {
   source = "../modules/load-balancer-controller"
 
   name               = local.name_prefix
+  namespace          = module.ingress_namespace.namespace
   environment        = var.environment
   cluster_name       = module.eks.cluster_name
   iam_oidc_provider  = module.eks.iam_oidc_provider
@@ -179,7 +190,7 @@ module "lbc" {
 
   depends_on = [
     module.eks,
-    module.vpc,
+    module.ingress_namespace,
   ]
 }
 
@@ -187,7 +198,7 @@ module "nic" {
   source = "../../common/modules/nginx-ingress-controller"
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
-  namespace               = var.ingress_namespace
+  namespace               = module.ingress_namespace.namespace
   load_balancer_name      = local.name_prefix
   eip_addresses           = module.lbc.eip_addresses
   vpc_cidr_block          = var.vpc_cidr_block
@@ -195,7 +206,18 @@ module "nic" {
 
   depends_on = [
     module.eks,
-    module.lbc
+    module.ingress_namespace,
+    module.lbc,
+  ]
+}
+
+module "cert_manager_namespace" {
+  source = "../../common/modules/k8s-namespace"
+
+  namespace = var.cert_manager_namespace
+
+  depends_on = [
+    module.eks,
   ]
 }
 
@@ -205,13 +227,15 @@ module "cert-manager" {
   count = 1
 
   helm_chart_release_name = format("%s-cert-manager", local.name_prefix)
-  namespace               = "cert-manager"
+  namespace               = module.cert_manager_namespace.namespace
   name                    = local.name_prefix
   email                   = var.lets_encrypt_email
-  zone_name               = try(local.create_r53_record ? module.route53[0].route53_zone_name : var.zone_name, module.nic.host)
+#  zone_name               = try(local.create_r53_record ? module.route53[0].route53_zone_name : var.zone_name, module.nic.host)
+  zone_name               = local.create_r53_record ? module.route53[0].zone_name : module.nic.host
 
   depends_on = [
     module.eks,
+    module.cert_manager_namespace,
   ]
 }
 
