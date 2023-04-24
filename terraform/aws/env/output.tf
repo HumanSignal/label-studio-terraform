@@ -28,5 +28,9 @@ output "load_balancer_host" {
 }
 
 output "host" {
-  value = try(module.label-studio.host, "")
+  value = var.deploy_label_studio ? module.label-studio[0].host : ""
+}
+
+output "dns" {
+  value = local.create_r53_record ? module.route53[0].fqdn : ""
 }

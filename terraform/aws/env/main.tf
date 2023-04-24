@@ -202,7 +202,7 @@ module "nic" {
   load_balancer_name      = local.name_prefix
   eip_addresses           = module.lbc.eip_addresses
   vpc_cidr_block          = var.vpc_cidr_block
-  default_ssl_certificate = "cert-manager/${local.name_prefix}-certificate"
+  default_ssl_certificate = "${var.cert_manager_namespace}/${local.name_prefix}-certificate"
 
   depends_on = [
     module.eks,
@@ -230,7 +230,6 @@ module "cert-manager" {
   namespace               = module.cert_manager_namespace.namespace
   name                    = local.name_prefix
   email                   = var.lets_encrypt_email
-#  zone_name               = try(local.create_r53_record ? module.route53[0].route53_zone_name : var.zone_name, module.nic.host)
   zone_name               = local.create_r53_record ? module.route53[0].zone_name : module.nic.host
 
   depends_on = [
@@ -286,7 +285,7 @@ module "label-studio" {
   redis_tls_crt_file = var.redis_tls_crt_file
   redis_ca_crt_file  = var.redis_ca_crt_file
 
-  host = try(local.create_r53_record ? module.route53[0].fqdn : module.nic.host, "")
+  host = local.create_r53_record ? module.route53[0].fqdn : module.nic.host
 
   depends_on = [
     module.lbc,
