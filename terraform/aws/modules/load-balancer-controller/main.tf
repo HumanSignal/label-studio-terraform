@@ -452,13 +452,12 @@ data "aws_availability_zones" "availability_zones" {
 
 locals {
   pri_availability_zones = slice(data.aws_availability_zones.availability_zones.names, 0, length(var.private_cidr_block))
-  pri_az_map             = {for idx, az in local.pri_availability_zones : idx => az}
 }
 
 resource "aws_eip" "lb_eip" {
-  for_each = local.pri_az_map
+  count = length(var.private_cidr_block)
   tags     = merge(var.tags, {
-    "Name" = format("%s-lb-eip-%s", var.name, each.value)
+    "Name" = format("%s-lb-eip-%s", var.name, local.pri_availability_zones[count.index])
   })
   vpc = true
 }
