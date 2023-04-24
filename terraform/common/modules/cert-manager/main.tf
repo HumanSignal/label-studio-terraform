@@ -38,32 +38,7 @@ resource "helm_release" "this" {
   ]
 }
 
-variable "selfsigned" {
-  type    = bool
-  default = true
-}
-
-resource "kubectl_manifest" "selfsigned_cluster_issuer" {
-  count     = var.selfsigned ? 1 : 0
-  yaml_body = yamlencode({
-    apiVersion = "cert-manager.io/v1"
-    kind       = "ClusterIssuer"
-    metadata   = {
-      name = "selfsigned-cluster-issuer"
-    }
-    spec = {
-      selfSigned : {}
-    }
-  })
-
-  depends_on = [
-    kubernetes_namespace.this,
-    helm_release.this,
-  ]
-}
-
 resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
-  count     = var.selfsigned ? 0 : 1
   yaml_body = yamlencode({
     apiVersion = "cert-manager.io/v1"
     kind       = "ClusterIssuer"
@@ -109,7 +84,7 @@ resource "kubectl_manifest" "certificate" {
       secretName = var.tls_secret_name
       issuerRef  = {
         kind = "ClusterIssuer"
-        name = var.selfsigned ? kubectl_manifest.selfsigned_cluster_issuer[0].name : kubectl_manifest.letsencrypt_cluster_issuer[0].name
+        name = kubectl_manifest.letsencrypt_cluster_issuer.name
       }
     }
   })

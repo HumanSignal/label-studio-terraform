@@ -1,5 +1,5 @@
 output "issuer_name" {
-  value = var.selfsigned ? kubectl_manifest.selfsigned_cluster_issuer[0].name : kubectl_manifest.letsencrypt_cluster_issuer[0].name
+  value = kubectl_manifest.letsencrypt_cluster_issuer.name
 }
 
 output "namespace" {

@@ -202,11 +202,12 @@ module "nic" {
 module "cert-manager" {
   source = "../../common/modules/cert-manager"
 
+  count = 1
+
   helm_chart_release_name = format("%s-cert-manager", local.name_prefix)
   namespace               = "cert-manager"
   name                    = local.name_prefix
   email                   = var.lets_encrypt_email
-  selfsigned              = var.self_signed_cert
   zone_name               = try(local.create_r53_record ? module.route53[0].route53_zone_name : var.zone_name, module.nic.host)
 
   depends_on = [
