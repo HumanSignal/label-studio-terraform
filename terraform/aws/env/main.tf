@@ -222,9 +222,9 @@ module "cert_manager_namespace" {
 }
 
 module "cert-manager" {
-  source = "../../common/modules/cert-manager"
+  source = "../modules/cert-manager"
 
-  count = 1
+  count = local.create_r53_record ? 1 : 0
 
   helm_chart_release_name = format("%s-cert-manager", local.name_prefix)
   namespace               = module.cert_manager_namespace.namespace
