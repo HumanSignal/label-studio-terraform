@@ -15,18 +15,20 @@ resource "helm_release" "this" {
   version    = var.helm_chart_version
 
   values = [
-    yamlencode(var.settings)
+    yamlencode(
+      merge(
+        {
+          installCRDs    = true,
+          serviceAccount = {
+            annotations = {
+              "eks.amazonaws.com/role-arn" = aws_iam_role.this.arn
+            }
+          }
+        },
+        var.settings,
+      )
+    )
   ]
-
-  dynamic "set" {
-    for_each = {
-      installCRDs = true
-    }
-    content {
-      name  = set.key
-      value = set.value
-    }
-  }
 }
 
 resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
@@ -49,7 +51,6 @@ resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
               route53 = {
                 region       = var.region
                 hostedZoneID = var.zone_id
-                role         = aws_iam_role.this.arn
               }
             }
           },

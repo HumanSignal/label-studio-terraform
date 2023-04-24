@@ -19,7 +19,7 @@ function check_terraform() {
   echo "Running terraform validate"
   REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
   for provider in "${REPO_ROOT}"/terraform/*; do
-    [[ "$provider" == "${REPO_ROOT}/terraform/common" ]] && continue
+    [[ "$provider" == "${REPO_ROOT}/terraform/common" ]] || [[ "$provider" == "${REPO_ROOT}/terraform/terraform.tfstate" ]] && continue
     cd "${provider}/env"
     terraform init -backend=false
     terraform validate .
@@ -43,7 +43,7 @@ function check_tflint() {
   echo "Running tflint"
   REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
   for provider in "${REPO_ROOT}"/terraform/*; do
-    [[ "$provider" == "${REPO_ROOT}/terraform/common" ]] && continue
+    [[ "$provider" == "${REPO_ROOT}/terraform/common" ]] || [[ "$provider" == "${REPO_ROOT}/terraform/terraform.tfstate" ]] && continue
     cd "${provider}/env"
     tflint
   done
@@ -59,7 +59,7 @@ function check_tfsec() {
   echo "Running tfsec"
   REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
   for provider in "${REPO_ROOT}"/terraform/*; do
-    [[ "$provider" == "${REPO_ROOT}/terraform/common" ]] && continue
+    [[ "$provider" == "${REPO_ROOT}/terraform/common" ]] || [[ "$provider" == "${REPO_ROOT}/terraform/terraform.tfstate" ]] && continue
     cd "${provider}/env"
     tfsec
   done
