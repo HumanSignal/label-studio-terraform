@@ -198,6 +198,7 @@ module "nic" {
   source = "../../common/modules/nginx-ingress-controller"
 
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
+  replicas                = length(var.private_cidr_block)
   namespace               = module.ingress_namespace.namespace
   load_balancer_name      = local.name_prefix
   eip_addresses           = module.lbc.eip_addresses

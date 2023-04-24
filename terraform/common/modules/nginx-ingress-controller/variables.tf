@@ -53,3 +53,9 @@ variable "default_ssl_certificate" {
   description = "Default SSL certificate"
   type = string
 }
+
+variable "replicas" {
+  type = number
+  description = "Amount of replicas"
+  default = 1
+}
