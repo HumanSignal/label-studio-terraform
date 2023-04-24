@@ -288,7 +288,7 @@ module "label-studio" {
   redis_tls_crt_file = var.redis_tls_crt_file
   redis_ca_crt_file  = var.redis_ca_crt_file
 
-  host = local.create_r53_record ? module.route53[0].fqdn : module.nic.host
+  host = try(local.create_r53_record ? module.route53[0].fqdn : module.nic.host, "")
 
   depends_on = [
     module.lbc,
