@@ -184,7 +184,8 @@ module "lbc" {
   namespace          = module.ingress_namespace.namespace
   environment        = var.environment
   cluster_name       = module.eks.cluster_name
-  iam_oidc_provider  = module.eks.iam_oidc_provider
+  region             = var.region
+  oidc_provider_arn  = module.eks.iam_oidc_provider_arn
   tags               = local.tags
   private_cidr_block = var.private_cidr_block
 

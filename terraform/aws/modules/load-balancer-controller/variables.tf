@@ -8,12 +8,9 @@ variable "environment" {
   type        = string
 }
 
-variable "iam_oidc_provider" {
+variable "oidc_provider_arn" {
   description = "AWS EKS IRSA provider"
-  type        = object({
-    url = string
-    arn = string
-  })
+  type        = string
 }
 
 variable "cluster_name" {
@@ -56,3 +53,10 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "settings" {
+  description = "Additional yaml encoded values which will be passed to the Helm chart."
+  default     = {}
+}
+
+variable "region" {}
