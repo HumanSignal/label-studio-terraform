@@ -186,7 +186,7 @@ module "lbc" {
   region                   = var.region
   oidc_provider_arn        = module.eks.iam_oidc_provider_arn
   tags                     = local.tags
-  private_cidr_block       = var.private_cidr_block
+  public_cidr_block        = var.public_cidr_block
   use_eip_for_nat_gateways = var.use_eip_for_nat_gateways
 
   depends_on = [

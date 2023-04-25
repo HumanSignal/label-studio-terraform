@@ -305,13 +305,13 @@ data "aws_availability_zones" "availability_zones" {
 }
 
 locals {
-  pri_availability_zones = slice(data.aws_availability_zones.availability_zones.names, 0, length(var.private_cidr_block))
+  pub_availability_zones = slice(data.aws_availability_zones.availability_zones.names, 0, length(var.public_cidr_block))
 }
 
 resource "aws_eip" "lb_eip" {
-  count = var.use_eip_for_nat_gateways ? length(var.private_cidr_block) : 0
+  count = var.use_eip_for_nat_gateways ? length(var.public_cidr_block) : 0
   tags  = merge(var.tags, {
-    "Name" = format("%s-lb-eip-%s", var.name, local.pri_availability_zones[count.index])
+    "Name" = format("%s-lb-eip-%s", var.name, local.pub_availability_zones[count.index])
   })
   vpc = true
 }

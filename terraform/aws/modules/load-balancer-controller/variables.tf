@@ -48,8 +48,8 @@ variable "use_eip_for_nat_gateways" {
   description = "Use EIP for nat gateway"
 }
 
-variable "private_cidr_block" {
-  description = "List of private subnet CIDR blocks"
+variable "public_cidr_block" {
+  description = "List of public subnet CIDR blocks"
   type        = list(string)
 }
 
