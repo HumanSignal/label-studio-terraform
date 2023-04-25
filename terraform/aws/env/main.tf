@@ -112,7 +112,6 @@ module "route53" {
   count = local.create_r53_record ? 1 : 0
 
   create_r53_zone        = var.create_r53_zone
-  record_name            = var.record_name
   zone_name              = var.zone_name
   tags                   = local.tags
   alias_zone_id          = var.region
@@ -290,7 +289,7 @@ module "label-studio" {
   redis_tls_crt_file = var.redis_tls_crt_file
   redis_ca_crt_file  = var.redis_ca_crt_file
 
-  host = try(local.create_r53_record ? module.route53[0].fqdn : module.nic.host, "")
+  host = module.nic.host
 
   depends_on = [
     module.lbc,

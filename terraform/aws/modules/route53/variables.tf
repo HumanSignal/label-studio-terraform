@@ -13,11 +13,6 @@ variable "zone_name" {
   description = "Main public domain name"
 }
 
-variable "record_name" {
-  description = "Subdomain name"
-  default = "www"
-}
-
 variable "alias_zone_id" {
   description = "Zone id for alias"
   type = string

@@ -32,5 +32,5 @@ output "host" {
 }
 
 output "dns" {
-  value = local.create_r53_record ? module.route53[0].fqdn : ""
+  value = ""
 }
