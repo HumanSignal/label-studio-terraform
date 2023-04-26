@@ -33,11 +33,13 @@ variable "name" {
   type        = string
 }
 
-variable "oidc_provider_arn" {}
+variable "region" {}
 
 variable "zone_name" {}
 
-variable "region" {}
+variable "zone_id" {}
+
+variable "oidc_provider_arn" {}
 
 variable "settings" {
   description = "Additional yaml encoded values which will be passed to the Helm chart."

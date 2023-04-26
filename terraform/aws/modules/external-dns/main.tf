@@ -86,7 +86,7 @@ resource "aws_iam_role_policy" "this" {
           "route53:ListResourceRecordSets"
         ],
         "Resource" : [
-          "arn:aws:route53:::hostedzone/*"
+          "arn:aws:route53:::hostedzone/${var.zone_id}"
         ]
       },
       {

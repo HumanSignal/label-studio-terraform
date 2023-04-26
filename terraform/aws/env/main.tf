@@ -256,11 +256,14 @@ module "external_dns_namespace" {
 module "external_dns" {
   source = "../modules/external-dns"
 
+  count = local.create_r53_record ? 1 : 0
+
   helm_chart_release_name = format("%s-external-dns", local.name_prefix)
   namespace               = module.external_dns_namespace.namespace
   name                    = local.name_prefix
-  zone_name               = local.create_r53_record ? module.route53[0].zone_name : module.nic.host
   region                  = var.region
+  zone_name               = local.create_r53_record ? module.route53[0].zone_name : module.nic.host
+  zone_id                 = module.route53[0].zone_id
   oidc_provider_arn       = module.eks.iam_oidc_provider_arn
 
   depends_on = [
