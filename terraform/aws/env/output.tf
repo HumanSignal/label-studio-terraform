@@ -30,7 +30,3 @@ output "load_balancer_host" {
 output "host" {
   value = var.deploy_label_studio ? module.label-studio[0].host : ""
 }
-
-output "dns" {
-  value = ""
-}
