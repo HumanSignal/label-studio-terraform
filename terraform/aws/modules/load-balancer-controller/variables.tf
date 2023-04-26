@@ -42,6 +42,12 @@ variable "namespace" {
   default     = "ingress"
 }
 
+variable "use_eip_for_nat_gateways" {
+  default     = true
+  type        = bool
+  description = "Use EIP for nat gateway"
+}
+
 variable "private_cidr_block" {
   description = "List of private subnet CIDR blocks"
   type        = list(string)

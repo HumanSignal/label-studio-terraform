@@ -11,7 +11,7 @@ resource "helm_release" "this" {
       merge(
         {
           controller = {
-            replicaCount = var.replicas
+            replicaCount   = var.replicas
             updateStrategy = {
               rollingUpdate = {
                 maxUnavailable = 1
@@ -19,14 +19,18 @@ resource "helm_release" "this" {
               type = "RollingUpdate"
             }
             service = {
-              annotations = {
-                "service.beta.kubernetes.io/aws-load-balancer-name"            = var.load_balancer_name
-                "service.beta.kubernetes.io/aws-load-balancer-type"            = "external"
-                "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
-                "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "ip"
-                "service.beta.kubernetes.io/aws-load-balancer-eip-allocations" = join(",", var.eip_addresses)
-                "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol"  = "*"
-              }
+              annotations = merge(
+                {
+                  "service.beta.kubernetes.io/aws-load-balancer-name"            = var.load_balancer_name
+                  "service.beta.kubernetes.io/aws-load-balancer-type"            = "external"
+                  "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
+                  "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "ip"
+                  "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol"  = "*"
+                },
+                var.eip_addresses != [] ? tomap({
+                  "service.beta.kubernetes.io/aws-load-balancer-eip-allocations" = join(",", var.eip_addresses)
+                }) : {},
+              )
             },
             config = {
               server-tokens      = "false"
@@ -43,7 +47,7 @@ resource "helm_release" "this" {
               podAntiAffinity = {
                 preferredDuringSchedulingIgnoredDuringExecution = [
                   {
-                    weight = 100
+                    weight          = 100
                     podAffinityTerm = {
                       labelSelector = {
                         matchExpressions = [

@@ -284,7 +284,7 @@ resource "helm_release" "alb_controller" {
     yamlencode(
       merge(
         {
-          clusterName                = var.cluster_name
+          clusterName        = var.cluster_name
           ingressClassConfig = {
             default = true
           }
@@ -309,8 +309,8 @@ locals {
 }
 
 resource "aws_eip" "lb_eip" {
-  count = length(var.private_cidr_block)
-  tags     = merge(var.tags, {
+  count = var.use_eip_for_nat_gateways ? length(var.private_cidr_block) : 0
+  tags  = merge(var.tags, {
     "Name" = format("%s-lb-eip-%s", var.name, local.pri_availability_zones[count.index])
   })
   vpc = true

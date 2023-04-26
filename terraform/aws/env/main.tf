@@ -179,14 +179,15 @@ module "ingress_namespace" {
 module "lbc" {
   source = "../modules/load-balancer-controller"
 
-  name               = local.name_prefix
-  namespace          = module.ingress_namespace.namespace
-  environment        = var.environment
-  cluster_name       = module.eks.cluster_name
-  region             = var.region
-  oidc_provider_arn  = module.eks.iam_oidc_provider_arn
-  tags               = local.tags
-  private_cidr_block = var.private_cidr_block
+  name                     = local.name_prefix
+  namespace                = module.ingress_namespace.namespace
+  environment              = var.environment
+  cluster_name             = module.eks.cluster_name
+  region                   = var.region
+  oidc_provider_arn        = module.eks.iam_oidc_provider_arn
+  tags                     = local.tags
+  private_cidr_block       = var.private_cidr_block
+  use_eip_for_nat_gateways = var.use_eip_for_nat_gateways
 
   depends_on = [
     module.eks,
@@ -242,6 +243,33 @@ module "cert-manager" {
   ]
 }
 
+module "external_dns_namespace" {
+  source = "../../common/modules/k8s-namespace"
+
+  namespace = var.external_dns_namespace
+
+  depends_on = [
+    module.eks,
+  ]
+}
+
+module "external_dns" {
+  source = "../modules/external-dns"
+
+  helm_chart_release_name = format("%s-external-dns", local.name_prefix)
+  namespace               = module.external_dns_namespace.namespace
+  name                    = local.name_prefix
+  zone_name               = local.create_r53_record ? module.route53[0].zone_name : module.nic.host
+  region                  = var.region
+  oidc_provider_arn       = module.eks.iam_oidc_provider_arn
+
+  depends_on = [
+    module.eks,
+    module.external_dns_namespace,
+  ]
+}
+
+
 module "label-studio" {
   count = var.deploy_label_studio ? 1 : 0
 
@@ -289,7 +317,7 @@ module "label-studio" {
   redis_tls_crt_file = var.redis_tls_crt_file
   redis_ca_crt_file  = var.redis_ca_crt_file
 
-  host = module.nic.host
+  host = try(local.create_r53_record ? "${var.record_name}.${module.route53[0].zone_name}" : module.nic.host, module.nic.host)
 
   depends_on = [
     module.lbc,

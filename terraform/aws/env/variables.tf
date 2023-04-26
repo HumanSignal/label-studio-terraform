@@ -119,6 +119,12 @@ variable "cert_manager_namespace" {
   default     = "cert-manager"
 }
 
+variable "external_dns_namespace" {
+  description = "Namespace for external-dns"
+  type        = string
+  default     = "external-dns"
+}
+
 # EKS AWS auth
 variable "aws_auth_roles" {
   description = "List of role maps to add to the aws-auth configmap"
@@ -355,6 +361,12 @@ variable "create_internet_gateway" {
   default     = true
   type        = bool
   description = "Create Internet gateway"
+}
+
+variable "use_eip_for_nat_gateways" {
+  default     = true
+  type        = bool
+  description = "Use EIP for nat gateway"
 }
 
 variable "vpc_cidr_block" {
