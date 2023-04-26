@@ -23,10 +23,14 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_acm"></a> [acm](#module\_acm) | ../modules/acm | n/a |
-| <a name="module_cert-manager"></a> [cert-manager](#module\_cert-manager) | ../../common/modules/cert-manager | n/a |
+| <a name="module_cert-manager"></a> [cert-manager](#module\_cert-manager) | ../modules/cert-manager | n/a |
+| <a name="module_cert_manager_namespace"></a> [cert\_manager\_namespace](#module\_cert\_manager\_namespace) | ../../common/modules/k8s-namespace | n/a |
 | <a name="module_eks"></a> [eks](#module\_eks) | ../modules/eks | n/a |
 | <a name="module_elasticache"></a> [elasticache](#module\_elasticache) | ../modules/elasticache | n/a |
+| <a name="module_external_dns"></a> [external\_dns](#module\_external\_dns) | ../modules/external-dns | n/a |
+| <a name="module_external_dns_namespace"></a> [external\_dns\_namespace](#module\_external\_dns\_namespace) | ../../common/modules/k8s-namespace | n/a |
 | <a name="module_iam"></a> [iam](#module\_iam) | ../modules/iam | n/a |
+| <a name="module_ingress_namespace"></a> [ingress\_namespace](#module\_ingress\_namespace) | ../../common/modules/k8s-namespace | n/a |
 | <a name="module_label-studio"></a> [label-studio](#module\_label-studio) | ../../common/modules/label-studio | n/a |
 | <a name="module_lbc"></a> [lbc](#module\_lbc) | ../modules/load-balancer-controller | n/a |
 | <a name="module_nic"></a> [nic](#module\_nic) | ../../common/modules/nginx-ingress-controller | n/a |
@@ -53,15 +57,17 @@
 | <a name="input_aws_auth_accounts"></a> [aws\_auth\_accounts](#input\_aws\_auth\_accounts) | List of account maps to add to the aws-auth configmap | `list(any)` | `[]` | no |
 | <a name="input_aws_auth_roles"></a> [aws\_auth\_roles](#input\_aws\_auth\_roles) | List of role maps to add to the aws-auth configmap | `list(any)` | `[]` | no |
 | <a name="input_aws_auth_users"></a> [aws\_auth\_users](#input\_aws\_auth\_users) | List of user maps to add to the aws-auth configmap | `list(any)` | `[]` | no |
+| <a name="input_cert_manager_namespace"></a> [cert\_manager\_namespace](#input\_cert\_manager\_namespace) | Namespace for cert-manager | `string` | `"cert-manager"` | no |
 | <a name="input_cluster_endpoint_public_access_cidrs"></a> [cluster\_endpoint\_public\_access\_cidrs](#input\_cluster\_endpoint\_public\_access\_cidrs) | List of CIDR blocks which can access the Amazon EKS public API server endpoint | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_create_acm_certificate"></a> [create\_acm\_certificate](#input\_create\_acm\_certificate) | Whether to create acm certificate or use existing | `bool` | `false` | no |
+| <a name="input_create_internet_gateway"></a> [create\_internet\_gateway](#input\_create\_internet\_gateway) | Create Internet gateway | `bool` | `true` | no |
 | <a name="input_create_r53_zone"></a> [create\_r53\_zone](#input\_create\_r53\_zone) | Create R53 zone for main public domain | `bool` | `false` | no |
 | <a name="input_deploy_label_studio"></a> [deploy\_label\_studio](#input\_deploy\_label\_studio) | Include Label Studio module? | `bool` | `true` | no |
 | <a name="input_desired_capacity"></a> [desired\_capacity](#input\_desired\_capacity) | Desired capacity for the autoscaling Group. | `number` | `3` | no |
-| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Main public domain name | `string` | `null` | no |
 | <a name="input_eks_capacity_type"></a> [eks\_capacity\_type](#input\_eks\_capacity\_type) | Type of capacity associated with the EKS Node Group | `string` | `"ON_DEMAND"` | no |
 | <a name="input_enterprise"></a> [enterprise](#input\_enterprise) | Deploy enterprise version of Label Studio | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Name of the environment where infrastructure is being built. | `string` | n/a | yes |
+| <a name="input_external_dns_namespace"></a> [external\_dns\_namespace](#input\_external\_dns\_namespace) | Namespace for external-dns | `string` | `"external-dns"` | no |
 | <a name="input_ingress_namespace"></a> [ingress\_namespace](#input\_ingress\_namespace) | Namespace for ingress | `string` | `"ingress"` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Type of instance to be used for the Kubernetes cluster. | `string` | `"t3.medium"` | no |
 | <a name="input_label_studio_additional_set"></a> [label\_studio\_additional\_set](#input\_label\_studio\_additional\_set) | Additional sets for Label Studio Helm chart release | `map(string)` | `{}` | no |
@@ -106,6 +112,9 @@
 | <a name="input_redis_tls_key_file"></a> [redis\_tls\_key\_file](#input\_redis\_tls\_key\_file) | n/a | `string` | `null` | no |
 | <a name="input_redis_type"></a> [redis\_type](#input\_redis\_type) | Redis deployment type | `string` | `"internal"` | no |
 | <a name="input_region"></a> [region](#input\_region) | The AWS region where terraform build resources. | `string` | `"us-east-1"` | no |
+| <a name="input_use_eip_for_nat_gateways"></a> [use\_eip\_for\_nat\_gateways](#input\_use\_eip\_for\_nat\_gateways) | Use EIP for nat gateway | `bool` | `true` | no |
+| <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | Virtual Private Cloud CIDR block | `string` | `"10.0.0.0/16"` | no |
+| <a name="input_zone_name"></a> [zone\_name](#input\_zone\_name) | Main public domain name | `string` | `null` | no |
 
 ## Outputs
 
