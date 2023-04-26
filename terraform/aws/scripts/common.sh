@@ -63,6 +63,9 @@ if ! aws s3api head-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}"
   aws s3api put-bucket-encryption \
     --bucket "${BUCKET_NAME}" \
     --server-side-encryption-configuration={\"Rules\":[{\"ApplyServerSideEncryptionByDefault\":{\"SSEAlgorithm\":\"AES256\"}}]} > /dev/null
+  aws s3api put-public-access-block \
+      --bucket "${BUCKET_NAME}" \
+      --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
   aws s3api put-bucket-versioning --bucket "${BUCKET_NAME}" --versioning-configuration Status=Enabled > /dev/null
 fi
 
