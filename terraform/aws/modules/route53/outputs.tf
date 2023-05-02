@@ -1,7 +1,7 @@
 output "zone_name" {
-  value = var.create_r53_zone ? aws_route53_zone.this[0].name : data.aws_route53_zone.this[0].name
+  value = var.create_r53_zone ? aws_route53_zone.r53_zone[0].name : data.aws_route53_zone.r53_zone[0].name
 }
 
 output "zone_id" {
-  value = var.create_r53_zone ? aws_route53_zone.this[0].id : data.aws_route53_zone.this[0].id
+  value = var.create_r53_zone ? aws_route53_zone.r53_zone[0].id : data.aws_route53_zone.r53_zone[0].id
 }

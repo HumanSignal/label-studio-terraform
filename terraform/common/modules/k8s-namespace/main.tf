@@ -1,4 +1,4 @@
-resource "kubernetes_namespace" "this" {
+resource "kubernetes_namespace" "namespace" {
   metadata {
     name = var.namespace
   }

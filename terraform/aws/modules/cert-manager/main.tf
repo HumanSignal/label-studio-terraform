@@ -6,7 +6,7 @@ terraform {
   }
 }
 
-resource "helm_release" "this" {
+resource "helm_release" "cert_manager" {
   name      = var.helm_chart_release_name
   namespace = var.namespace
 
@@ -21,7 +21,7 @@ resource "helm_release" "this" {
           installCRDs    = true,
           serviceAccount = {
             annotations = {
-              "eks.amazonaws.com/role-arn" = aws_iam_role.this.arn
+              "eks.amazonaws.com/role-arn" = aws_iam_role.cert_manager.arn
             }
           }
         },
@@ -60,7 +60,7 @@ resource "kubectl_manifest" "letsencrypt_cluster_issuer" {
   })
 
   depends_on = [
-    helm_release.this,
+    helm_release.cert_manager,
   ]
 }
 
@@ -86,11 +86,11 @@ resource "kubectl_manifest" "certificate" {
   })
 
   depends_on = [
-    aws_iam_role.this,
+    aws_iam_role.cert_manager,
   ]
 }
 
-resource "aws_iam_role" "this" {
+resource "aws_iam_role" "cert_manager" {
   name_prefix        = var.name
   assume_role_policy = <<EOF
 {
@@ -113,9 +113,9 @@ resource "aws_iam_role" "this" {
 EOF
 }
 
-resource "aws_iam_role_policy" "this" {
+resource "aws_iam_role_policy" "cert_manager" {
   name_prefix = var.name
-  role        = aws_iam_role.this.id
+  role        = aws_iam_role.cert_manager.id
   policy      = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

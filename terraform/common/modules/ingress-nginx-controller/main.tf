@@ -1,4 +1,4 @@
-resource "helm_release" "this" {
+resource "helm_release" "ingress_nginx" {
   name      = var.helm_chart_release_name
   namespace = var.namespace
 

@@ -8,14 +8,14 @@ locals {
   # domain names replaced by the domain name
   validation_domains = distinct(
     [
-    for k, v in aws_acm_certificate.this.domain_validation_options : merge(
+    for k, v in aws_acm_certificate.acm_certificate.domain_validation_options : merge(
       tomap(v), { domain_name = replace(v.domain_name, "*.", "") }
     )
     ]
   )
 }
 
-resource "aws_acm_certificate" "this" {
+resource "aws_acm_certificate" "acm_certificate" {
   domain_name               = var.domain_name
   subject_alternative_names = var.subject_alternative_names
   validation_method         = var.validation_method
@@ -54,13 +54,13 @@ resource "aws_route53_record" "validation" {
 
   allow_overwrite = var.validation_allow_overwrite_records
 
-  depends_on = [aws_acm_certificate.this]
+  depends_on = [aws_acm_certificate.acm_certificate]
 }
 
-resource "aws_acm_certificate_validation" "this" {
+resource "aws_acm_certificate_validation" "acm_certificate_validation" {
   count = var.validation_method != "NONE" && var.validate_certificate && var.wait_for_validation ? 1 : 0
 
-  certificate_arn = aws_acm_certificate.this.arn
+  certificate_arn = aws_acm_certificate.acm_certificate.arn
 
   validation_record_fqdns = flatten([aws_route53_record.validation.*.fqdn, var.validation_record_fqdns])
 }

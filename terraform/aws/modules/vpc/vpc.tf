@@ -30,7 +30,7 @@ locals {
 ################################################################################
 # VPC flow logs
 ################################################################################
-resource "aws_flow_log" "this" {
+resource "aws_flow_log" "flow_log" {
   count           = var.enable_vpc_log ? 1 : 0
   iam_role_arn    = aws_iam_role.vpc_flow_log_cloudwatch[count.index].arn
   log_destination = aws_cloudwatch_log_group.vpc_flow_log[count.index].arn

@@ -1,4 +1,4 @@
-resource "aws_iam_role" "this" {
+resource "aws_iam_role" "alb_controller" {
   name_prefix        = var.name
   assume_role_policy = <<EOF
 {
@@ -22,9 +22,9 @@ EOF
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
-resource "aws_iam_role_policy" "this" {
+resource "aws_iam_role_policy" "alb_controller" {
   name_prefix = var.name
-  role        = aws_iam_role.this.id
+  role        = aws_iam_role.alb_controller.id
   policy      = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -290,7 +290,7 @@ resource "helm_release" "alb_controller" {
           }
           serviceAccount = {
             annotations = {
-              "eks.amazonaws.com/role-arn" = aws_iam_role.this.arn
+              "eks.amazonaws.com/role-arn" = aws_iam_role.alb_controller.arn
             }
           }
         },

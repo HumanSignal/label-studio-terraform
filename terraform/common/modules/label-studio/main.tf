@@ -26,7 +26,7 @@ locals {
   redis_tls_key_secret_key        = "tls.key"
 }
 
-resource "kubernetes_namespace" "this" {
+resource "kubernetes_namespace" "labelstudio" {
   metadata {
     name = var.namespace
   }
@@ -35,7 +35,7 @@ resource "kubernetes_namespace" "this" {
 resource "kubernetes_secret" "heartex_pull_key" {
   metadata {
     name      = local.heartex_pull_key_secret_name
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = kubernetes_namespace.labelstudio.metadata[0].name
   }
   type = "kubernetes.io/dockerconfigjson"
   data = {
@@ -56,7 +56,7 @@ resource "kubernetes_secret" "license" {
   count = var.enterprise ? 1 : 0
   metadata {
     name      = local.license_secret_name
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = kubernetes_namespace.labelstudio.metadata[0].name
   }
   type = "generic"
   # TODO: Read license from file
@@ -69,7 +69,7 @@ resource "kubernetes_secret" "postgresql" {
   count = contains(["external", "rds"], var.postgresql_type) ? 1 : 0
   metadata {
     name      = local.postgresql_secret_name
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = kubernetes_namespace.labelstudio.metadata[0].name
   }
   type = "generic"
   data = {
@@ -81,7 +81,7 @@ resource "kubernetes_secret" "postgresql-ssl-cert" {
   count = local.postgresql_ssl_enabled ? 1 : 0
   metadata {
     name      = local.postgresql_ssl_cert_secret_name
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = kubernetes_namespace.labelstudio.metadata[0].name
   }
   type = "kubernetes.io/tls"
   data = {
@@ -95,7 +95,7 @@ resource "kubernetes_secret" "redis" {
   count = contains(["external", "elasticache"], var.redis_type) ? 1 : 0
   metadata {
     name      = local.redis_secret_name
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = kubernetes_namespace.labelstudio.metadata[0].name
   }
   type = "generic"
   data = {
@@ -107,7 +107,7 @@ resource "kubernetes_secret" "redis-ssl-cert" {
   count = local.redis_ssl_enabled ? 1 : 0
   metadata {
     name      = local.redis_ssl_cert_secret_name
-    namespace = kubernetes_namespace.this.metadata[0].name
+    namespace = kubernetes_namespace.labelstudio.metadata[0].name
   }
   type = "kubernetes.io/tls"
   data = {
@@ -119,7 +119,7 @@ resource "kubernetes_secret" "redis-ssl-cert" {
 
 resource "helm_release" "label_studio" {
   name      = var.helm_chart_release_name
-  namespace = kubernetes_namespace.this.metadata[0].name
+  namespace = kubernetes_namespace.labelstudio.metadata[0].name
 
   repository          = var.helm_chart_repo
   repository_username = var.helm_chart_repo_username

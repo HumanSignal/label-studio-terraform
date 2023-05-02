@@ -196,9 +196,8 @@ module "lbc" {
 }
 
 module "nic" {
-  source = "../../common/modules/nginx-ingress-controller"
+  source = "../../common/modules/ingress-nginx-controller"
 
-  helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
   replicas                = length(var.private_cidr_block)
   namespace               = module.ingress_namespace.namespace
   load_balancer_name      = local.name_prefix
@@ -228,7 +227,6 @@ module "cert-manager" {
 
   count = local.create_r53_record ? 1 : 0
 
-  helm_chart_release_name = format("%s-cert-manager", local.name_prefix)
   namespace               = module.cert_manager_namespace.namespace
   name                    = local.name_prefix
   email                   = var.lets_encrypt_email
@@ -258,7 +256,6 @@ module "external_dns" {
 
   count = local.create_r53_record ? 1 : 0
 
-  helm_chart_release_name = format("%s-external-dns", local.name_prefix)
   namespace               = module.external_dns_namespace.namespace
   name                    = local.name_prefix
   region                  = var.region

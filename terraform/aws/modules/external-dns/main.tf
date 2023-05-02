@@ -6,7 +6,7 @@ terraform {
   }
 }
 
-resource "helm_release" "this" {
+resource "helm_release" "external_dns" {
   name      = var.helm_chart_release_name
   namespace = var.namespace
 
@@ -23,11 +23,12 @@ resource "helm_release" "this" {
             create      = true
             name        = "external-dns"
             annotations = {
-              "eks.amazonaws.com/role-arn" = aws_iam_role.this.arn
+              "eks.amazonaws.com/role-arn" = aws_iam_role.external_dns.arn
             }
           }
           provider      = "aws"
           domainFilters = [var.zone_name]
+          policy = "upsert-only"
           extraArgs : [
             "--aws-zone-type=public",
             "--aws-batch-change-size=1000",
@@ -45,7 +46,7 @@ resource "helm_release" "this" {
   ]
 }
 
-resource "aws_iam_role" "this" {
+resource "aws_iam_role" "external_dns" {
   name_prefix        = var.name
   assume_role_policy = <<EOF
 {
@@ -68,9 +69,9 @@ resource "aws_iam_role" "this" {
 EOF
 }
 
-resource "aws_iam_role_policy" "this" {
+resource "aws_iam_role_policy" "external_dns" {
   name_prefix = var.name
-  role        = aws_iam_role.this.id
+  role        = aws_iam_role.external_dns.id
   policy      = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

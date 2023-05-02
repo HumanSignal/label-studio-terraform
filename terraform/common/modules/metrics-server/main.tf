@@ -1,10 +1,10 @@
-resource "kubernetes_namespace" "this" {
+resource "kubernetes_namespace" "monitoring" {
   metadata {
     name = var.namespace
   }
 }
 
-resource "helm_release" "this" {
+resource "helm_release" "metrics_server" {
   name      = var.helm_chart_release_name
   namespace = var.namespace
 
@@ -17,6 +17,6 @@ resource "helm_release" "this" {
   ]
 
   depends_on = [
-    kubernetes_namespace.this
+    kubernetes_namespace.monitoring
   ]
 }
