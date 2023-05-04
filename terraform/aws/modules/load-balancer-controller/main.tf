@@ -281,22 +281,18 @@ resource "helm_release" "alb_controller" {
   wait    = true
 
   values = [
-    yamlencode(
-      merge(
-        {
-          clusterName        = var.cluster_name
-          ingressClassConfig = {
-            default = true
-          }
-          serviceAccount = {
-            annotations = {
-              "eks.amazonaws.com/role-arn" = aws_iam_role.alb_controller.arn
-            }
-          }
-        },
-        var.settings,
-      )
-    )
+    jsonencode({
+      clusterName        = var.cluster_name
+      ingressClassConfig = {
+        default = true
+      }
+      serviceAccount = {
+        annotations = {
+          "eks.amazonaws.com/role-arn" = aws_iam_role.alb_controller.arn
+        }
+      }
+    }),
+    jsonencode(var.helm_values),
   ]
 }
 

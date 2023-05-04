@@ -15,19 +15,15 @@ resource "helm_release" "cert_manager" {
   version    = var.helm_chart_version
 
   values = [
-    yamlencode(
-      merge(
-        {
-          installCRDs    = true,
-          serviceAccount = {
-            annotations = {
-              "eks.amazonaws.com/role-arn" = aws_iam_role.cert_manager.arn
-            }
-          }
-        },
-        var.settings,
-      )
-    )
+    jsonencode({
+      installCRDs    = true,
+      serviceAccount = {
+        annotations = {
+          "eks.amazonaws.com/role-arn" = aws_iam_role.cert_manager.arn
+        }
+      }
+    }),
+    jsonencode(var.helm_values),
   ]
 }
 

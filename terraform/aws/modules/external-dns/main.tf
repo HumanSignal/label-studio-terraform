@@ -15,34 +15,30 @@ resource "helm_release" "external_dns" {
   version    = var.helm_chart_version
 
   values = [
-    yamlencode(
-      merge(
-        {
-          rbac           = { create = true }
-          serviceAccount = {
-            create      = true
-            name        = "external-dns"
-            annotations = {
-              "eks.amazonaws.com/role-arn" = aws_iam_role.external_dns.arn
-            }
-          }
-          provider      = "aws"
-          domainFilters = [var.zone_name]
-          policy = "upsert-only"
-          extraArgs : [
-            "--aws-zone-type=public",
-            "--aws-batch-change-size=1000",
-          ]
-          serviceMonitor = { enabled = false }
+    jsonencode({
+      rbac           = { create = true }
+      serviceAccount = {
+        create      = true
+        name        = "external-dns"
+        annotations = {
+          "eks.amazonaws.com/role-arn" = aws_iam_role.external_dns.arn
+        }
+      }
+      provider      = "aws"
+      domainFilters = [var.zone_name]
+      policy = "upsert-only"
+      extraArgs : [
+        "--aws-zone-type=public",
+        "--aws-batch-change-size=1000",
+      ]
+      serviceMonitor = { enabled = false }
 
-          sources = [
-            "service",
-            "ingress",
-          ]
-        },
-        var.settings,
-      )
-    )
+      sources = [
+        "service",
+        "ingress",
+      ]
+    }),
+    jsonencode(var.helm_values),
   ]
 }
 

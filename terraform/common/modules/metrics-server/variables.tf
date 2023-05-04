@@ -33,15 +33,7 @@ variable "namespace" {
   default     = "monitoring"
 }
 
-variable "settings" {
+variable "helm_values" {
   description = "Additional settings which will be passed to the Helm chart values"
-  default = {
-    extraArgs = [
-      "--kubelet-insecure-tls=true",
-      "--kubelet-preferred-address-types=InternalIP"
-    ]
-    apiService = {
-      create = true
-    }
-  }
+  default = {}
 }

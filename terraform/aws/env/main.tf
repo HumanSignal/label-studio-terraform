@@ -188,6 +188,7 @@ module "lbc" {
   tags                     = local.tags
   public_cidr_block        = var.public_cidr_block
   use_eip_for_nat_gateways = var.use_eip_for_nat_gateways
+  helm_values              = var.load_balancer_controller_helm_values
 
   depends_on = [
     module.eks,
@@ -204,6 +205,8 @@ module "nic" {
   eip_addresses           = module.lbc.eip_addresses
   vpc_cidr_block          = var.vpc_cidr_block
   default_ssl_certificate = "${var.cert_manager_namespace}/tls"
+  helm_values             = var.ingress_nginx_helm_values
+
 
   depends_on = [
     module.eks,
@@ -227,13 +230,15 @@ module "cert-manager" {
 
   count = local.create_r53_record ? 1 : 0
 
-  namespace               = module.cert_manager_namespace.namespace
-  name                    = local.name_prefix
-  email                   = var.lets_encrypt_email
-  zone_name               = local.create_r53_record ? module.route53[0].zone_name : module.nic.host
-  zone_id                 = module.route53[0].zone_id
-  region                  = var.region
-  oidc_provider_arn       = module.eks.iam_oidc_provider_arn
+  namespace         = module.cert_manager_namespace.namespace
+  name              = local.name_prefix
+  email             = var.lets_encrypt_email
+  zone_name         = local.create_r53_record ? module.route53[0].zone_name : module.nic.host
+  zone_id           = module.route53[0].zone_id
+  region            = var.region
+  oidc_provider_arn = module.eks.iam_oidc_provider_arn
+  helm_values       = var.cert_manager_helm_values
+
 
   depends_on = [
     module.eks,
@@ -256,12 +261,13 @@ module "external_dns" {
 
   count = local.create_r53_record ? 1 : 0
 
-  namespace               = module.external_dns_namespace.namespace
-  name                    = local.name_prefix
-  region                  = var.region
-  zone_name               = local.create_r53_record ? module.route53[0].zone_name : module.nic.host
-  zone_id                 = module.route53[0].zone_id
-  oidc_provider_arn       = module.eks.iam_oidc_provider_arn
+  namespace         = module.external_dns_namespace.namespace
+  name              = local.name_prefix
+  region            = var.region
+  zone_name         = local.create_r53_record ? module.route53[0].zone_name : module.nic.host
+  zone_id           = module.route53[0].zone_id
+  oidc_provider_arn = module.eks.iam_oidc_provider_arn
+  helm_values       = var.external_dns_helm_values
 
   depends_on = [
     module.eks,

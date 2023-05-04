@@ -60,7 +60,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "settings" {
+variable "helm_values" {
   description = "Additional yaml encoded values which will be passed to the Helm chart."
   default     = {}
 }

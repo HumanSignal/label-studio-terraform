@@ -13,7 +13,16 @@ resource "helm_release" "metrics_server" {
   version    = var.helm_chart_version
 
   values = [
-    yamlencode(var.settings)
+    jsonencode({
+      extraArgs = [
+        "--kubelet-insecure-tls=true",
+        "--kubelet-preferred-address-types=InternalIP"
+      ]
+      apiService = {
+        create = true
+      }
+    }),
+    jsonencode(var.helm_values),
   ]
 
   depends_on = [

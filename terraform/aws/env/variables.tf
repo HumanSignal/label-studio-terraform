@@ -9,7 +9,7 @@ locals {
     "project-id"    = format("%s", data.aws_caller_identity.current.id)
   }
 
-  create_r53_record = var.zone_name != null && var.record_name != null
+  create_r53_record = var.zone_name != null
 }
 
 data "aws_caller_identity" "current" {}
@@ -373,4 +373,24 @@ variable "vpc_cidr_block" {
   description = "Virtual Private Cloud CIDR block"
   type        = string
   default     = "10.0.0.0/16"
+}
+
+variable "load_balancer_controller_helm_values" {
+  description = "Additional yaml encoded values which will be passed to the Load Balancer Helm chart"
+  default = {}
+}
+
+variable "ingress_nginx_helm_values" {
+  description = "Additional yaml encoded values which will be passed to the Ingress Nginx Helm chart"
+  default = {}
+}
+
+variable "cert_manager_helm_values" {
+  description = "Additional yaml encoded values which will be passed to the Cert Manager Helm chart"
+  default = {}
+}
+
+variable "external_dns_helm_values" {
+  description = "Additional yaml encoded values which will be passed to the External DNS Helm chart"
+  default = {}
 }
