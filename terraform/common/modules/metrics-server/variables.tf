@@ -35,5 +35,6 @@ variable "namespace" {
 
 variable "helm_values" {
   description = "Additional settings which will be passed to the Helm chart values"
+  type        = map(any)
   default = {}
 }

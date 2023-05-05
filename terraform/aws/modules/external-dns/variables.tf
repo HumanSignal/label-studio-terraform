@@ -43,5 +43,6 @@ variable "oidc_provider_arn" {}
 
 variable "helm_values" {
   description = "Additional yaml encoded values which will be passed to the Helm chart."
+  type        = map(any)
   default     = {}
 }

@@ -377,24 +377,24 @@ variable "vpc_cidr_block" {
 
 variable "load_balancer_controller_helm_values" {
   description = "Additional yaml encoded values which will be passed to the Load Balancer Helm chart"
-  type = map(string)
+  type = map(any)
   default = {}
 }
 
 variable "ingress_nginx_helm_values" {
   description = "Additional yaml encoded values which will be passed to the Ingress Nginx Helm chart"
-  type = map(string)
+  type = map(any)
   default = {}
 }
 
 variable "cert_manager_helm_values" {
   description = "Additional yaml encoded values which will be passed to the Cert Manager Helm chart"
-  type = map(string)
+  type = map(any)
   default = {}
 }
 
 variable "external_dns_helm_values" {
   description = "Additional yaml encoded values which will be passed to the External DNS Helm chart"
-  type = map(string)
+  type = map(any)
   default = {}
 }

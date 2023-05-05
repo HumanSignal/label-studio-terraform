@@ -6,8 +6,8 @@ variable "helm_chart_release_name" {
 
 variable "helm_chart_repo" {
   description = "Nginx Ingress Controller repository name"
-  type    = string
-  default = "https://kubernetes.github.io/ingress-nginx"
+  type        = string
+  default     = "https://kubernetes.github.io/ingress-nginx"
 }
 
 variable "helm_chart_name" {
@@ -18,8 +18,8 @@ variable "helm_chart_name" {
 
 variable "helm_chart_version" {
   description = "Nginx Ingress Controller Helm chart version"
-  type    = string
-  default = "4.6.0"
+  type        = string
+  default     = "4.6.0"
 }
 
 variable "namespace" {
@@ -30,17 +30,18 @@ variable "namespace" {
 
 variable "load_balancer_name" {
   description = "Load Balancer name to create"
-  type = string
+  type        = string
 }
 
 variable "helm_values" {
   description = "Additional yaml encoded values which will be passed to the Helm chart"
-  default = {}
+  type        = map(any)
+  default     = {}
 }
 
 variable "eip_addresses" {
   description = "EIP addresses list"
-  default = []
+  default     = []
 }
 
 variable "vpc_cidr_block" {
@@ -51,11 +52,11 @@ variable "vpc_cidr_block" {
 
 variable "default_ssl_certificate" {
   description = "Default SSL certificate"
-  type = string
+  type        = string
 }
 
 variable "replicas" {
-  type = number
+  type        = number
   description = "Amount of replicas"
-  default = 1
+  default     = 1
 }
