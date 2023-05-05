@@ -53,6 +53,7 @@ variable "vpc_cidr_block" {
 variable "default_ssl_certificate" {
   description = "Default SSL certificate"
   type        = string
+  default     = null
 }
 
 variable "replicas" {
