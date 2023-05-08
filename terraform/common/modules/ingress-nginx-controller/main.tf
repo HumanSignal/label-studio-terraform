@@ -9,11 +9,14 @@ resource "helm_release" "ingress_nginx" {
   values = [
     jsonencode({
       controller = {
+        metrics = {
+          enabled = true
+        }
         replicaCount   = var.replicas
         updateStrategy = {
           rollingUpdate = {
             maxUnavailable = 0
-            maxSurge = 1
+            maxSurge       = 1
           },
           type = "RollingUpdate"
         }
@@ -21,7 +24,7 @@ resource "helm_release" "ingress_nginx" {
           annotations = merge(
             {
               "service.beta.kubernetes.io/aws-load-balancer-name"            = var.load_balancer_name
-              "service.beta.kubernetes.io/aws-load-balancer-type"            = "external"
+              "service.beta.kubernetes.io/aws-load-balancer-type"            = "nlb"
               "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
               "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "instance"
               "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol"  = "*"
@@ -32,12 +35,14 @@ resource "helm_release" "ingress_nginx" {
           )
         },
         config = {
-          server-tokens      = "false"
-          enable-real-ip     = "true"
-          use-proxy-protocol = "true"
-          real-ip-header     = "proxy_protocol"
-          set-real-ip-from   = "0.0.0.0/0" # IPv4 CIDR to allow all source IPs
-          hide-headers       = "Server, X-Powered-By"
+          enable-real-ip         = "true"
+          use-proxy-protocol     = "true"
+          real-ip-header         = "proxy_protocol"
+          set-real-ip-from       = "0.0.0.0/0" # IPv4 CIDR to allow all source IPs
+          server-tokens          = "false"
+          hide-headers           = "Server, X-Powered-By"
+          log-format-escape-json = "true"
+          log-format-upstream    = "{\"time\": \"$time_iso8601\", \"request_id\": \"$request_id\", \"user\": \"$remote_user\", \"address\": \"$remote_addr\", \"connection_from\": \"$realip_remote_addr\", \"bytes_received\": $request_length, \"bytes_sent\": $bytes_sent, \"protocol\": \"$server_protocol\", \"scheme\": \"$scheme\", \"method\": \"$request_method\", \"host\": \"$host\", \"path\": \"$uri\", \"request_query\": \"$args\", \"referrer\": \"$http_referer\", \"user_agent\": \"$http_user_agent\", \"request_time\": $request_time, \"status\": $status, \"content_type\": \"$content_type\", \"upstream_response_time\": $upstream_response_time, \"namespace\": \"$namespace\", \"ingress\": \"$ingress_name\", \"service\": \"$service_name\", \"service_port\": \"$service_port\", \"vhost\": \"$server_name\", \"location\": \"$location_path\", \"nginx_upstream_addr\": \"$upstream_addr\", \"nginx_upstream_bytes_received\": \"$upstream_bytes_received\", \"nginx_upstream_response_time\": \"$upstream_response_time\", \"nginx_upstream_status\": \"$upstream_status\"}"
         },
         extraArgs = merge(
           {},
