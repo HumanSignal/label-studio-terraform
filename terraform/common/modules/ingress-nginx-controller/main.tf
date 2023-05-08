@@ -38,9 +38,12 @@ resource "helm_release" "ingress_nginx" {
           set-real-ip-from   = "0.0.0.0/0" # IPv4 CIDR to allow all source IPs
           hide-headers       = "Server, X-Powered-By"
         },
-        extraArgs = {
-          default-ssl-certificate = var.default_ssl_certificate
-        },
+        extraArgs = merge(
+          {},
+          var.default_ssl_certificate != null ? tomap({
+            default-ssl-certificate = var.default_ssl_certificate
+          }) : {},
+        )
         affinity = {
           podAntiAffinity = {
             preferredDuringSchedulingIgnoredDuringExecution = [

@@ -204,7 +204,7 @@ module "nic" {
   load_balancer_name      = local.name_prefix
   eip_addresses           = module.lbc.eip_addresses
   vpc_cidr_block          = var.vpc_cidr_block
-  default_ssl_certificate = "${var.cert_manager_namespace}/tls"
+  default_ssl_certificate = var.enable_cert_manager ? "${var.cert_manager_namespace}/tls" : null
   helm_values             = var.ingress_nginx_helm_values
 
 
@@ -228,7 +228,7 @@ module "cert_manager_namespace" {
 module "cert-manager" {
   source = "../modules/cert-manager"
 
-  count = local.create_r53_record ? 1 : 0
+  count = var.enable_cert_manager ? 1 : 0
 
   namespace         = module.cert_manager_namespace.namespace
   name              = local.name_prefix
