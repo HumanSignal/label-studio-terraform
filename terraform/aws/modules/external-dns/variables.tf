@@ -19,7 +19,7 @@ variable "helm_chart_name" {
 variable "helm_chart_version" {
   description = "Cert-manager Helm chart version."
   type        = string
-  default     = "1.9.0"
+  default     = "1.12.2"
 }
 
 variable "namespace" {
