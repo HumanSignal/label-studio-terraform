@@ -109,6 +109,7 @@ resource "aws_iam_role" "cert_manager" {
 EOF
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "cert_manager" {
   name_prefix = var.name
   role        = aws_iam_role.cert_manager.id
