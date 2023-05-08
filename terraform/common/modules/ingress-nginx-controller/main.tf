@@ -27,7 +27,7 @@ resource "helm_release" "ingress_nginx" {
               "service.beta.kubernetes.io/aws-load-balancer-type"            = "nlb"
               "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
               "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "instance"
-              #              "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol"  = "*"
+              "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol"  = "*"
             },
             var.eip_addresses != [] ? tomap({
               "service.beta.kubernetes.io/aws-load-balancer-eip-allocations" = join(",", var.eip_addresses)
@@ -35,12 +35,10 @@ resource "helm_release" "ingress_nginx" {
           )
         },
         config = {
-          #          use-proxy-protocol     = "true"
-          #          real-ip-header         = "proxy_protocol"
-
-          enable-real-ip        = "true"
-          proxy-real-ip-cidr    = var.vpc_cidr_block
-          use-forwarded-headers = "true"
+          use-proxy-protocol = "true"
+          enable-real-ip     = "true"
+          real-ip-header     = "proxy_protocol"
+          proxy-real-ip-cidr = var.vpc_cidr_block
 
           server-tokens          = "false"
           hide-headers           = "Server, X-Powered-By"
