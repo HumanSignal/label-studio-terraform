@@ -1,9 +1,9 @@
 locals {
   addon_versions = {
-    "coredns"            = "v1.9.3-eksbuild.2"
-    "kube-proxy"         = "v1.26.2-eksbuild.1"
+    "coredns"            = "v1.9.3-eksbuild.3"
+    "kube-proxy"         = "v1.26.4-eksbuild.1"
     "vpc_cni"            = "v1.12.6-eksbuild.1"
-    "aws_ebs_csi_driver" = "v1.17.0-eksbuild.1"
+    "aws_ebs_csi_driver" = "v1.18.0-eksbuild.1"
   }
 }
 

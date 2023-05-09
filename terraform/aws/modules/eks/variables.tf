@@ -146,3 +146,9 @@ variable "cluster_api_cidr" {
   type        = string
   default     = "10.2.0.0/32"
 }
+
+variable "disk_size" {
+  description = "Node Group disk size"
+  type        = number
+  default     = 100
+}

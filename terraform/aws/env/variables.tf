@@ -404,3 +404,9 @@ variable "enable_cert_manager" {
   type        = bool
   default     = true
 }
+
+variable "eks_node_group_disk_size" {
+  description = "Node Group disk size"
+  type        = number
+  default     = 100
+}

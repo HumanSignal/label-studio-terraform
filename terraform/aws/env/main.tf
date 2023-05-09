@@ -96,6 +96,7 @@ module "eks" {
   capacity_type                        = var.eks_capacity_type
   monitoring_namespace                 = var.monitoring_namespace
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
+  disk_size                            = var.eks_node_group_disk_size
 
   aws_auth_roles    = var.aws_auth_roles
   aws_auth_users    = var.aws_auth_users

@@ -53,6 +53,12 @@ resource "aws_eks_node_group" "eks_node_group" {
     min_size     = var.min_size
   }
 
+  disk_size = var.disk_size
+
+  update_config {
+    max_unavailable = var.min_size
+  }
+
   tags = merge(
     var.tags,
     {
