@@ -10,6 +10,7 @@ help:
 	@echo '    make plan    "provider=<REPLACE_ME>" "vars_file=<REPLACE_ME>" Plan all Terraform resources.'
 	@echo '    make apply   "provider=<REPLACE_ME>" "vars_file=<REPLACE_ME>" Create or update Terraform resources.'
 	@echo '    make destroy "provider=<REPLACE_ME>" "vars_file=<REPLACE_ME>" Destroy all Terraform resources.'
+	@echo '    make cleanup "provider=<REPLACE_ME>" "vars_file=<REPLACE_ME>" Delete Terraform state bucket.'
 	@echo '    make console "provider=<REPLACE_ME>" "vars_file=<REPLACE_ME>" Run terraform console to debug terraform resources.'
 	@echo '    make lint	                                                 Check syntax of all scripts.'
 	@echo '    make docs	                                                 Generate documentation for terraform modules.'
@@ -40,6 +41,11 @@ apply:
 .PHONY: destroy
 destroy:
 	bash $(ROOT)/terraform/$(provider)/scripts/destroy.sh "$(var_file)"
+
+# Destroy the terraform resources
+.PHONY: cleanup
+cleanup:
+	bash $(ROOT)/terraform/$(provider)/scripts/cleanup.sh "$(var_file)"
 
 .PHONY: lint
 lint: check_shell check_terraform check_shebangs check_tflint check_tfsec

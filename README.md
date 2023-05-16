@@ -45,6 +45,7 @@ Follow the step from official Kubernetes documentation:
 | `make plan "provider=<REPLACE_ME>" "vars_file=<REPLACE_ME>"`    | Plan all Terraform resources                 |
 | `make apply "provider=<REPLACE_ME>" "vars_file=<REPLACE_ME>"`   | Create or update Terraform resources         |
 | `make destroy "provider=<REPLACE_ME>" "vars_file=<REPLACE_ME>"` | Destroy all Terraform resources              |
+| `make cleanup "provider=<REPLACE_ME>" "vars_file=<REPLACE_ME>"` | Delete Terraform state bucket                |
 | `make lint`                                                     | Check syntax of all scripts                  |
 | `make docs`                                                     | Generate documentation for terraform modules |
 
