@@ -24,6 +24,3 @@ terraform init -backend-config="bucket=${BUCKET_NAME}" \
 
 # Validate the Terraform resources.
 terraform validate
-
-# Create workspace based on the environment, by doing this you don't overlap wih the resources in different environments.
-terraform workspace new "${TF_VAR_environment:-}" || terraform workspace select "${TF_VAR_environment:-}"

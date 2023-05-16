@@ -39,19 +39,30 @@ else
   fi
 fi
 
-TF_PARAMS="-var-file=${VAR_FILE} ${ADDITIONAL_TF_PARAMS:-}"
-TF_VAR_environment=$(sed -n 's#^[ ]*environment[ ]*=[ ]*"\(.*\)"#\1#p' "${VAR_FILE}" | head -n 1)
-TF_VAR_name=$(sed -n 's#^[ ]*name[ ]*=[ ]*"\(.*\)"#\1#p' "${VAR_FILE}" | head -n 1)
-TF_VAR_region=$(sed -n 's#^[ ]*region[ ]*=[ ]*"\(.*\)"#\1#p' "${VAR_FILE}" | head -n 1)
+function get_tf_var() {
+  sed -n "s#^[ ]*${2}[ ]*=[ ]*\"\(.*\)\"#\1#p" "${1}" | head -n 1
+}
 
-export TF_PARAMS TF_VAR_environment TF_VAR_name TF_VAR_region
+TF_PARAMS="-var-file=${VAR_FILE} ${ADDITIONAL_TF_PARAMS:-}"
+TF_VAR_environment=$(get_tf_var "${VAR_FILE}" "environment")
+TF_VAR_name=$(get_tf_var "${VAR_FILE}" "name")
+TF_VAR_region=$(get_tf_var "${VAR_FILE}" "region")
+TF_VAR_workspace=$(get_tf_var "${VAR_FILE}" "workspace")
+TF_VAR_workspace=${TF_VAR_workspace:-$TF_VAR_environment}
+
+export TF_PARAMS TF_VAR_environment TF_VAR_name TF_VAR_region TF_VAR_workspace
 
 # Make sure you initialize the following TF_VAR's before you initialize the environment
 if [ -z "${TF_VAR_environment:-}" ] || [ -z "${TF_VAR_name:-}" ] || [ -z "${TF_VAR_region:-}" ] || [ -z "${TF_PARAMS:-}" ]; then
-  echo "[ERROR] This step requires to export the following variables TF_VAR_environment, TF_VAR_name, TF_VAR_region, TF_PARAMS"
+  echo "[ERROR] This step requires to export the following variables TF_VAR_environment, TF_VAR_name, TF_VAR_region, TF_PARAMS, TF_VAR_workspace"
   exit 1
 else
-  echo -e "[INFO] The following variables are configured:\n  TF_VAR_environment: ${TF_VAR_environment}\n  TF_VAR_name: ${TF_VAR_name}\n  TF_VAR_region: ${TF_VAR_region}\n  TF_PARAMS: ${TF_PARAMS}"
+  echo "[INFO] The following variables are configured:"
+  echo "    TF_VAR_environment: ${TF_VAR_environment}"
+  echo "    TF_VAR_name: ${TF_VAR_name}"
+  echo "    TF_VAR_region: ${TF_VAR_region}"
+  echo "    TF_VAR_workspace: ${TF_VAR_workspace}"
+  echo "    TF_PARAMS: ${TF_PARAMS}"
 fi
 
 # Create s3 state bucket if not exist
@@ -59,14 +70,17 @@ export BUCKET_NAME=${TF_VAR_environment}-${TF_VAR_region}-ls-terraform-state-buc
 # shellcheck disable=SC2046
 if ! aws s3api head-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" > /dev/null 2>&1; then
   echo "[INFO] Creating S3 bucket to store Terraform state: ${BUCKET_NAME}"
-  aws s3api create-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" $( [[ "${TF_VAR_region}" != "us-east-1" ]] && echo "--create-bucket-configuration LocationConstraint=${TF_VAR_region}" ) > /dev/null
+  aws s3api create-bucket --bucket "${BUCKET_NAME}" --region "${TF_VAR_region}" $([[ "${TF_VAR_region}" != "us-east-1" ]] && echo "--create-bucket-configuration LocationConstraint=${TF_VAR_region}") > /dev/null
   aws s3api put-bucket-encryption \
     --bucket "${BUCKET_NAME}" \
     --server-side-encryption-configuration={\"Rules\":[{\"ApplyServerSideEncryptionByDefault\":{\"SSEAlgorithm\":\"AES256\"}}]} > /dev/null
   aws s3api put-public-access-block \
-      --bucket "${BUCKET_NAME}" \
-      --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+    --bucket "${BUCKET_NAME}" \
+    --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
   aws s3api put-bucket-versioning --bucket "${BUCKET_NAME}" --versioning-configuration Status=Enabled > /dev/null
 fi
 
 echo "[INFO] Using s3 bucket to store terraform state: ${BUCKET_NAME}"
+
+# Create workspace based on the environment, by doing this you don't overlap wih the resources in different environments.
+terraform workspace select -or-create=true "${TF_VAR_workspace}"
