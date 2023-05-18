@@ -6,6 +6,17 @@
 # Locate the root directory. Used by scripts that source this one.
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+function prompt_confirm() {
+  while true; do
+    read -r -p "${1:-Continue?} [${2:-y}/n]: " REPLY
+    case $REPLY in
+      ${2}) echo ; return 0 ;;
+      [nN]) echo ; return 1 ;;
+      *) printf " \033[31m %s \n\033[0m" "invalid input"
+    esac
+  done
+}
+
 # AWS CLI v2 is installed
 command -v aws > /dev/null 2>&1 || {
   echo >&2 "AWS CLI v2 is required, but it's not installed.  Aborting."
