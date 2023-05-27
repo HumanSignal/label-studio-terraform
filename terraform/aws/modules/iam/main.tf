@@ -79,6 +79,12 @@ resource "aws_iam_role_policy_attachment" "EC2ContainerRegistryReadOnly_iam_role
   role       = aws_iam_role.worker_iam_role.name
 }
 
+# Create AWS SSMManagedInstanceCore iam role policy attachment.
+resource "aws_iam_role_policy_attachment" "SSMManagedInstanceCore_iam_role_policy_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.worker_iam_role.name
+}
+
 # Create AWS iam instance profile group.
 resource "aws_iam_instance_profile" "iam_instance_profile" {
   name = format("%s-eks-instance-profile", var.name)
@@ -87,33 +93,4 @@ resource "aws_iam_instance_profile" "iam_instance_profile" {
   lifecycle {
     create_before_destroy = true
   }
-}
-
-# Create AWS LabelStudio iam role policy attachment to the worker nodes.
-resource "aws_iam_role_policy_attachment" "ls_s3_iam_role_policy_attachment" {
-  policy_arn = aws_iam_policy.ls_s3_iam_policy.arn
-  role       = aws_iam_role.worker_iam_role.name
-}
-
-# Create AWS iam policy document to create access to the s3 bucket to store LS files(upload, avatars, exports).
-resource "aws_iam_policy" "ls_s3_iam_policy" {
-  name = format("%s-eks-ls-s3-access", var.name)
-
-  policy = jsonencode({
-    Version   = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:DeleteObject"
-        ]
-        Effect   = "Allow"
-        Resource = [
-          format("arn:aws:s3:::%s", var.bucket_id),
-          format("arn:aws:s3:::%s/*", var.bucket_id)
-        ]
-      },
-    ]
-  })
 }

@@ -64,6 +64,7 @@ locals {
   }
 }
 
+# Create AWS iam policy document to create access to the s3 bucket to store LS files(upload, avatars, exports).
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "persistence" {
   name        = "${var.name}-s3-persistence"
@@ -71,6 +72,7 @@ resource "aws_iam_policy" "persistence" {
   policy      = jsonencode(local.policy)
 }
 
+# Create AWS LabelStudio iam role policy attachment to the service account.
 resource "aws_iam_role_policy_attachment" "persistence" {
   role       = aws_iam_role.persistence.name
   policy_arn = aws_iam_policy.persistence.arn

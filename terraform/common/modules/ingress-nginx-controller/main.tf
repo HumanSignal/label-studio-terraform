@@ -9,8 +9,14 @@ resource "helm_release" "ingress_nginx" {
   values = [
     jsonencode({
       controller = {
+        ingressClassResource = {
+          default = true
+        }
         metrics = {
           enabled = true
+          serviceMonitor = {
+            enabled = false
+          }
         }
         replicaCount   = var.replicas
         updateStrategy = {
