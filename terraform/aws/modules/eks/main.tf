@@ -39,11 +39,11 @@ resource "aws_eks_cluster" "eks_cluster" {
 
 # AWS EKS node group configuration.
 resource "aws_eks_node_group" "eks_node_group" {
-  cluster_name    = aws_eks_cluster.eks_cluster.name
-  node_group_name = format("%s-eks-node-group", var.name)
-  node_role_arn   = var.worker_role_arn
-  subnet_ids      = var.subnet_ids
-  instance_types  = [var.instance_type]
+  cluster_name           = aws_eks_cluster.eks_cluster.name
+  node_group_name_prefix = "${var.name}-eks-mng-node-group-"
+  node_role_arn          = var.worker_role_arn
+  subnet_ids             = var.subnet_ids
+  instance_types         = [var.instance_type]
 
   capacity_type = var.capacity_type
 
@@ -53,10 +53,17 @@ resource "aws_eks_node_group" "eks_node_group" {
     min_size     = var.min_size
   }
 
-  disk_size = var.disk_size
+  ami_type = "AL2_x86_64"
+
+  #  disk_size = var.disk_size set disk size on custom LT or else it will error here
 
   update_config {
     max_unavailable = 1
+  }
+
+  launch_template {
+    id      = aws_launch_template.managed_node_group.id
+    version = aws_launch_template.managed_node_group.default_version
   }
 
   tags = merge(
@@ -73,7 +80,8 @@ resource "aws_eks_node_group" "eks_node_group" {
 
   # Allow external changes without Terraform plan difference
   lifecycle {
-    ignore_changes = [scaling_config[0].desired_size]
+    create_before_destroy = true
+    ignore_changes        = [scaling_config[0].desired_size]
   }
 
   depends_on = [
@@ -84,16 +92,18 @@ resource "aws_eks_node_group" "eks_node_group" {
 # aws-auth configmap
 locals {
   aws_auth_configmap_data = {
-    mapRoles    = yamlencode(
-        concat(
-            [{
-                rolearn  = var.worker_role_arn
-                username = "system:node:{{EC2PrivateDNSName}}"
-                groups = ["system:bootstrappers","system:nodes"]
-            }],
-            var.aws_auth_roles
-            )
-        )
+    mapRoles = yamlencode(
+      concat(
+        [
+          {
+            rolearn  = var.worker_role_arn
+            username = "system:node:{{EC2PrivateDNSName}}"
+            groups   = ["system:bootstrappers", "system:nodes"]
+          }
+        ],
+        var.aws_auth_roles
+      )
+    )
     mapUsers    = yamlencode(var.aws_auth_users)
     mapAccounts = yamlencode(var.aws_auth_accounts)
   }
