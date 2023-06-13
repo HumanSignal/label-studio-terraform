@@ -19,7 +19,7 @@ variable "helm_chart_name" {
 variable "helm_chart_version" {
   description = "Nginx Ingress Controller Helm chart version"
   type        = string
-  default     = "4.6.1"
+  default     = "4.7.0"
 }
 
 variable "namespace" {
