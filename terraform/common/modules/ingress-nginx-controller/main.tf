@@ -13,7 +13,7 @@ resource "helm_release" "ingress_nginx" {
           default = true
         }
         metrics = {
-          enabled = true
+          enabled        = true
           serviceMonitor = {
             enabled = false
           }
@@ -50,6 +50,15 @@ resource "helm_release" "ingress_nginx" {
           hide-headers           = "Server, X-Powered-By"
           log-format-escape-json = "true"
           log-format-upstream    = "{\"time\": \"$time_iso8601\", \"request_id\": \"$request_id\", \"user\": \"$remote_user\", \"address\": \"$remote_addr\", \"connection_from\": \"$realip_remote_addr\", \"bytes_received\": $request_length, \"bytes_sent\": $bytes_sent, \"protocol\": \"$server_protocol\", \"scheme\": \"$scheme\", \"method\": \"$request_method\", \"host\": \"$host\", \"path\": \"$uri\", \"request_query\": \"$args\", \"referrer\": \"$http_referer\", \"user_agent\": \"$http_user_agent\", \"request_time\": $request_time, \"status\": $status, \"content_type\": \"$content_type\", \"upstream_response_time\": \"$upstream_response_time\", \"namespace\": \"$namespace\", \"ingress\": \"$ingress_name\", \"service\": \"$service_name\", \"service_port\": \"$service_port\", \"vhost\": \"$server_name\", \"location\": \"$location_path\", \"nginx_upstream_addr\": \"$upstream_addr\", \"nginx_upstream_bytes_received\": \"$upstream_bytes_received\", \"nginx_upstream_response_time\": \"$upstream_response_time\", \"nginx_upstream_status\": \"$upstream_status\"}"
+
+          client-body-buffer-size     = "128k"
+          client-header-buffer-size   = "5120k"
+          large-client-header-buffers = "16 5120k"
+          limit-req-status-code       = "429"
+
+          proxy-connect-timeout       = "3"
+          proxy-next-upstream         = "error timeout http_502 http_503 http_504 non_idempotent"
+          proxy-next-upstream-timeout = "10"
         },
         extraArgs = merge(
           {},
