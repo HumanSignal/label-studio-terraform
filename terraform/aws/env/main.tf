@@ -19,7 +19,7 @@ locals {
 
 # Create and/or configure VPC
 module "vpc" {
-  source    = "../modules/vpc"
+  source = "../modules/vpc"
 
   name               = local.name_prefix
   environment        = var.environment
@@ -30,7 +30,7 @@ module "vpc" {
   vpc_cidr_block     = var.vpc_cidr_block
 
   # Predefined VPC
-  predefined_vpc_id = var.predefined_vpc_id
+  predefined_vpc_id       = var.predefined_vpc_id
   create_internet_gateway = var.create_internet_gateway
 }
 
@@ -170,12 +170,10 @@ module "elasticache" {
 module "lbc" {
   source = "../modules/load-balancer-controller"
 
-  name               = local.name_prefix
-  environment        = var.environment
-  cluster_name       = module.eks.cluster_name
-  iam_oidc_provider  = module.eks.iam_oidc_provider
-  tags               = local.tags
-  private_cidr_block = var.private_cidr_block
+  name              = local.name_prefix
+  environment       = var.environment
+  cluster_name      = module.eks.cluster_name
+  iam_oidc_provider = module.eks.iam_oidc_provider
 
   depends_on = [
     module.eks,
@@ -189,12 +187,11 @@ module "nic" {
   helm_chart_release_name = format("%s-ingress-nginx", local.name_prefix)
   namespace               = var.ingress_namespace
   load_balancer_name      = local.name_prefix
-  eip_addresses           = module.lbc.eip_addresses
   vpc_cidr_block          = var.vpc_cidr_block
 
   depends_on = [
     module.eks,
-    module.lbc
+    module.lbc,
   ]
 }
 

@@ -445,20 +445,3 @@ resource "helm_release" "alb_controller" {
     kubernetes_cluster_role_binding.this,
   ]
 }
-
-# This data block help you to get the availability zone from the region.
-data "aws_availability_zones" "availability_zones" {
-}
-
-locals {
-  pri_availability_zones = slice(data.aws_availability_zones.availability_zones.names, 0, length(var.private_cidr_block))
-  pri_az_count = length(local.pri_availability_zones)
-}
-
-resource "aws_eip" "lb_eip" {
-  count = local.pri_az_count
-  tags  = merge(var.tags, {
-    "Name" = format("%s-lb-eip-%s", var.name, local.pri_availability_zones[count.index])
-  })
-  vpc        = true
-}

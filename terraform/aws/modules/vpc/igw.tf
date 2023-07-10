@@ -38,7 +38,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 resource "aws_eip" "mod_nat_eip" {
   count = var.multi_az_nat_gateway * local.pri_az_count + var.single_nat_gateway * 1
   tags  = merge(var.tags, {
-    "Name" = format("%s-nat-eip-%s", var.name, local.pub_availability_zones[count.index])
+    "Name" = format("%s-elasticIP-%s", var.name, local.pub_availability_zones[count.index])
   })
   vpc        = true
   depends_on = [aws_internet_gateway.internet_gateway]

@@ -38,11 +38,6 @@ variable "settings" {
   default = {}
 }
 
-variable "eip_addresses" {
-  description = "EIP addresses list"
-  default = []
-}
-
 variable "vpc_cidr_block" {
   description = "Virtual Private Cloud CIDR block"
   type        = string
