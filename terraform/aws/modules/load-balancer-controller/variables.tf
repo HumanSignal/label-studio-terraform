@@ -44,15 +44,3 @@ variable "namespace" {
   type        = string
   default     = "ingress"
 }
-
-variable "private_cidr_block" {
-  description = "List of private subnet CIDR blocks"
-  type        = list(string)
-}
-
-# Common tags for the resources.
-variable "tags" {
-  description = "Common tags to attach all the resources create in this project."
-  type        = map(string)
-  default     = {}
-}
